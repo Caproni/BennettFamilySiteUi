@@ -1,0 +1,9 @@
+.navbar-nav > .project-title {
+    font-size: large;
+    color: rgb(255, 255, 255);
+
+}
+
+.link-icon:hover {
+    background-color: rgb(100, 100, 100);
+}

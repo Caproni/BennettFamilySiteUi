@@ -1,0 +1,41 @@
+<br>
+<br>
+<img src="assets/GHD_ARC_Logo_blurred.png" width="20%" style="margin-left: 40%; margin-right: auto;" alt="">
+<br>
+<br>
+<br>
+<div class="container login-container">
+      <div class="card w-75 mx-auto">
+            <h4 class="card-header">Login</h4>
+            <div class="card-body">
+                  <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                              <label for="username">Username</label>
+                              <input required  minlength=3 [(ngModel)] = "f.username.text" name="username" type="text" #username="ngModel" class="form-control" id="username">
+                              <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                    <div *ngIf="f.username.errors.required">Username is required</div>
+                              </div>
+                        </div>
+                        <div class="form-group">
+                              <label for="password">Password</label>
+                              <input required minlength=7 maxlength=15 [(ngModel)] = "f.password.text" type="{{getPasswordVisibility()}}" name="password" class="form-control" id="password">
+                              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                    <div *ngIf="f.password.errors.required">Password is required</div>
+                              </div>
+                        </div>
+                        <div *ngIf="f.unauthorised" class="mb-2">
+                              Incorrect username and password combination.
+                        </div>
+                        <div class="form-group">
+                              <button [disabled]="loading" class="btn btn-primary">
+                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                    Login
+                              </button>
+                        </div>
+                  </form>
+            </div>
+      </div>
+</div>
+<br>
+<br>
+<div class="mx-auto" style="color: rgb(150,150,150); width: 200px">Powered by GHD Digital</div>
