@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AlertWindowComponent } from './alert/alert.component';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,7 +11,6 @@ import { RouterModule } from "@angular/router";
 @NgModule({
   declarations: [
     AppComponent,
-    AlertWindowComponent,
   ],
   imports: [
     RouterModule.forRoot([]),

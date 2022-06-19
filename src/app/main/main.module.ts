@@ -35,6 +35,7 @@ const routes: Routes = [
     PhotosComponent,
   ],
   imports: [
+    RouterModule.forChild(routes),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
