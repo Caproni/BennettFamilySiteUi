@@ -36,7 +36,6 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes),
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,

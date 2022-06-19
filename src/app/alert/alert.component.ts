@@ -13,8 +13,4 @@ export class AlertWindowComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  onClosed(dismissedAlert: any): void {
-    this.alerts = this.alerts.filter(alert => alert !== dismissedAlert);
-  }
-
 }

@@ -10,8 +10,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class NavbarComponent implements OnInit {
 
   constructor(
-    private router: Router,
-    private sanitiser: DomSanitizer,
   ) { }
 
   ngOnInit(): void { }
