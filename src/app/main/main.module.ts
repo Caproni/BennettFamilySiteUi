@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main/main.component';
 import { NavbarComponent } from './main/navbar/navbar.component';
+import { AuthGuardGuard } from '../auth-guard.guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -16,10 +17,10 @@ import { PhotosComponent } from './photos/photos.component';
 const routes: Routes = [
   {
     path: '', component: MainComponent, children: [
-      { path: 'family', component: FamilyTreeComponent },
-      { path: 'recipes', component: RecipesComponent },
-      { path: 'media', component: MediaComponent },
-      { path: 'photos', component: PhotosComponent },
+      { path: 'family', component: FamilyTreeComponent, canActivate: [AuthGuardGuard] },
+      { path: 'recipes', component: RecipesComponent, canActivate: [AuthGuardGuard] },
+      { path: 'media', component: MediaComponent, canActivate: [AuthGuardGuard] },
+      { path: 'photos', component: PhotosComponent, canActivate: [AuthGuardGuard] },
     ],
   },
 ];

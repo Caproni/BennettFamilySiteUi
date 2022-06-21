@@ -16,13 +16,6 @@
                                     <div *ngIf="f.username.errors.required">Username is required</div>
                               </div>
                         </div>
-                        <div class="form-group">
-                              <label for="password">Password</label>
-                              <input required minlength=7 maxlength=15 [(ngModel)] = "f.password.text" type="{{getPasswordVisibility()}}" name="password" class="form-control" id="password">
-                              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                                    <div *ngIf="f.password.errors.required">Password is required</div>
-                              </div>
-                        </div>
                         <div *ngIf="f.unauthorised" class="mb-2">
                               Incorrect username and password combination.
                         </div>
@@ -38,4 +31,3 @@
 </div>
 <br>
 <br>
-<div class="mx-auto" style="color: rgb(150,150,150); width: 200px">Powered by GHD Digital</div>
