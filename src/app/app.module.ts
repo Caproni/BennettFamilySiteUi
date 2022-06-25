@@ -13,7 +13,7 @@ import { FamilyTreeComponent } from './family-tree/family-tree.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { MediaComponent } from './media/media.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { LandingComponent } from './landing/landing.component';
+import { HomeComponent } from './home/home.component';
 import { PhotosComponent } from './photos/photos.component';
 
 @NgModule({
@@ -25,7 +25,7 @@ import { PhotosComponent } from './photos/photos.component';
     RecipesComponent,
     MediaComponent,
     NavbarComponent,
-    LandingComponent,
+    HomeComponent,
     PhotosComponent,
   ],
   imports: [
