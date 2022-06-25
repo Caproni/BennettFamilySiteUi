@@ -7,17 +7,26 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { RouterModule } from "@angular/router";
-import { AlertWindowComponent } from "./alert/alert.component";
+import { AlertWindowComponent } from './alert/alert.component';
 import { UnauthorisedComponent } from './unauthorised/unauthorised.component';
-import { AccountComponent } from "./account/account.component";
+import { FamilyTreeComponent } from './family-tree/family-tree.component';
+import { RecipesComponent } from './recipes/recipes.component';
+import { MediaComponent } from './media/media.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { LandingComponent } from './landing/landing.component';
+import { PhotosComponent } from './photos/photos.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AccountComponent,
     AlertWindowComponent,
     UnauthorisedComponent,
+    FamilyTreeComponent,
+    RecipesComponent,
+    MediaComponent,
+    NavbarComponent,
+    LandingComponent,
+    PhotosComponent,
   ],
   imports: [
     BrowserModule,
