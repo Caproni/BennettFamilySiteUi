@@ -1,7 +1,19 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark">
+<nav class="navbar navbar-expand navbar-dark">
   <div class="container-fluid">
     <div class="navbar-nav">
-      <i class="fa-solid fa-camera-retro"></i>
+      <a class="nav-brand pl-2 pr-2" routerLink="" title="Home"><img src="assets/favicon_io/favicon.ico" height="40"></a>
+      <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/photos" routerLinkActive="active" title="Photos">
+        <fa-icon [icon]="photosIcon" [size]="'lg'"></fa-icon>
+      </a>
+      <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/recipes" routerLinkActive="active" title="Recipes">
+        <fa-icon [icon]="recipesIcon" [size]="'lg'"></fa-icon>
+      </a>
+      <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/family" routerLinkActive="active" title="Family Tree">
+        <fa-icon [icon]="familyTreeIcon" [size]="'lg'"></fa-icon>
+      </a>
+      <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/media" routerLinkActive="active" title="Media">
+        <fa-icon [icon]="mediaIcon" [size]="'lg'"></fa-icon>
+      </a>
     </div>
     <div class="navbar-nav navbar-right">
     </div>

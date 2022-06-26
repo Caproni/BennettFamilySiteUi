@@ -1,1 +1,93 @@
-<p>recipes works!</p>
+<br>
+<div class="container mx-auto text-center">
+  <h1>Recipes</h1>
+</div>
+<br>
+<div>
+  <div class="mx-auto text-center">
+<!--    <button class="btn btn-primary" (click)="openModal(uploadText)">Add Snippet</button>-->
+  </div>
+  <br>
+
+  <br>
+  <div class="col">
+    <div class="row justify-content-center">
+      <div class="input-group col-8" id="searchContainer">
+<!--        <input class="form-control search-bar" type="text"-->
+<!--               placeholder="Search for text snippets by name or content" id="textSearch"-->
+<!--               name="dataSearch" [(ngModel)]="searchPhrase">-->
+<!--        <button type="button" class="btn btn-dark" aria-label="Search" (click)="filterSnippets()">-->
+<!--          <i class="fas fa-search fa-lg"></i>-->
+<!--        </button>-->
+      </div>
+    </div>
+  </div>
+  <br>
+  <!-- <div *ngIf="isFiltered()" class="mx-auto text-center">
+        Showing reports containing datasource '{{getFilterString()}}'
+        <button class="btn outline-secondary" (click)="clearFilter()">Clear</button>
+  </div>
+  <br> -->
+  <div class="container-fluid text-center table-outer">
+
+    <div class="row row-chart row-header m-1 p-2">
+      <div class="col">Text Name</div>
+      <div class="col">Text Preview</div>
+      <div class="col">Upload Date</div>
+      <div class="col">Show Text</div>
+      <div class="col">Update Text</div>
+      <div class="col">Last Updated</div>
+      <div class="col">Delete Text</div>
+    </div>
+<!--    <div *ngIf="textStrings && textStrings.length < 1 && !_isLoading">-->
+<!--      <app-loading-table></app-loading-table>-->
+<!--    </div>-->
+<!--    <div *ngFor="let text of filteredTextStrings">-->
+<!--      <app-text-details [text]="text"></app-text-details>-->
+<!--    </div>-->
+  </div>
+</div>
+
+
+<!--<ng-template #uploadText>-->
+<!--  <div class="modal-header">-->
+<!--    <h4 class="modal-title pull-left">Enter details for-->
+<!--      {{uploadTextName.length > 0 ? uploadTextName : "the new Text String"}}-->
+<!--    </h4>-->
+<!--    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">-->
+<!--      <span aria-hidden="true">&times;</span>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--  <div class="modal-body">-->
+<!--    <div class="form-horizontal">-->
+<!--      <div class="col form-group">-->
+
+<!--        <label class="control-label">Text Name: </label>-->
+<!--        <div class="row">-->
+<!--          <div class="col">-->
+<!--            <input type="text" class="form-control" [(ngModel)]="uploadTextName" required>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <br>-->
+<!--        <label class="control-label">Text Contents: </label>-->
+<!--        <div class="row">-->
+<!--          <div class="col">-->
+<!--            <input type="text" class="form-control" [(ngModel)]="uploadTextContents" required>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <br>-->
+<!--        <div *ngIf="validationMessage.length > 0" class="col mx-auto text-center">-->
+<!--          {{validationMessage}}-->
+<!--        </div>-->
+<!--        <br>-->
+<!--        <button class="btn btn-outline-success" (click)="submitText(modalRef)"-->
+<!--                style="width: 100%;">Upload</button>-->
+
+<!--        <div *ngIf="uploadErrors.name">-->
+<!--          <br>-->
+<!--          Please enter a name for this text string.-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</ng-template>-->

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
-
+import {
+  faCameraRetro,
+  faTv,
+  faMugSaucer,
+  faTree,
+} from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -9,8 +12,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(
-  ) { }
+  mediaIcon = faTv;
+  photosIcon = faCameraRetro;
+  recipesIcon = faMugSaucer;
+  familyTreeIcon = faTree;
+
+  constructor() { }
 
   ngOnInit(): void { }
 

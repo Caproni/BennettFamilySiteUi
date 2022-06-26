@@ -15,6 +15,7 @@ import { MediaComponent } from './media/media.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { PhotosComponent } from './photos/photos.component';
+import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { PhotosComponent } from './photos/photos.component';
     NavbarComponent,
     HomeComponent,
     PhotosComponent,
+    RecipeDetailsComponent,
   ],
   imports: [
     BrowserModule,
