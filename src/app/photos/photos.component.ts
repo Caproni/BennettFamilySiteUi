@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-photos',
+  selector: 'fam-app-photos',
   templateUrl: './photos.component.html',
   styleUrls: ['./photos.component.css']
 })

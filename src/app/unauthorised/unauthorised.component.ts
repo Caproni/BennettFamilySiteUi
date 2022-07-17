@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-unauthorised',
+  selector: 'fam-app-unauthorised',
   templateUrl: './unauthorised.component.html',
   styleUrls: ['./unauthorised.component.css']
 })

@@ -16,6 +16,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { PhotosComponent } from './photos/photos.component';
 import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.component';
+import { PhotoCardComponent } from './photos/photo-card/photo-card.component';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.
     HomeComponent,
     PhotosComponent,
     RecipeDetailsComponent,
+    PhotoCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +41,7 @@ import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.
     HttpClientModule,
     FontAwesomeModule,
     ReactiveFormsModule,
+    MatCardModule,
   ],
   providers: [],
   exports: [],

@@ -6,7 +6,7 @@ import { RecipeUploadService } from 'src/app/_services/api/recipe-upload.service
 import { Recipe } from '../_models/recipe';
 
 @Component({
-  selector: 'app-recipes',
+  selector: 'fam-app-recipes',
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.css']
 })

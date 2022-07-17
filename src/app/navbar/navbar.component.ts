@@ -6,7 +6,7 @@ import {
   faTree,
 } from '@fortawesome/free-solid-svg-icons';
 @Component({
-  selector: 'app-navbar',
+  selector: 'fam-app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })

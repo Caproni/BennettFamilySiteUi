@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-family-tree',
+  selector: 'fam-app-family-tree',
   templateUrl: './family-tree.component.html',
   styleUrls: ['./family-tree.component.css']
 })
