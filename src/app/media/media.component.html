@@ -1,1 +1,43 @@
-<p>media works!</p>
+<br>
+<div class="container mx-auto text-center">
+  <h1>Medium</h1>
+</div>
+<br>
+<div class="col">
+  <div class="row justify-content-center">
+    <div class="input-group col-8" id="searchContainer">
+      <input class="form-control search-bar" type="text"
+             placeholder="Search for media by name, director or actors" id="textSearch"
+             name="dataSearch" [(ngModel)]="searchPhrase">
+      <button type="button" class="btn btn-dark" aria-label="Search" (click)="filterMedia()">
+        <i class="fas fa-search fa-lg"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<br>
+<div>
+  <br>
+  <div class="container-fluid text-center table-outer">
+    <div class="row row-chart row-header m-1 p-2">
+      <div class="col">Title</div>
+      <div class="col">Director</div>
+      <div class="col">Publisher</div>
+      <div class="col">Actors</div>
+      <div class="col">Media Format</div>
+      <div class="col">Release Year</div>
+      <div class="col">Media Type</div>
+      <div class="col">Non-Fiction</div>
+      <div class="col">No. Episodes</div>
+      <div class="col">Duration (mins)</div>
+      <div class="col">Language</div>
+      <div class="col">Location</div>
+    </div>
+    <div *ngIf="media && media.length < 1 && loadedMedia">
+      <fam-app-loading-table></fam-app-loading-table>
+    </div>
+    <div *ngFor="let medium of filteredMedia">
+      <fam-app-medium-detail [medium]="medium"></fam-app-medium-detail>
+    </div>
+  </div>
+</div>

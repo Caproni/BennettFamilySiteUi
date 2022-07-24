@@ -1,4 +1,4 @@
-export interface Media {
+export interface Medium {
   director: string;
   title: string;
   publisher: string;

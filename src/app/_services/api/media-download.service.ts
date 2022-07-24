@@ -4,21 +4,21 @@ import { BehaviorSubject, Observable } from "rxjs";
 
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from "../../_models/api-response";
-import { Media } from "../../_models/media";
+import { Medium } from "../../_models/medium";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MediaDownloadService {
 
-  baseUrl = environment.apiURL;
-  private content: Media[] = [];
+  baseUrl = environment.apiUrl;
+  private content: Medium[] = [];
 
   constructor(
     private http: HttpClient,
   ) {}
 
-  getMedia(): Media[] {
+  getMedia(): Medium[] {
     return this.content;
   }
 

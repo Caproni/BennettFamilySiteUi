@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { MatCardModule } from "@angular/material/card";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { AlertWindowComponent } from './alert/alert.component';
 import { UnauthorisedComponent } from './unauthorised/unauthorised.component';
 import { FamilyTreeComponent } from './family-tree/family-tree.component';
@@ -17,7 +18,8 @@ import { HomeComponent } from './home/home.component';
 import { PhotosComponent } from './photos/photos.component';
 import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.component';
 import { PhotoCardComponent } from './photos/photo-card/photo-card.component';
-import {MatCardModule} from "@angular/material/card";
+import { MediumDetailComponent } from './media/medium-detail/medium-detail.component';
+import { LoadingTableComponent } from "./loading-table/loading-table.component";
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import {MatCardModule} from "@angular/material/card";
     PhotosComponent,
     RecipeDetailsComponent,
     PhotoCardComponent,
+    MediumDetailComponent,
+    LoadingTableComponent,
   ],
   imports: [
     BrowserModule,
