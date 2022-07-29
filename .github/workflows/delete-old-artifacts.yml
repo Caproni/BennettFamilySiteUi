@@ -7,7 +7,7 @@ jobs:
   delete-artifacts:
     runs-on: ubuntu-latest
     steps:
-      - uses: kolvap/purge-artifacts-action@v1
+      - uses: Caproni/BennettFamilySiteUi
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           expire-in: 0days
