@@ -52,4 +52,4 @@ jobs:
           app-name: 'bennett-family'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6D55182CCD654FABAC9C6F0774743232 }}
-          package: ./dist/bennett-family-site-ui
+          package: ./dist/bennett-family
