@@ -20,6 +20,7 @@ import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.
 import { PhotoCardComponent } from './photos/photo-card/photo-card.component';
 import { MediumDetailComponent } from './media/medium-detail/medium-detail.component';
 import { LoadingTableComponent } from "./loading-table/loading-table.component";
+import { PersonComponent } from './family-tree/person/person.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { LoadingTableComponent } from "./loading-table/loading-table.component";
     PhotoCardComponent,
     MediumDetailComponent,
     LoadingTableComponent,
+    PersonComponent,
   ],
   imports: [
     BrowserModule,
