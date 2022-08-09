@@ -1,9 +1,9 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 // import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { takeWhile } from 'rxjs/operators';
-import { RecipeDownloadService } from 'src/app/_services/api/recipe-download.service';
-import { RecipeUploadService } from 'src/app/_services/api/recipe-upload.service';
-import { Recipe } from '../_models/recipe';
+import { RecipeReadService } from 'src/app/_services/api/recipes/recipe-read.service';
+import { RecipeCreateService } from 'src/app/_services/api/recipes/recipe-create.service';
+import { Recipe } from '../_models/recipes/recipe';
 
 @Component({
   selector: 'fam-app-recipes',
@@ -23,8 +23,8 @@ export class RecipesComponent implements OnInit {
   _isLoading = true;
 
   constructor(
-    private recipeUploadService: RecipeUploadService,
-    private recipeDownloadService: RecipeDownloadService,
+    private recipeUploadService: RecipeCreateService,
+    private recipeDownloadService: RecipeReadService,
     // private modalService: BsModalService,
   ) { }
 

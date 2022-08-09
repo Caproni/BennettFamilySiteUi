@@ -3,6 +3,10 @@
   <h1>Media</h1>
 </div>
 <br>
+<div class="mx-auto text-center">
+  <button class="btn btn-dark" (click)="openModal(addMediaTemplate)">Add Media</button>
+</div>
+<br>
 <div class="col">
   <div class="row justify-content-center">
     <div class="input-group col-8" id="searchContainer">
@@ -32,6 +36,7 @@
       <div class="col"><b>Duration (mins)</b></div>
       <div class="col"><b>Language</b></div>
       <div class="col"><b>Location</b></div>
+      <div class="col"><b>Delete</b></div>
     </div>
     <div *ngIf="media && media.length < 1 && loadedMedia">
       <fam-app-loading-table></fam-app-loading-table>
@@ -41,3 +46,12 @@
     </div>
   </div>
 </div>
+
+<ng-template #addMediaTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">New Media</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>

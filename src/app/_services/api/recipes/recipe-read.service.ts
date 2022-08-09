@@ -1,29 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject, Observable } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 
+import { ApiResponse } from 'src/app/_models/common/api-response';
+import { Recipe } from 'src/app/_models/recipes/recipe';
 import { environment } from 'src/environments/environment';
-import { ApiResponse } from "../../_models/api-response";
-import { Medium } from "../../_models/medium";
 
 @Injectable({
   providedIn: 'root'
 })
-export class MediaDownloadService {
+export class RecipeReadService {
 
-  baseUrl = environment.apiUrl;
-  private content: Medium[] = [];
+  private baseUrl = environment.apiUrl;
+  private content: Recipe[] = [];
 
   constructor(
     private http: HttpClient,
-  ) {}
+  ) { }
 
-  getMedia(): Medium[] {
+  getRecipes(): Recipe[] {
     return this.content;
   }
 
-  downloadMedia(): Observable<boolean> {
-    const url = `${this.baseUrl}/readMedia`;
+  readRecipes(): Observable<boolean> {
+    const url = `${this.baseUrl}/readRecipes`;
     let _subject = new BehaviorSubject<boolean>(false);
     this.http.get<ApiResponse>(url).subscribe((data) => {
       if (data.success) {

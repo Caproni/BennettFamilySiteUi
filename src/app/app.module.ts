@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,8 @@ import { PhotoCardComponent } from './photos/photo-card/photo-card.component';
 import { MediumDetailComponent } from './media/medium-detail/medium-detail.component';
 import { LoadingTableComponent } from "./loading-table/loading-table.component";
 import { PersonComponent } from './family-tree/person/person.component';
+import {MatInputModule} from "@angular/material/input";
+import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 
 @NgModule({
   declarations: [
@@ -39,16 +42,19 @@ import { PersonComponent } from './family-tree/person/person.component';
     LoadingTableComponent,
     PersonComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    MatCardModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ModalModule.forRoot(),
+        BrowserAnimationsModule,
+        HttpClientModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatInputModule,
+        BsDatepickerModule,
+    ],
   providers: [],
   exports: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { MediaDownloadService } from "../_services/api/media-download.service";
-import { Medium } from "../_models/medium";
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
+import { MediaReadService } from "src/app/_services/api/media/media-read.service";
+import { Medium } from "src/app/_models/media/medium";
 
 @Component({
   selector: 'fam-app-media',
@@ -12,25 +14,30 @@ export class MediaComponent implements OnInit {
   loadedMedia = false;
   media: Medium[] = [];
   filteredMedia: Medium[] = [];
+  modalRef: BsModalRef = new BsModalRef();
 
-  searchRegex = /["']([a-z0-9:,\-\.\s^\/+]+)["']|([a-z0-9:,\-\.^\/+]+)/gm;
+  searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;
   searchPhrase = '';
 
   constructor(
-    private mediaDownloadService: MediaDownloadService,
+    private mediaDownloadService: MediaReadService,
+    private modalService: BsModalService,
   ) { }
 
   ngOnInit(): void {
-    this.mediaDownloadService.downloadMedia().subscribe((b) => {
+    this.mediaDownloadService.readMedia().subscribe((b) => {
       this.loadedMedia = b;
       this.media = this.mediaDownloadService.getMedia();
       this.filteredMedia = this.media;
     });
   }
 
+  openModal(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(template);
+  }
+
   filterMedia() {
     const searchTerms: string[] = [];
-    console.log("Hi")
     // @ts-ignore
     const groups = this.searchPhrase.matchAll(this.searchRegex);
     let group = groups.next();

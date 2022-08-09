@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RecipeUploadService } from './recipe-upload.service';
+import { MediaCreateService } from "./media-create.service";
 
-describe('RecipeUploadService', () => {
-  let service: RecipeUploadService;
+describe('MediaCreateService', () => {
+  let service: MediaCreateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RecipeUploadService);
+    service = TestBed.inject(MediaCreateService);
   });
 
   it('should be created', () => {

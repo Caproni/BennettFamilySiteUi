@@ -11,4 +11,41 @@
   <div class="col">{{medium.duration_in_minutes}}</div>
   <div class="col">{{medium.language}}</div>
   <div class="col">{{medium.location}}</div>
+  <div class="col"><button class="btn btn-dark" (click)="openModal(deleteMediaTemplate)"><i class="fas fa-trash-alt"></i></button></div>
 </div>
+
+<ng-template #deleteMediaTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">
+      Are you sure you want to delete {{ medium.title }}?
+    </h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row justify-content-center">
+      <button
+        class="btn btn-outline-danger"
+        (click)="deleteMedia(modalRef)"
+        style="width: 80%"
+      >
+        Confirm
+      </button>
+    </div>
+    <div class="row justify-content-center pt-2">
+      <button
+        class="btn btn-outline-secondary"
+        (click)="modalRef.hide()"
+        style="width: 80%"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</ng-template>
