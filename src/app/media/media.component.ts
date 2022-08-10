@@ -28,9 +28,12 @@ export class MediaComponent implements OnInit {
     actors: new FormControl(''),
     format: new FormControl(''),
     release_year: new FormControl(''),
-    date_of_birth: new FormControl(''),
-    date_of_death: new FormControl(''),
-    narrative: new FormControl(''),
+    series_or_film: new FormControl(''),
+    fiction: new FormControl(''),
+    episodes: new FormControl(''),
+    duration_in_minutes: new FormControl(''),
+    language: new FormControl(''),
+    location: new FormControl(''),
   });
 
   searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;
