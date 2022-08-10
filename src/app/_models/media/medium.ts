@@ -1,17 +1,15 @@
 export interface Medium {
-  director: string;
+  director: string | null;
   title: string;
-  publisher: string;
-  actors: string;
-  format: string;
-  release_year: number;
+  publisher: string | null;
+  actors: string | null;
+  format: string | null;
+  release_year: number | null;
   series_or_film: string;
-  fiction: string;
-  episodes: string;
-  duration_in_minutes: number;
-  language: string;
-  location: string;
-  partitionKey: string;
-  id: string;
-  _ts: number;
+  fiction: string | null;
+  episodes: string | null;
+  duration_in_minutes: number | null;
+  language: string | null;
+  location: string | null;
+  id: string | null;
 }

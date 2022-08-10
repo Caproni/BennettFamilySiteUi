@@ -54,4 +54,131 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
+
+  <div class="modal-body">
+    <form [formGroup]="newMediaForm">
+      <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Director </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="director" id="director" class="form-control" name="director">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Title </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="title" id="title" class="form-control" name="title" required>
+            <div *ngIf="newMediaForm.controls['title'].touched && newMediaForm.controls['title'].invalid" class="alert alert-danger">
+              A title is required
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Publisher </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="publisher" id="publisher" class="form-control" name="publisher">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Actors ( ; separated) </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="actors" id="actors" class="form-control" name="actors">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Format </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="format" id="format" class="form-control" name="format">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Release Year </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="release_year" id="release_year" class="form-control" name="release_year">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Series / Film </label>
+          </div>
+          <div class="col">
+            <select formControlName="series_or_film" id="series_or_film" class="form-control" name="series_or_film">
+              <option>Film</option>
+              <option>Series</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Fiction </label>
+          </div>
+          <div class="col">
+            <select formControlName="fiction" id="fiction" class="form-control" name="fiction">
+              <option>Fiction</option>
+              <option>Non-Fiction</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Episodes </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="episodes" id="episodes" class="form-control" name="episodes">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Duration (mins) </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="duration_in_minutes" id="duration_in_minutes" class="form-control" name="duration_in_minutes">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Language </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="language" id="language" class="form-control" name="language">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Location </label>
+          </div>
+          <div class="col">
+            <select formControlName="location" id="location" class="form-control" name="location">
+              <option>Attic</option>
+              <option>Living Room</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <div class="row mx-auto justify-content-center">
+              <button class="btn btn-outline-success" style="width: 80%;"
+                      [disabled]="!newMediaForm.valid"
+                      (click)="onMediaFormSubmit()">Save</button>
+            </div>
+            <div class="row mx-auto pt-2 justify-content-center">
+              <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </ng-template>

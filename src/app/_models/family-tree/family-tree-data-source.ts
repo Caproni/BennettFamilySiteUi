@@ -1,6 +1,6 @@
 export interface FamilyTreeDataSource {
   name: string;
-  description: string;
-  url: string;
-  source_date: Date;
+  description: string | null;
+  url: string | null;
+  source_date: Date | null;
 }

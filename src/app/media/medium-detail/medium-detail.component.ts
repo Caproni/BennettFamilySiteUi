@@ -30,17 +30,19 @@ export class MediumDetailComponent implements OnInit {
   }
 
   deleteMedia(modalRef: BsModalRef): void {
-    this.mediaDeleteService.deleteMedia(
-      this.medium.id,
-    )
-      .pipe(takeWhile(_ => this.isActive))
-      .subscribe(
-        (res) => {
-          console.log(res);
-        },
-        (err) => console.log(err),
-      );
-    modalRef.hide();
+    if (this.medium.id) {
+      this.mediaDeleteService.deleteMedia(
+        this.medium.id,
+      )
+        .pipe(takeWhile(_ => this.isActive))
+        .subscribe(
+          (res) => {
+            console.log(res);
+          },
+          (err) => console.log(err),
+        );
+      modalRef.hide();
+    }
   }
 
 }

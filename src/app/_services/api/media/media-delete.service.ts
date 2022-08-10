@@ -16,7 +16,7 @@ export class MediaDeleteService {
   ) { }
 
   deleteMedia(id: string) {
-    const url = `${this.baseUrl}/deleteMedia?id=${id}`;
-    return this.http.get<ApiResponse>(url);
+    const url = `${this.baseUrl}/deleteMedia?media_id=${id}`;
+    return this.http.delete<ApiResponse>(url);
   }
 }

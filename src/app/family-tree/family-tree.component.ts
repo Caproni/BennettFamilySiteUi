@@ -92,7 +92,7 @@ export class FamilyTreeComponent implements OnInit {
         date_of_birth: payload.date_of_birth? new Date(payload.date_of_birth): null,
         date_of_death: payload.date_of_death? new Date(payload.date_of_death): null,
         image: null,
-        previous_surnames: [],
+        previous_surnames: payload.previous_surnames ? payload.previous_surnames.split(" "): [],
         relationships: [],
         narrative: payload.narrative ?? null,
         generation_index: 0,
@@ -106,6 +106,53 @@ export class FamilyTreeComponent implements OnInit {
       .subscribe(
         (_) => {
           this.familyTreePersonReadService.readFamilyTreePeople();
+        },
+        (err) => console.log(err),
+      );
+
+    this.modalRef.hide();
+  }
+
+  onRelationshipFormSubmit(): void {
+
+    const payload = JSON.parse(JSON.stringify(this.newRelationshipForm.value));
+
+    this.familyTreeRelationshipCreateService.createFamilyTreeRelationship(
+      {
+        person_one: payload.person_one,
+        person_two: payload.person_two,
+        start_time: payload.start_time? new Date(payload.start_time): null,
+        end_time: payload.end_time? new Date(payload.end_time): null,
+        narrative: payload.narrative ?? null,
+      }
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.familyTreeRelationshipReadService.readFamilyTreeRelationships();
+        },
+        (err) => console.log(err),
+      );
+
+    this.modalRef.hide();
+  }
+
+  onDataSourceFormSubmit(): void {
+
+    const payload = JSON.parse(JSON.stringify(this.newDataSourceForm.value));
+
+    this.familyTreeDataSourceCreateService.createFamilyTreeDataSource(
+      {
+        name: payload.name,
+        description: payload.description ?? null,
+        url: payload.url ?? null,
+        source_date: payload.source_date? new Date(payload.source_date): null,
+      }
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.familyTreeDataSourceReadService.readFamilyTreeDataSources();
         },
         (err) => console.log(err),
       );
