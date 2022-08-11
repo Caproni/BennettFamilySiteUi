@@ -166,6 +166,66 @@
   <div class="modal-body">
     <form [formGroup]="newRelationshipForm">
       <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">First Person </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="person_one" id="person_one" class="form-control" name="person_one">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Second Person </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="person_two" id="person_two" class="form-control" name="person_two">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Start Date </label>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              placeholder="Select relationship start date"
+              class="form-control"
+              bsDatepicker
+              formControlName="start_date"
+              [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+            />
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">End Date </label>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              placeholder="Select relationship end date"
+              class="form-control"
+              bsDatepicker
+              formControlName="end_date"
+              [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+            />
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Narrative </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="narrative" id="narrative" class="form-control" name="narrative">
+          </div>
+        </div>
         <div class="row mt-3">
           <div class="col">
             <div class="row mx-auto justify-content-center">
@@ -193,6 +253,51 @@
   <div class="modal-body">
     <form [formGroup]="newDataSourceForm">
       <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Name </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="name" id="name" class="form-control" name="name" required>
+            <div *ngIf="newDataSourceForm.controls['name'].touched && newDataSourceForm.controls['name'].invalid" class="alert alert-danger">
+              A name is required
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Description </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="description" id="description" class="form-control" name="description">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">URL </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="url" id="url" class="form-control" name="url">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Source Date </label>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              placeholder="Select data source creation date"
+              class="form-control"
+              bsDatepicker
+              formControlName="source_date"
+              [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+            />
+          </div>
+        </div>
         <div class="row mt-3">
           <div class="col">
             <div class="row mx-auto justify-content-center">

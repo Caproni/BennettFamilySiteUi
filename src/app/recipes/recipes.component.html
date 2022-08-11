@@ -15,7 +15,43 @@
     <button class="btn btn-dark" (click)="openModal(addEquipmentTemplate)">Add Equipment</button>
   </div>
 </div>
+
 <br>
+<div class="col">
+  <div class="row justify-content-center">
+    <div class="input-group col-8" id="searchContainer">
+      <input class="form-control search-bar" type="text"
+             placeholder="Search for recipes by name, ingredient, source, or tags" id="textSearch"
+             name="dataSearch" [(ngModel)]="searchPhrase">
+      <button type="button" class="btn btn-dark" aria-label="Search" (click)="filterRecipes()">
+        <i class="fas fa-search fa-lg"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<br>
+<div>
+  <br>
+  <div class="container-fluid text-center table-outer">
+    <div class="row row-chart row-header m-1 p-2">
+      <div class="col"><b>Name</b></div>
+      <div class="col"><b>Description</b></div>
+      <div class="col"><b>Cooking Time (mins)</b></div>
+      <div class="col"><b>Source</b></div>
+      <div class="col"><b>No. Ingredients</b></div>
+      <div class="col"><b>No. Steps</b></div>
+      <div class="col"><b>Tags</b></div>
+      <div class="col"><b>Edit</b></div>
+    </div>
+    <div *ngIf="recipes && recipes.length < 1 && loadedRecipes">
+      <fam-app-loading-table></fam-app-loading-table>
+    </div>
+    <div *ngFor="let recipe of filteredRecipes">
+      <fam-app-recipe-details [recipe]="recipe"></fam-app-recipe-details>
+    </div>
+  </div>
+</div>
+
 
 <ng-template #addRecipeTemplate>
   <div class="modal-header">
@@ -27,6 +63,44 @@
   <div class="modal-body">
     <form [formGroup]="newRecipeForm">
       <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Name </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="name" id="recipe-name" class="form-control" name="recipe-name" required>
+            <div *ngIf="newRecipeForm.controls['name'].touched && newRecipeForm.controls['name'].invalid" class="alert alert-danger">
+              A name is required
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Description </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="description" id="description" class="form-control" name="description">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Cooking time (mins) </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="duration_in_minutes" id="duration_in_minutes" class="form-control" name="duration_in_minutes" required>
+            <div *ngIf="newRecipeForm.controls['duration_in_minutes'].touched && newRecipeForm.controls['duration_in_minutes'].invalid" class="alert alert-danger">
+              A duration is required (even just a guess)
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Source </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="source" id="source" class="form-control" name="source">
+          </div>
+        </div>
         <div class="row mt-3">
           <div class="col">
             <div class="row mx-auto justify-content-center">
@@ -81,6 +155,17 @@
   <div class="modal-body">
     <form [formGroup]="newIngredientForm">
       <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Name </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="equipment-name" id="equipment-name" class="form-control" name="equipment-name" required>
+            <div *ngIf="newRecipeForm.controls['name'].touched && newRecipeForm.controls['name'].invalid" class="alert alert-danger">
+              A name is required
+            </div>
+          </div>
+        </div>
         <div class="row mt-3">
           <div class="col">
             <div class="row mx-auto justify-content-center">

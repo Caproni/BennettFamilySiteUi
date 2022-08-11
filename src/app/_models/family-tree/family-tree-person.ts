@@ -16,4 +16,5 @@ export interface FamilyTreePerson {
   facts: string[];
   photos: string[];
   sources: string[];
+  id: string | null;
 }

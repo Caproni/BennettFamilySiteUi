@@ -16,7 +16,7 @@ export class RecipeDeleteService {
   ) { }
 
   deleteRecipe(id: string) {
-    const url = `${this.baseUrl}/deleteRecipe?id=${id}`;
+    const url = `${this.baseUrl}/deleteRecipe?recipe_id=${id}`;
     return this.http.delete<ApiResponse>(url);
   }
 }

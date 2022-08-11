@@ -5,4 +5,5 @@ export interface RecipeStep {
   description: string;
   image: string;
   ingredientsUsed: Ingredient[];
+  id: string | null;
 }

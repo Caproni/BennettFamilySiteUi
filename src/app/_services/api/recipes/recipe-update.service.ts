@@ -16,7 +16,7 @@ export class RecipeUpdateService {
   ) {}
 
   updateRecipe(id: string, patch: Object) {
-    const url = `${this.baseUrl}/updateRecipe?id=${id}`;
+    const url = `${this.baseUrl}/updateRecipe?recipe_id=${id}`;
     return this.http.patch<ApiResponse>(url, patch);
   }
 

@@ -16,7 +16,7 @@ export class FamilyTreeRelationshipUpdateService {
   ) {}
 
   updateFamilyTreeRelationship(id: string, patch: Object) {
-    const url = `${this.baseUrl}/updateFamilyTreeRelationship?id=${id}`;
+    const url = `${this.baseUrl}/updateFamilyTreeRelationship?family_tree_relationship_id=${id}`;
     return this.http.patch<ApiResponse>(url, patch);
   }
 

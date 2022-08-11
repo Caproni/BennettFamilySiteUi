@@ -16,7 +16,7 @@ export class MediaUpdateService {
   ) {}
 
   updateMedia(id: string, patch: Object) {
-    const url = `${this.baseUrl}/updateMedia?id=${id}`;
+    const url = `${this.baseUrl}/updateMedia?media_id=${id}`;
     return this.http.patch<ApiResponse>(url, patch);
   }
 

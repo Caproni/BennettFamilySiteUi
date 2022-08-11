@@ -16,7 +16,7 @@ export class FamilyTreeRelationshipDeleteService {
   ) { }
 
   deleteFamilyTreeRelationship(id: string) {
-    const url = `${this.baseUrl}/deleteFamilyTreeRelationship?id=${id}`;
+    const url = `${this.baseUrl}/deleteFamilyTreeRelationship?family_tree_relationship_id=${id}`;
     return this.http.delete<ApiResponse>(url);
   }
 }

@@ -7,7 +7,7 @@ import { ApiResponse } from 'src/app/_models/common/api-response';
 @Injectable({
   providedIn: 'root'
 })
-export class FamilyTreeDataSourceUpdateService {
+export class RecipeStepUpdateService {
 
   private baseUrl = environment.apiUrl;
 
@@ -15,8 +15,8 @@ export class FamilyTreeDataSourceUpdateService {
     private http: HttpClient,
   ) {}
 
-  updateFamilyTreeDataSource(id: string, patch: Object) {
-    const url = `${this.baseUrl}/updateFamilyTreeDataSource?family_tree_data_source_id=${id}`;
+  updateRecipeStep(id: string, patch: Object) {
+    const url = `${this.baseUrl}/updateRecipeStep?recipe_step_id=${id}`;
     return this.http.patch<ApiResponse>(url, patch);
   }
 

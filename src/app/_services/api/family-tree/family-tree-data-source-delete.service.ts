@@ -16,7 +16,7 @@ export class FamilyTreeDataSourceDeleteService {
   ) { }
 
   deleteFamilyTreeDataSource(id: string) {
-    const url = `${this.baseUrl}/deleteFamilyTreeDataSource?id=${id}`;
+    const url = `${this.baseUrl}/deleteFamilyTreeDataSource?family_tree_data_source_id=${id}`;
     return this.http.delete<ApiResponse>(url);
   }
 }

@@ -135,6 +135,8 @@ export class MediaComponent implements OnInit {
       .subscribe(
         (_) => {
           this.mediaReadService.readMedia();
+          this.media = this.mediaReadService.getMedia();
+          this.filteredMedia = this.media;
         },
         (err) => console.log(err),
       );

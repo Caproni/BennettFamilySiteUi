@@ -3,4 +3,5 @@ export interface FamilyTreeDataSource {
   description: string | null;
   url: string | null;
   source_date: Date | null;
+  id: string | null;
 }

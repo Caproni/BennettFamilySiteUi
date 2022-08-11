@@ -16,7 +16,7 @@ export class FamilyTreePersonUpdateService {
   ) {}
 
   updateFamilyTreePerson(id: string, patch: Object) {
-    const url = `${this.baseUrl}/updateFamilyTreePerson?id=${id}`;
+    const url = `${this.baseUrl}/updateFamilyTreePerson?family_tree_person_id=${id}`;
     return this.http.patch<ApiResponse>(url, patch);
   }
 

@@ -4,4 +4,5 @@ export interface FamilyTreeRelationship {
   start_time: Date | null;
   end_time: Date | null;
   narrative: string | null;
+  id: string | null;
 }

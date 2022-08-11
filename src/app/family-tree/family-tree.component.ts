@@ -15,6 +15,9 @@ import { FamilyTreeDataSourceCreateService } from '../_services/api/family-tree/
 import { FamilyTreeDataSourceReadService } from '../_services/api/family-tree/family-tree-data-source-read.service';
 import { FamilyTreeDataSourceUpdateService } from '../_services/api/family-tree/family-tree-data-source-update.service';
 import { FamilyTreeDataSourceDeleteService } from '../_services/api/family-tree/family-tree-data-source-delete.service';
+import { FamilyTreePerson } from 'src/app/_models/family-tree/family-tree-person';
+import { FamilyTreeRelationship } from 'src/app/_models/family-tree/family-tree-relationship';
+import { FamilyTreeDataSource } from 'src/app/_models/family-tree/family-tree-data-source';
 
 @Component({
   selector: 'fam-app-family-tree',
@@ -22,6 +25,14 @@ import { FamilyTreeDataSourceDeleteService } from '../_services/api/family-tree/
   styleUrls: ['./family-tree.component.css']
 })
 export class FamilyTreeComponent implements OnInit {
+
+  people!: FamilyTreePerson[];
+  relationships!: FamilyTreeRelationship[];
+  dataSources!: FamilyTreeDataSource[];
+
+  loadedPeople = false;
+  loadedRelationships = false;
+  loadedDataSources = false;
 
   isActive = true;
 
@@ -71,6 +82,23 @@ export class FamilyTreeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.familyTreePersonReadService.readFamilyTreePeople()
+      this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
+        this.loadedPeople = b;
+        this.people = this.familyTreePersonReadService.getFamilyTreePeople();
+      });
+
+    this.familyTreeRelationshipReadService.readFamilyTreeRelationships()
+    this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
+      this.loadedRelationships = b;
+      this.relationships = this.familyTreeRelationshipReadService.getFamilyTreeRelationships();
+    });
+
+    this.familyTreeDataSourceReadService.readFamilyTreeDataSources()
+    this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
+      this.loadedDataSources = b;
+      this.dataSources = this.familyTreeDataSourceReadService.getFamilyTreeDataSources();
+    });
   }
 
   openModal(template: TemplateRef<any>): void {
@@ -100,12 +128,16 @@ export class FamilyTreeComponent implements OnInit {
         facts: [],
         photos: [],
         sources: [],
+        id: null,
       }
     )
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.familyTreePersonReadService.readFamilyTreePeople();
+          this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
+            this.loadedPeople = b;
+            this.people = this.familyTreePersonReadService.getFamilyTreePeople();
+          });
         },
         (err) => console.log(err),
       );
@@ -124,12 +156,16 @@ export class FamilyTreeComponent implements OnInit {
         start_time: payload.start_time? new Date(payload.start_time): null,
         end_time: payload.end_time? new Date(payload.end_time): null,
         narrative: payload.narrative ?? null,
+        id: null,
       }
     )
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.familyTreeRelationshipReadService.readFamilyTreeRelationships();
+          this.familyTreeRelationshipReadService.readFamilyTreeRelationships().subscribe((b) => {
+            this.loadedRelationships = b;
+            this.relationships = this.familyTreeRelationshipReadService.getFamilyTreeRelationships();
+          });
         },
         (err) => console.log(err),
       );
@@ -147,6 +183,7 @@ export class FamilyTreeComponent implements OnInit {
         description: payload.description ?? null,
         url: payload.url ?? null,
         source_date: payload.source_date? new Date(payload.source_date): null,
+        id: null,
       }
     )
       .pipe(takeWhile(_ => this.isActive))

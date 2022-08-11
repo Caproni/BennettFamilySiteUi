@@ -9,6 +9,8 @@ import { Recipe } from 'src/app/_models/recipes/recipe';
 import { Ingredient } from 'src/app/_models/recipes/ingredient';
 import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
 import { Equipment } from 'src/app/_models/recipes/equipment';
+import { RecipeUpdateService } from 'src/app/_services/api/recipes/recipe-update.service';
+import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe-delete.service';
 
 @Component({
   selector: 'fam-app-recipes',
@@ -18,10 +20,25 @@ import { Equipment } from 'src/app/_models/recipes/equipment';
 export class RecipesComponent implements OnInit {
 
   searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;
+  searchPhrase = '';
 
   recipes: Recipe[] = [];
+  ingredients: Ingredient[] = [];
+  recipeSteps: RecipeStep[] = [];
+  equipment: Equipment[] = [];
+
+  filteredRecipes: Recipe[] = [];
+  filteredIngredients: Ingredient[] = [];
+  filteredRecipeSteps: RecipeStep[] = [];
+  filteredEquipment: Equipment[] = [];
+
   modalRef: BsModalRef = new BsModalRef();
   private isActive = true;
+
+  loadedRecipes = false;
+  loadedIngredients = false;
+  loadedRecipeSteps = false;
+  loadedEquipment = false;
 
   newRecipeForm: FormGroup = new FormGroup({
     name: new FormControl(''),
@@ -48,19 +65,20 @@ export class RecipesComponent implements OnInit {
   });
 
   constructor(
-    private recipeUploadService: RecipeCreateService,
-    private recipeDownloadService: RecipeReadService,
+    private recipeCreateService: RecipeCreateService,
+    private recipeReadService: RecipeReadService,
+    private recipeUpdateService: RecipeUpdateService,
+    private recipeDeleteService: RecipeDeleteService,
     private modalService: BsModalService,
   ) { }
 
   ngOnInit(): void {
 
-    // this.recipeDownloadService.downloadRecipes()
-    //   .pipe(takeWhile(_ => this.isActive))
-    //   .subscribe(
-    //     (data: Recipe[]) => {
-    //       this.recipes = data;
-    //     });
+    this.recipeReadService.readRecipes().subscribe((b) => {
+      this.loadedRecipes = b;
+      this.recipes = this.recipeReadService.getRecipes();
+      this.filteredRecipes = this.recipes;
+    });
   }
 
   ngOnDestroy(): void {
@@ -71,25 +89,36 @@ export class RecipesComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
+  filterRecipes() {
+
+  }
+
   onRecipeFormSubmit(): void {
 
     const payload = JSON.parse(JSON.stringify(this.newRecipeForm.value));
 
-    // this.recipeCreateService.createFamilyTreeDataSource(
-    //   {
-    //     name: payload.name,
-    //     description: payload.description ?? null,
-    //     url: payload.url ?? null,
-    //     source_date: payload.source_date? new Date(payload.source_date): null,
-    //   }
-    // )
-    //   .pipe(takeWhile(_ => this.isActive))
-    //   .subscribe(
-    //     (_) => {
-    //       this.familyTreeDataSourceReadService.readFamilyTreeDataSources();
-    //     },
-    //     (err) => console.log(err),
-    //   );
+    this.recipeCreateService.createRecipe(
+      {
+        name: payload.name,
+        description: payload.description ?? null,
+        duration_in_minutes: payload.duration_in_minutes,
+        source: payload.source ?? null,
+        ingredients: [],
+        steps: [],
+        equipment: [],
+        tags: [],
+        id: null,
+      }
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.recipeReadService.readRecipes();
+          this.recipes = this.recipeReadService.getRecipes();
+          this.filteredRecipes = this.recipes;
+        },
+        (err) => console.log(err),
+      );
 
     this.modalRef.hide();
   }

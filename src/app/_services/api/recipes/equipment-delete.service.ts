@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class FamilyTreePersonDeleteService {
+export class EquipmentDeleteService {
 
   private baseUrl = environment.apiUrl;
 
@@ -15,8 +15,8 @@ export class FamilyTreePersonDeleteService {
     private http: HttpClient,
   ) { }
 
-  deleteFamilyTreePerson(id: string) {
-    const url = `${this.baseUrl}/deleteFamilyTreePerson?family_tree_person_id=${id}`;
+  deleteEquipment(id: string) {
+    const url = `${this.baseUrl}/deleteEquipment?equipment_id=${id}`;
     return this.http.delete<ApiResponse>(url);
   }
 }
