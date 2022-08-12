@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   faCameraRetro,
   faTv,
-  faMugSaucer,
+  faUtensils,
   faTree,
 } from '@fortawesome/free-solid-svg-icons';
 @Component({
@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
 
   mediaIcon = faTv;
   photosIcon = faCameraRetro;
-  recipesIcon = faMugSaucer;
+  recipesIcon = faUtensils;
   familyTreeIcon = faTree;
 
   constructor() { }

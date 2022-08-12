@@ -134,9 +134,11 @@ export class MediaComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.mediaReadService.readMedia();
-          this.media = this.mediaReadService.getMedia();
-          this.filteredMedia = this.media;
+          this.mediaReadService.readMedia().subscribe((b) => {
+            this.loadedMedia = b;
+            this.media = this.mediaReadService.getMedia();
+            this.filteredMedia = this.media;
+          });
         },
         (err) => console.log(err),
       );

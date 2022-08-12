@@ -62,8 +62,23 @@ export class MediumDetailComponent implements OnInit {
   onMediaUpdate(modalRef: BsModalRef) {
 
     if (this.medium.id) {
-      const patch: Object = {
 
+      const payload = JSON.parse(JSON.stringify(this.editMediumForm.value));
+
+      const patch: Medium = {
+        director: payload.director ?? null,
+        title: payload.title,
+        publisher: payload.publisher ?? null,
+        actors: payload.actors ?? null,
+        format: payload.format ?? null,
+        release_year: payload.release_year ? parseInt(payload.release_year) : null,
+        series_or_film: payload.series_or_film ?? null,
+        fiction: payload.fiction ?? null,
+        episodes: payload.episodes ?? null,
+        duration_in_minutes: payload.duration_in_minutes ? parseInt(payload.duration_in_minutes) : null,
+        language: payload.language ?? null,
+        location: payload.location ?? null,
+        id: this.medium.id,
       };
 
       this.mediaUpdateService.updateMedia(

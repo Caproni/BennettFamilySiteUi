@@ -24,6 +24,7 @@ import { LoadingTableComponent } from "./loading-table/loading-table.component";
 import { PersonComponent } from './family-tree/person/person.component';
 import {MatInputModule} from "@angular/material/input";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
+import { RecipeViewComponent } from './recipes/recipe-details/recipe-view/recipe-view.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
     MediumDetailComponent,
     LoadingTableComponent,
     PersonComponent,
+    RecipeViewComponent,
   ],
     imports: [
         BrowserModule,
