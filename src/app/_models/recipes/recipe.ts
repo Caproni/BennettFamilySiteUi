@@ -1,4 +1,3 @@
-import { Ingredient } from './ingredient';
 import { RecipeStep } from './recipe-step';
 import { Equipment } from './equipment';
 
@@ -7,9 +6,9 @@ export interface Recipe {
   description: string | null;
   duration_in_minutes: number;
   source: string | null;
-  ingredients: Ingredient[];
+  added_date: Date;
   steps: RecipeStep[];
   equipment: Equipment[];
-  tags: Equipment[];
+  tags: string[];
   id: string | null;
 }

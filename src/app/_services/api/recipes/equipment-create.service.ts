@@ -15,9 +15,9 @@ export class EquipmentCreateService {
     private http: HttpClient,
   ) { }
 
-  createEquipment(recipe: Equipment) {
+  createEquipment(equipment: Equipment) {
     const url = `${this.baseUrl}/createEquipment`;
-    return this.http.post(url, recipe);
+    return this.http.post(url, equipment);
   }
 
 }

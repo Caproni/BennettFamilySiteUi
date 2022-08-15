@@ -21,7 +21,7 @@ export class LoadingTableComponent implements OnInit {
     this.start();
   }
 
-  start(){
+  start() {
     this.$interval = interval(100);
     this.numberSubscription = this.$interval.subscribe(
       () => this.step()
@@ -31,11 +31,11 @@ export class LoadingTableComponent implements OnInit {
     }, 30000);
   }
 
-  stop(){
+  stop() {
     this.numberSubscription.unsubscribe();
   }
 
-  step(){
+  step() {
 
     this.fadeSine += 0.1;
 

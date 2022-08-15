@@ -1,0 +1,16 @@
+.primary-border {
+  border-color: gray;
+  border-style: ridge;
+  border-width: 1px;
+}
+
+.secondary-border {
+  border-color: gray;
+  border-style: dashed;
+  border-width: 1px;
+}
+
+.spacing {
+  padding: 10px;
+  margin: 5px;
+}

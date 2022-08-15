@@ -24,7 +24,8 @@ import { LoadingTableComponent } from "./loading-table/loading-table.component";
 import { PersonComponent } from './family-tree/person/person.component';
 import {MatInputModule} from "@angular/material/input";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
-import { RecipeViewComponent } from './recipes/recipe-details/recipe-view/recipe-view.component';
+import { RecipeViewComponent } from './recipes/recipe-view/recipe-view.component';
+import { NoPageComponent } from './no-page/no-page.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { RecipeViewComponent } from './recipes/recipe-details/recipe-view/recipe
     LoadingTableComponent,
     PersonComponent,
     RecipeViewComponent,
+    NoPageComponent,
   ],
     imports: [
         BrowserModule,

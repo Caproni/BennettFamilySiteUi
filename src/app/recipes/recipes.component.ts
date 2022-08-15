@@ -3,14 +3,21 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { takeWhile } from 'rxjs/operators';
 
-import { RecipeReadService } from 'src/app/_services/api/recipes/recipe-read.service';
-import { RecipeCreateService } from 'src/app/_services/api/recipes/recipe-create.service';
 import { Recipe } from 'src/app/_models/recipes/recipe';
 import { Ingredient } from 'src/app/_models/recipes/ingredient';
-import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
 import { Equipment } from 'src/app/_models/recipes/equipment';
+import { RecipeCreateService } from 'src/app/_services/api/recipes/recipe-create.service';
+import { RecipeReadService } from 'src/app/_services/api/recipes/recipe-read.service';
 import { RecipeUpdateService } from 'src/app/_services/api/recipes/recipe-update.service';
 import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe-delete.service';
+import { IngredientDeleteService } from 'src/app/_services/api/recipes/ingredient-delete.service';
+import { IngredientUpdateService } from 'src/app/_services/api/recipes/ingredient-update.service';
+import { IngredientReadService } from 'src/app/_services/api/recipes/ingredient-read.service';
+import { IngredientCreateService } from 'src/app/_services/api/recipes/ingredient-create.service';
+import { EquipmentDeleteService } from 'src/app/_services/api/recipes/equipment-delete.service';
+import { EquipmentUpdateService } from 'src/app/_services/api/recipes/equipment-update.service';
+import { EquipmentReadService } from 'src/app/_services/api/recipes/equipment-read.service';
+import { EquipmentCreateService } from 'src/app/_services/api/recipes/equipment-create.service';
 
 @Component({
   selector: 'fam-app-recipes',
@@ -24,12 +31,10 @@ export class RecipesComponent implements OnInit {
 
   recipes: Recipe[] = [];
   ingredients: Ingredient[] = [];
-  recipeSteps: RecipeStep[] = [];
   equipment: Equipment[] = [];
 
   filteredRecipes: Recipe[] = [];
   filteredIngredients: Ingredient[] = [];
-  filteredRecipeSteps: RecipeStep[] = [];
   filteredEquipment: Equipment[] = [];
 
   modalRef: BsModalRef = new BsModalRef();
@@ -37,7 +42,6 @@ export class RecipesComponent implements OnInit {
 
   loadedRecipes = false;
   loadedIngredients = false;
-  loadedRecipeSteps = false;
   loadedEquipment = false;
 
   newRecipeForm: FormGroup = new FormGroup({
@@ -69,6 +73,14 @@ export class RecipesComponent implements OnInit {
     private recipeReadService: RecipeReadService,
     private recipeUpdateService: RecipeUpdateService,
     private recipeDeleteService: RecipeDeleteService,
+    private ingredientCreateService: IngredientCreateService,
+    private ingredientReadService: IngredientReadService,
+    private ingredientUpdateService: IngredientUpdateService,
+    private ingredientDeleteService: IngredientDeleteService,
+    private equipmentCreateService: EquipmentCreateService,
+    private equipmentReadService: EquipmentReadService,
+    private equipmentUpdateService: EquipmentUpdateService,
+    private equipmentDeleteService: EquipmentDeleteService,
     private modalService: BsModalService,
   ) { }
 
@@ -79,6 +91,19 @@ export class RecipesComponent implements OnInit {
       this.recipes = this.recipeReadService.getRecipes();
       this.filteredRecipes = this.recipes;
     });
+
+    this.ingredientReadService.readIngredients().subscribe((b) => {
+      this.loadedIngredients = b;
+      this.ingredients = this.ingredientReadService.getIngredients();
+      this.filteredIngredients = this.ingredients;
+    });
+
+    this.equipmentReadService.readEquipments().subscribe((b) => {
+      this.loadedEquipment = b;
+      this.equipment = this.equipmentReadService.getEquipments();
+      this.filteredEquipment = this.equipment;
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -103,7 +128,7 @@ export class RecipesComponent implements OnInit {
         description: payload.description ?? null,
         duration_in_minutes: payload.duration_in_minutes,
         source: payload.source ?? null,
-        ingredients: [],
+        added_date: new Date(),
         steps: [],
         equipment: [],
         tags: [],
@@ -127,21 +152,24 @@ export class RecipesComponent implements OnInit {
 
     const payload = JSON.parse(JSON.stringify(this.newIngredientForm.value));
 
-    // this.recipeCreateService.createFamilyTreeDataSource(
-    //   {
-    //     name: payload.name,
-    //     description: payload.description ?? null,
-    //     url: payload.url ?? null,
-    //     source_date: payload.source_date? new Date(payload.source_date): null,
-    //   }
-    // )
-    //   .pipe(takeWhile(_ => this.isActive))
-    //   .subscribe(
-    //     (_) => {
-    //       this.familyTreeDataSourceReadService.readFamilyTreeDataSources();
-    //     },
-    //     (err) => console.log(err),
-    //   );
+    this.ingredientCreateService.createIngredient(
+      {
+        name: payload.name,
+        description: payload.description ?? null,
+        id: null,
+      }
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.ingredientReadService.readIngredients().subscribe((b) => {
+            this.loadedIngredients = b;
+            this.ingredients = this.ingredientReadService.getIngredients();
+            this.filteredIngredients = this.ingredients;
+          });
+        },
+        (err) => console.log(err),
+      );
 
     this.modalRef.hide();
   }
@@ -150,21 +178,24 @@ export class RecipesComponent implements OnInit {
 
     const payload = JSON.parse(JSON.stringify(this.newEquipmentForm.value));
 
-    // this.recipeCreateService.createFamilyTreeDataSource(
-    //   {
-    //     name: payload.name,
-    //     description: payload.description ?? null,
-    //     url: payload.url ?? null,
-    //     source_date: payload.source_date? new Date(payload.source_date): null,
-    //   }
-    // )
-    //   .pipe(takeWhile(_ => this.isActive))
-    //   .subscribe(
-    //     (_) => {
-    //       this.familyTreeDataSourceReadService.readFamilyTreeDataSources();
-    //     },
-    //     (err) => console.log(err),
-    //   );
+    this.equipmentCreateService.createEquipment(
+      {
+        name: payload.name,
+        description: payload.description ?? null,
+        id: null,
+      }
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.equipmentReadService.readEquipments().subscribe((b) => {
+            this.loadedEquipment = b;
+            this.equipment = this.equipmentReadService.getEquipments();
+            this.filteredEquipment = this.equipment;
+          });
+        },
+        (err) => console.log(err),
+      );
 
     this.modalRef.hide();
   }
