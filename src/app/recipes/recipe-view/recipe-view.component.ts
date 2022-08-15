@@ -4,6 +4,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { takeWhile } from 'rxjs/operators';
 
+import { Recipe } from 'src/app/_models/recipes/recipe';
 import { RecipeDetails } from 'src/app/_models/recipes/recipe-details';
 import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe-delete.service';
 import { RecipeStepCreateService } from 'src/app/_services/api/recipes/recipe-step-create.service';
@@ -36,6 +37,16 @@ export class RecipeViewComponent implements OnInit {
   currentEquipmentId = '';
 
   modalRef: BsModalRef = new BsModalRef();
+
+  editRecipeForm: FormGroup = new FormGroup({
+    name: new FormControl(''),
+    description: new FormControl(''),
+    duration_in_minutes: new FormControl(''),
+    source: new FormControl(''),
+    steps: new FormControl(''),
+    equipment: new FormControl(''),
+    tags: new FormControl(''),
+  });
 
   addRecipeStepForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -74,6 +85,13 @@ export class RecipeViewComponent implements OnInit {
         ).subscribe((b) => {
           this.loadedRecipeDetail = b;
           this.recipeDetails = this.recipeDetailReadService.getRecipeDetails();
+          this.editRecipeForm.controls['name'].setValue(this.recipeDetails.recipe.name);
+          this.editRecipeForm.controls['description'].setValue(this.recipeDetails.recipe.description);
+          this.editRecipeForm.controls['duration_in_minutes'].setValue(this.recipeDetails.recipe.duration_in_minutes);
+          this.editRecipeForm.controls['source'].setValue(this.recipeDetails.recipe.source);
+          this.editRecipeForm.controls['steps'].setValue(this.recipeDetails.recipe.steps);
+          this.editRecipeForm.controls['equipment'].setValue(this.recipeDetails.recipe.equipment);
+          this.editRecipeForm.controls['tags'].setValue(this.recipeDetails.recipe.tags);
         });
       }});
   }
@@ -118,6 +136,38 @@ export class RecipeViewComponent implements OnInit {
       modalRef.hide();
       this.ngOnInit();
     }
+  }
+
+  onEditRecipeFormSubmit() {
+    const payload = JSON.parse(JSON.stringify(this.editRecipeForm.value));
+
+    if (!this.recipeDetails.recipe.id) return;
+
+    const patch: Recipe = {
+      name: payload.name,
+      description: payload.description ?? null,
+      duration_in_minutes: payload.duration_in_minutes ?? null,
+      source: payload.source ?? null,
+      added_date: this.recipeDetails.recipe.added_date,
+      steps: this.recipeDetails.recipe.steps,
+      equipment: this.recipeDetails.recipe.equipment,
+      tags: this.recipeDetails.recipe.tags,
+      id: this.recipeDetails.recipe.id,
+    };
+
+    this.recipeUpdateService.updateRecipe(
+      this.recipeDetails.recipe.id,
+      patch,
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.ngOnInit();
+        },
+        (err) => console.log(err),
+      );
+
+    this.modalRef.hide();
   }
 
   onIngredientFormSubmit() {

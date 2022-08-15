@@ -41,7 +41,7 @@
       <div class="col"><b>Tags</b></div>
       <div class="col"><b>View</b></div>
     </div>
-    <div *ngIf="recipes && recipes.length < 1 && loadedRecipes">
+    <div *ngIf="recipes && recipes.length < 1 && !loadedRecipes">
       <fam-app-loading-table></fam-app-loading-table>
     </div>
     <div *ngFor="let recipe of filteredRecipes">
@@ -49,7 +49,6 @@
     </div>
   </div>
 </div>
-
 
 <ng-template #addRecipeTemplate>
   <div class="modal-header">
@@ -136,7 +135,10 @@
             <label class="control-label">Name </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="name" id="ingredient-name" class="form-control" name="ingredient-name">
+            <input type="text" formControlName="name" id="ingredient-name" class="form-control" name="ingredient-name" required>
+            <div *ngIf="newIngredientForm.controls['name'].touched && newIngredientForm.controls['name'].invalid" class="alert alert-danger">
+              A name is required
+            </div>
           </div>
         </div>
         <div class="row mb-1">

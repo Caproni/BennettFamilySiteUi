@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormControl, FormGroup } from '@angular/forms';
 import { takeWhile } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 import { MediaReadService } from 'src/app/_services/api/media/media-read.service';
 import { MediaCreateService } from '../_services/api/media/media-create.service';
@@ -15,8 +16,8 @@ import { Medium } from 'src/app/_models/media/medium';
 export class MediaComponent implements OnInit {
 
   isActive = true;
-
   loadedMedia = false;
+
   media: Medium[] = [];
   filteredMedia: Medium[] = [];
   modalRef: BsModalRef = new BsModalRef();
@@ -43,6 +44,7 @@ export class MediaComponent implements OnInit {
     private mediaReadService: MediaReadService,
     private mediaCreateService: MediaCreateService,
     private modalService: BsModalService,
+    private toasterService: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -134,13 +136,13 @@ export class MediaComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.mediaReadService.readMedia().subscribe((b) => {
-            this.loadedMedia = b;
-            this.media = this.mediaReadService.getMedia();
-            this.filteredMedia = this.media;
-          });
+          this.ngOnInit();
+          this.toasterService.success('Added ' + payload.title, 'Success');
         },
-        (err) => console.log(err),
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not add ' + payload.title, 'Error');
+        }
       );
 
     this.modalRef.hide();

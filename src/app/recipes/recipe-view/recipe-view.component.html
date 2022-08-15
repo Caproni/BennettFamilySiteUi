@@ -1,41 +1,59 @@
 <div>
   <div class="spacing primary-border row">
     <div class="spacing col">
-      <h3>{{ recipeDetails.recipe.name }}</h3>
-      <h5>Recipe added: {{ recipeDetails.recipe.added_date | date: 'd MMM YYYY' }}</h5>
-      <h5>Cooking time: {{ recipeDetails.recipe.duration_in_minutes }} minutes</h5>
-      <h5>Source: {{ recipeDetails.recipe.source }}</h5>
+
+      <h3 *ngIf="loadedRecipeDetail">{{ recipeDetails.recipe.name }}</h3>
+      <h3 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h3>
+
+      <h5 *ngIf="loadedRecipeDetail">Recipe added: {{ recipeDetails.recipe.added_date | date: 'd MMM YYYY' }}</h5>
+      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
+
+      <h5 *ngIf="loadedRecipeDetail">Cooking time: {{ recipeDetails.recipe.duration_in_minutes }} minutes</h5>
+      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
+
+      <h5 *ngIf="loadedRecipeDetail">Source: {{ recipeDetails.recipe.source }}</h5>
+      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
+
     </div>
     <br>
     <br>
     <div class="spacing col">
-      <h5>{{recipeDetails.recipe.description}}</h5>
+      <h5 *ngIf="loadedRecipeDetail">{{recipeDetails.recipe.description}}</h5>
+      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
     </div>
 
     <div class="spacing col">
-      <h5>Space for Image</h5>
+      <h5 *ngIf="loadedRecipeDetail">Space for Image</h5>
+      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
     </div>
 
     <div class="spacing col-1">
       <br>
       <div class="row">
         <a class="btn btn-dark" routerLink="/recipes" routerLinkActive="active" title="Back">
-          <i class="fas fa-angle-double-left" title="Back"></i>
+          <i class="fas fa-angle-double-left fa-fw" title="Back"></i>
         </a>
       </div>
       <br>
       <div class="row">
-        <button type="button" class="btn btn-dark" aria-label="Delete Recipe" (click)="openModal(deleteRecipeTemplate)">
-          <i class="fas fa-trash-alt" title="Delete Recipe"></i>
+        <button type="button" class="btn btn-dark" aria-label="Edit Recipe" (click)="openModal(editRecipeTemplate)">
+          <i class="fas fa-edit fa-fw" title="Edit Recipe"></i>
         </button>
       </div>
     </div>
 
   </div>
   <br>
-  <div class="spacing primary-border row">
+  <div *ngIf="loadedRecipeDetail" class="spacing primary-border row">
     <div class="spacing col">
       <div class="row">
+
+        <div class="col">
+          <h5>Add Step</h5>
+          <button type="button" class="btn btn-dark" aria-label="Add Step" (click)="openModal(addRecipeStepTemplate)">
+            <i class="fas fa-shoe-prints" title="Add Step"></i>
+          </button>
+        </div>
 
         <div *ngIf="recipeDetails.steps.length > 0" class="secondary-border col">
           <div *ngFor="let step of recipeDetails.steps">
@@ -52,10 +70,11 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!(recipeDetails.steps.length > 0)" class="col">
-          <h5>Add Step</h5>
-          <button type="button" class="btn btn-dark" aria-label="Add Step" (click)="openModal(addRecipeStepTemplate)">
-            <i class="fas fa-shoe-prints" title="Add Step"></i>
+
+        <div class="col">
+          <h5>Use Ingredient</h5>
+          <button type="button" class="btn btn-dark" aria-label="Use Ingredient" (click)="openModal(addIngredientTemplate)">
+            <i class="fas fa-carrot" title="Use Ingredient"></i>
           </button>
         </div>
 
@@ -73,12 +92,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div *ngIf="!(recipeDetails.steps.length > 0)" class="col">
-          <h5>Use Ingredient</h5>
-          <button type="button" class="btn btn-dark" aria-label="Use Ingredient" (click)="openModal(addIngredientTemplate)">
-            <i class="fas fa-carrot" title="Use Ingredient"></i>
-          </button>
         </div>
 
       </div>
@@ -128,23 +141,13 @@
 
       <div class="row mt-3">
         <div class="col">
-          <div class="row justify-content-center">
-            <button
-              class="btn btn-outline-danger"
-              (click)="addRecipeStep()"
-              style="width: 80%"
-            >
-              Save
-            </button>
-          </div>
           <div class="row mx-auto justify-content-center">
-            <button
-              class="btn btn-outline-secondary"
-              (click)="modalRef.hide()"
-              style="width: 80%"
-            >
-              Cancel
-            </button>
+            <button class="btn btn-outline-success" style="width: 80%;"
+                    [disabled]="!addRecipeStepForm.valid"
+                    (click)="addRecipeStep()">Save</button>
+          </div>
+          <div class="row mx-auto pt-2 justify-content-center">
+            <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
           </div>
         </div>
       </div>
@@ -194,29 +197,90 @@
 
       <div class="row mt-3">
         <div class="col">
-          <div class="row justify-content-center">
-            <button
-              class="btn btn-outline-danger"
-              (click)="onIngredientFormSubmit()"
-              style="width: 80%"
-            >
-              Save
-            </button>
-          </div>
           <div class="row mx-auto justify-content-center">
-            <button
-              class="btn btn-outline-secondary"
-              (click)="modalRef.hide()"
-              style="width: 80%"
-            >
-              Cancel
-            </button>
+            <button class="btn btn-outline-success" style="width: 80%;"
+                    [disabled]="!addIngredientForm.valid"
+                    (click)="addRecipeStep()">Save</button>
+          </div>
+          <div class="row mx-auto pt-2 justify-content-center">
+            <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
           </div>
         </div>
       </div>
+
     </form>
   </div>
 </ng-template>
+
+  <ng-template #editRecipeTemplate>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Edit Recipe</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="editRecipeForm">
+        <div class="form-horizontal">
+          <div class="row mb-1">
+            <div class="col form-group">
+              <label class="control-label">Name </label>
+            </div>
+            <div class="col">
+              <input type="text" formControlName="name" id="recipe-name" class="form-control" name="recipe-name" required>
+              <div *ngIf="editRecipeForm.controls['name'].touched && editRecipeForm.controls['name'].invalid" class="alert alert-danger">
+                A name is required
+              </div>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <div class="col form-group">
+              <label class="control-label">Description </label>
+            </div>
+            <div class="col">
+            <textarea matInput
+                      formControlName="description"
+                      cdkTextareaAutosize
+                      matAutosizeMinRows=3
+                      matAutosizeMaxRows=10
+            ></textarea>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <div class="col form-group">
+              <label class="control-label">Cooking time (mins) </label>
+            </div>
+            <div class="col">
+              <input type="text" formControlName="duration_in_minutes" id="duration_in_minutes" class="form-control" name="duration_in_minutes" required>
+              <div *ngIf="editRecipeForm.controls['duration_in_minutes'].touched && editRecipeForm.controls['duration_in_minutes'].invalid" class="alert alert-danger">
+                A duration is required (even just a guess)
+              </div>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <div class="col form-group">
+              <label class="control-label">Source </label>
+            </div>
+            <div class="col">
+              <input type="text" formControlName="source" id="source" class="form-control" name="source">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col">
+              <div class="row mx-auto justify-content-center">
+                <button class="btn btn-outline-success" style="width: 80%;"
+                        [disabled]="!editRecipeForm.valid"
+                        (click)="onEditRecipeFormSubmit()">Update</button>
+              </div>
+              <div class="row mx-auto pt-2 justify-content-center">
+                <button class="btn btn-outline-danger" (click)="modalRef.hide(); openModal(deleteRecipeTemplate);" style="width: 80%;">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
 
 <ng-template #deleteRecipeTemplate>
   <div class="modal-header">

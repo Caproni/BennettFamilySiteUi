@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
-import { Medium } from "src/app/_models/media/medium";
+import { Medium } from 'src/app/_models/media/medium';
 import { MediaUpdateService } from 'src/app/_services/api/media/media-update.service';
 import { MediaDeleteService } from 'src/app/_services/api/media/media-delete.service';
 
@@ -36,6 +37,8 @@ export class MediumDetailComponent implements OnInit {
 
   constructor(
     private modalService: BsModalService,
+    private toasterService: ToastrService,
+    private changeDetectorRef: ChangeDetectorRef,
     private mediaUpdateService: MediaUpdateService,
     private mediaDeleteService: MediaDeleteService,
   ) { }
@@ -89,8 +92,12 @@ export class MediumDetailComponent implements OnInit {
         .subscribe(
           (res) => {
             console.log(res);
+            this.toasterService.success('Updated ' + this.medium.title, 'Success');
           },
-          (err) => console.log(err),
+          (err) => {
+            console.log(err);
+            this.toasterService.error('Could not update ' + this.medium.title, 'Error');
+          },
         );
       modalRef.hide();
     }
@@ -104,9 +111,12 @@ export class MediumDetailComponent implements OnInit {
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (res) => {
-            console.log(res);
+            this.toasterService.success('Deleted ' + this.medium.title, 'Success');
           },
-          (err) => console.log(err),
+          (err) => {
+            console.log(err);
+            this.toasterService.error('Could not delete ' + this.medium.title, 'Error');
+          },
         );
       modalRef.hide();
     }

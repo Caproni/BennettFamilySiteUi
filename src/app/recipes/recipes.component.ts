@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
 import { Recipe } from 'src/app/_models/recipes/recipe';
@@ -69,6 +70,7 @@ export class RecipesComponent implements OnInit {
   });
 
   constructor(
+    private toasterService: ToastrService,
     private recipeCreateService: RecipeCreateService,
     private recipeReadService: RecipeReadService,
     private recipeUpdateService: RecipeUpdateService,
@@ -138,11 +140,13 @@ export class RecipesComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.recipeReadService.readRecipes();
-          this.recipes = this.recipeReadService.getRecipes();
-          this.filteredRecipes = this.recipes;
+          this.ngOnInit();
+          this.toasterService.success('Added ' + payload.name, 'Success');
         },
-        (err) => console.log(err),
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not add ' + payload.name, 'Error');
+        },
       );
 
     this.modalRef.hide();
@@ -162,13 +166,13 @@ export class RecipesComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ingredientReadService.readIngredients().subscribe((b) => {
-            this.loadedIngredients = b;
-            this.ingredients = this.ingredientReadService.getIngredients();
-            this.filteredIngredients = this.ingredients;
-          });
+          this.ngOnInit();
+          this.toasterService.success('Added ' + payload.name, 'Success');
         },
-        (err) => console.log(err),
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not add ' + payload.name, 'Error');
+        },
       );
 
     this.modalRef.hide();
@@ -188,13 +192,13 @@ export class RecipesComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.equipmentReadService.readEquipments().subscribe((b) => {
-            this.loadedEquipment = b;
-            this.equipment = this.equipmentReadService.getEquipments();
-            this.filteredEquipment = this.equipment;
-          });
+          this.ngOnInit();
+          this.toasterService.success('Added ' + payload.name, 'Success');
         },
-        (err) => console.log(err),
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not add ' + payload.name, 'Error');
+        },
       );
 
     this.modalRef.hide();
