@@ -5,6 +5,7 @@ export interface FamilyTreePerson {
   surname: string | null;
   title: string | null;
   birthplace: string | null;
+  sex: string | null;
   date_of_birth: Date | null;
   date_of_death: Date | null;
   image: string | null;
