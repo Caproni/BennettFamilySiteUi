@@ -16,6 +16,21 @@
   </div>
 </div>
 <br>
+<mat-grid-list
+  cols="5"
+  rowHeight="4:3"
+  gutterSize="100px"
+>
+  <mat-grid-tile *ngFor="let person of people">
+    <mat-grid-tile-header>
+      {{person.first_name + ' ' + person.surname}}
+    </mat-grid-tile-header>
+    {{person.narrative}}
+    <mat-grid-tile-footer>
+      {{person.date_of_birth? (person.date_of_birth | date : 'd MMM yyyy') : ''}}
+    </mat-grid-tile-footer>
+  </mat-grid-tile>
+</mat-grid-list>
 <div class="family-tree-image"></div>
 
 <ng-template #addPersonTemplate>

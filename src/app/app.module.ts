@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,7 +25,6 @@ import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.
 import { PhotoCardComponent } from './photos/photo-card/photo-card.component';
 import { MediumDetailComponent } from './media/medium-detail/medium-detail.component';
 import { LoadingTableComponent } from './loading-table/loading-table.component';
-import { PersonComponent } from './family-tree/person/person.component';
 import { RecipeViewComponent } from './recipes/recipe-view/recipe-view.component';
 import { NoPageComponent } from './no-page/no-page.component';
 
@@ -43,7 +43,6 @@ import { NoPageComponent } from './no-page/no-page.component';
     PhotoCardComponent,
     MediumDetailComponent,
     LoadingTableComponent,
-    PersonComponent,
     RecipeViewComponent,
     NoPageComponent,
   ],
@@ -60,6 +59,7 @@ import { NoPageComponent } from './no-page/no-page.component';
         MatCardModule,
         MatInputModule,
         BsDatepickerModule,
+        MatGridListModule,
     ],
   providers: [],
   exports: [],

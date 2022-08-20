@@ -23,7 +23,7 @@ export class FamilyTreeRelationshipReadService {
   }
 
   readFamilyTreeRelationships(): Observable<boolean> {
-    const url = `${this.baseUrl}/readFamilyTreeRelationship`;
+    const url = `${this.baseUrl}/readFamilyTreeRelationships`;
     let _subject = new BehaviorSubject<boolean>(false);
     this.http.get<ApiResponse>(url).subscribe((data) => {
       if (data.success) {

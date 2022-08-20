@@ -14,3 +14,16 @@ html, body {
   background-repeat: no-repeat;
   background-size: auto;
 }
+
+mat-grid-tile {
+  background: lightgray;
+  padding: 10px;
+}
+
+mat-grid-tile-header {
+  background: lightgoldenrodyellow;
+}
+
+mat-grid-tile-footer {
+  background: lightgoldenrodyellow;
+}
