@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, HostListener } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormControl, FormGroup } from '@angular/forms';
 import { takeWhile } from 'rxjs/operators';
@@ -14,6 +14,9 @@ import { Medium } from 'src/app/_models/media/medium';
   styleUrls: ['./media.component.css']
 })
 export class MediaComponent implements OnInit {
+
+  windowWidth!: number;
+  windowHeight!: number;
 
   isActive = true;
   loadedMedia = false;
@@ -48,11 +51,21 @@ export class MediaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.mediaReadService.readMedia().subscribe((b) => {
       this.loadedMedia = b;
       this.media = this.mediaReadService.getMedia();
       this.filteredMedia = this.media;
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
   }
 
   openModal(template: TemplateRef<any>): void {

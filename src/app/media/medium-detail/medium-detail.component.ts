@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, TemplateRef } from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, Input, OnInit, TemplateRef} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +14,9 @@ import { MediaDeleteService } from 'src/app/_services/api/media/media-delete.ser
   styleUrls: ['./medium-detail.component.css']
 })
 export class MediumDetailComponent implements OnInit {
+
+  windowWidth!: number;
+  windowHeight!: number;
 
   @Input() medium!: Medium;
   isActive = true;
@@ -44,6 +47,10 @@ export class MediumDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.editMediumForm.controls['director'].setValue(this.medium.director);
     this.editMediumForm.controls['title'].setValue(this.medium.title);
     this.editMediumForm.controls['publisher'].setValue(this.medium.publisher);
@@ -56,6 +63,12 @@ export class MediumDetailComponent implements OnInit {
     this.editMediumForm.controls['duration_in_minutes'].setValue(this.medium.duration_in_minutes);
     this.editMediumForm.controls['language'].setValue(this.medium.language);
     this.editMediumForm.controls['location'].setValue(this.medium.location);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
   }
 
   openModal(template: TemplateRef<any>): void {

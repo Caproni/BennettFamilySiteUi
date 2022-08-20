@@ -1,4 +1,4 @@
-<div class="row row-chart m-1 p-2 align-items-center">
+<div *ngIf="windowWidth > 1000" class="row row-chart m-1 p-2 align-items-center">
   <div class="col">{{medium.title}}</div>
   <div class="col">{{medium.director}}</div>
   <div class="col">{{medium.publisher}}</div>
@@ -11,6 +11,11 @@
   <div class="col">{{medium.duration_in_minutes}}</div>
   <div class="col">{{medium.language}}</div>
   <div class="col">{{medium.location}}</div>
+  <div class="col"><button class="btn btn-dark" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit"></i></button></div>
+</div>
+
+<div *ngIf="windowWidth <= 1000" class="row row-chart m-1 p-2 align-items-center">
+  <div class="col">{{medium.title}}</div>
   <div class="col"><button class="btn btn-dark" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit"></i></button></div>
 </div>
 

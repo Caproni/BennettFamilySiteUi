@@ -23,7 +23,7 @@
 <div>
   <br>
   <div class="container-fluid text-center table-outer">
-    <div class="row row-chart row-header m-1 p-2">
+    <div *ngIf="windowWidth > 1000" class="row row-chart row-header m-1 p-2">
       <div class="col"><b>Title</b></div>
       <div class="col"><b>Director</b></div>
       <div class="col"><b>Publisher</b></div>
@@ -38,6 +38,11 @@
       <div class="col"><b>Location</b></div>
       <div class="col"><b>Edit</b></div>
     </div>
+
+    <div *ngIf="windowWidth <= 1000" class="row row-chart row-header m-1 p-2">
+      <div class="col"><b>Title</b></div>
+    </div>
+
     <div *ngIf="media && media.length < 1 && !loadedMedia">
       <fam-app-loading-table></fam-app-loading-table>
     </div>
