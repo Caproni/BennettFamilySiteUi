@@ -183,7 +183,9 @@
             <label class="control-label">First Person </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="person_one" id="person_one" class="form-control" name="person_one">
+            <select formControlName="person_one" id="person_one" class="form-control" name="person_one">
+              <option *ngFor="let person of people">{{person.first_name + ' ' + person.surname + (person.date_of_birth | date: ' (dd MMM Y)') || ''}}</option>
+            </select>
           </div>
         </div>
         <div class="row mb-1">
@@ -191,7 +193,22 @@
             <label class="control-label">Second Person </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="person_two" id="person_two" class="form-control" name="person_two">
+            <select formControlName="person_two" id="person_two" class="form-control" name="person_two">
+              <option *ngFor="let person of people">{{person.first_name + ' ' + person.surname + (person.date_of_birth | date: ' (dd MMM Y)') || ''}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Type </label>
+          </div>
+          <div class="col">
+            <select formControlName="relationship_type" id="relationship_type" class="form-control" name="relationship_type">
+              <option>Child</option>
+              <option>Civil Partnership</option>
+              <option>Married</option>
+              <option>Divorced</option>
+            </select>
           </div>
         </div>
         <div class="row mb-1">
@@ -204,7 +221,7 @@
               placeholder="Select relationship start date"
               class="form-control"
               bsDatepicker
-              formControlName="start_date"
+              formControlName="start_time"
               [bsConfig]="{
               rangeInputFormat: 'YYYY-MM-DD',
               dateInputFormat: 'DD MMM YYYY'
@@ -222,7 +239,7 @@
               placeholder="Select relationship end date"
               class="form-control"
               bsDatepicker
-              formControlName="end_date"
+              formControlName="end_time"
               [bsConfig]="{
               rangeInputFormat: 'YYYY-MM-DD',
               dateInputFormat: 'DD MMM YYYY'

@@ -54,6 +54,7 @@ export class FamilyTreeComponent implements OnInit {
   newRelationshipForm: FormGroup = new FormGroup({
     person_one: new FormControl('', Validators.required),
     person_two: new FormControl('', Validators.required),
+    relationship_type: new FormControl('', Validators.required),
     start_time: new FormControl(''),
     end_time: new FormControl(''),
     narrative: new FormControl('', Validators.required),
