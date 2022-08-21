@@ -1,11 +1,13 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
 import { Recipe } from 'src/app/_models/recipes/recipe';
 import { RecipeDetails } from 'src/app/_models/recipes/recipe-details';
+import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
 import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe-delete.service';
 import { RecipeStepCreateService } from 'src/app/_services/api/recipes/recipe-step-create.service';
 import { RecipeStepDeleteService } from 'src/app/_services/api/recipes/recipe-step-delete.service';
@@ -26,7 +28,7 @@ import { RecipeDetailReadService } from 'src/app/_services/api/recipes/recipe-de
 })
 export class RecipeViewComponent implements OnInit {
 
-  recipeId!: string | null;
+  recipeId!: string;
   recipeDetails!: RecipeDetails;
 
   loadedRecipeDetail = false;
@@ -62,6 +64,7 @@ export class RecipeViewComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
+    private toasterService: ToastrService,
     private recipeDetailReadService: RecipeDetailReadService,
     private recipeUpdateService: RecipeUpdateService,
     private recipeDeleteService: RecipeDeleteService,
@@ -78,7 +81,7 @@ export class RecipeViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
-      this.recipeId = params.get('recipeId');
+      this.recipeId = params.get('recipeId')?? '';
       if (this.recipeId) {
         this.recipeDetailReadService.readRecipeDetails(
           this.recipeId
@@ -119,6 +122,33 @@ export class RecipeViewComponent implements OnInit {
 
   addRecipeStep() {
 
+    const payload = JSON.parse(JSON.stringify(this.addRecipeStepForm.value));
+
+    const recipeStep: RecipeStep = {
+      name: payload.name,
+      description: payload.description ?? null,
+      image: null,
+      ingredients_used: [],
+      equipment_used: [],
+      recipe_id: this.recipeId,
+      index: this.recipeDetails.steps.length,
+      id: null,
+    };
+
+    this.recipeStepCreateService.createRecipeStep(recipeStep)
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.ngOnInit();
+          this.toasterService.success('Added ' + payload.name, 'Success');
+        },
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not add ' + payload.name, 'Error');
+        },
+      );
+
+    this.modalRef.hide();
   }
 
   deleteRecipeStep(modalRef: BsModalRef): void {

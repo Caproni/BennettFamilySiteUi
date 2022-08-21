@@ -5,9 +5,11 @@
 }
 
 .secondary-border {
-  border-color: gray;
-  border-style: dashed;
+  border-color: lightgray;
+  border-style: ridge;
   border-width: 1px;
+  padding: 10px;
+  margin: 10px;
 }
 
 .spacing {
