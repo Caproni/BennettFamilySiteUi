@@ -27,6 +27,7 @@ import { MediumDetailComponent } from './media/medium-detail/medium-detail.compo
 import { LoadingTableComponent } from './loading-table/loading-table.component';
 import { RecipeViewComponent } from './recipes/recipe-view/recipe-view.component';
 import { NoPageComponent } from './no-page/no-page.component';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { NoPageComponent } from './no-page/no-page.component';
     LoadingTableComponent,
     RecipeViewComponent,
     NoPageComponent,
+    AccountComponent,
   ],
     imports: [
         BrowserModule,

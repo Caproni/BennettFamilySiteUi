@@ -23,7 +23,12 @@
 >
   <mat-grid-tile *ngFor="let person of people">
     <mat-grid-tile-header>
-      {{person.first_name + ' ' + person.surname}}
+      <div class="col">
+        {{person.first_name + ' ' + person.surname}}
+      </div>
+      <div class="col-1">
+        <button class="btn" (click)="openModal(addPersonTemplate)"><i class="fas fa-edit fa-sm fa-inverse"></i></button>
+      </div>
     </mat-grid-tile-header>
     {{person.narrative}}
     <mat-grid-tile-footer>
@@ -41,7 +46,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="newPersonForm">
+    <form [formGroup]="personForm">
       <div class="form-horizontal">
         <div class="row mb-1">
           <div class="col form-group">
@@ -49,7 +54,7 @@
           </div>
           <div class="col">
             <input type="text" formControlName="first_name" id="first_name" class="form-control" name="first_name" required>
-            <div *ngIf="newPersonForm.controls['first_name'].touched && newPersonForm.controls['first_name'].invalid" class="alert alert-danger">
+            <div *ngIf="personForm.controls['first_name'].touched && personForm.controls['first_name'].invalid" class="alert alert-danger">
               A first name is required
             </div>
           </div>
@@ -68,7 +73,7 @@
           </div>
           <div class="col">
             <input type="text" formControlName="surname" id="surname" class="form-control" name="surname" required>
-            <div *ngIf="newPersonForm.controls['surname'].touched && newPersonForm.controls['surname'].invalid" class="alert alert-danger">
+            <div *ngIf="personForm.controls['surname'].touched && personForm.controls['surname'].invalid" class="alert alert-danger">
               A surname is required
             </div>
           </div>
@@ -170,7 +175,7 @@
           <div class="col">
             <div class="row mx-auto justify-content-center">
               <button class="btn btn-outline-success" style="width: 80%;"
-                      [disabled]="!newPersonForm.valid"
+                      [disabled]="!personForm.valid"
                       (click)="onPersonFormSubmit()">Save</button>
             </div>
             <div class="row mx-auto pt-2 justify-content-center">
@@ -274,7 +279,7 @@
           <div class="col">
             <div class="row mx-auto justify-content-center">
               <button class="btn btn-outline-success" style="width: 80%;"
-                      [disabled]="!newPersonForm.valid"
+                      [disabled]="!personForm.valid"
                       (click)="onRelationshipFormSubmit()">Save</button>
             </div>
             <div class="row mx-auto pt-2 justify-content-center">
@@ -346,7 +351,7 @@
           <div class="col">
             <div class="row mx-auto justify-content-center">
               <button class="btn btn-outline-success" style="width: 80%;"
-                      [disabled]="!newPersonForm.valid"
+                      [disabled]="!newDataSourceForm.valid"
                       (click)="onDataSourceFormSubmit()">Save</button>
             </div>
             <div class="row mx-auto pt-2 justify-content-center">

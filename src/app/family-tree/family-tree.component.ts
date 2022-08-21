@@ -38,11 +38,12 @@ export class FamilyTreeComponent implements OnInit {
 
   modalRef: BsModalRef = new BsModalRef();
 
-  newPersonForm: FormGroup = new FormGroup({
+  personForm: FormGroup = new FormGroup({
     first_name: new FormControl(''),
     middle_names: new FormControl(''),
     chosen_name: new FormControl(''),
     surname: new FormControl(''),
+    previous_surnames: new FormControl(''),
     title: new FormControl(''),
     birthplace: new FormControl(''),
     sex: new FormControl(''),
@@ -103,13 +104,30 @@ export class FamilyTreeComponent implements OnInit {
     });
   }
 
+  populatePersonForm(id: string) {
+
+    let person = this.people.filter(x => x.id == id)[0]
+
+    this.personForm.controls['first_name'].setValue(person.first_name);
+    this.personForm.controls['middle_names'].setValue(person.middle_names);
+    this.personForm.controls['chosen_name'].setValue(person.chosen_name);
+    this.personForm.controls['surname'].setValue(person.surname);
+    this.personForm.controls['previous_surnames'].setValue(person.previous_surnames);
+    this.personForm.controls['title'].setValue(person.title);
+    this.personForm.controls['birthplace'].setValue(person.birthplace);
+    this.personForm.controls['sex'].setValue(person.sex);
+    this.personForm.controls['date_of_birth'].setValue(person.date_of_birth);
+    this.personForm.controls['date_of_death'].setValue(person.date_of_death);
+    this.personForm.controls['narrative'].setValue(person.narrative);
+  }
+
   openModal(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template);
   }
 
   onPersonFormSubmit(): void {
 
-    const payload = JSON.parse(JSON.stringify(this.newPersonForm.value));
+    const payload = JSON.parse(JSON.stringify(this.personForm.value));
 
     this.familyTreePersonCreateService.createFamilyTreePerson(
       {

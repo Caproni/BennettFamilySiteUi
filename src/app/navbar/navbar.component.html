@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand navbar-dark">
   <div class="container-fluid">
-    <div class="navbar-nav navbar-right">
+    <div class="navbar-nav navbar-left">
       <a class="nav-brand pl-2 pr-2" routerLink="" title="Home"><img src="assets/favicon_io/favicon.ico" height="40" alt="EB"></a>
       <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/photos" routerLinkActive="active" title="Photos">
         <fa-icon [icon]="photosIcon" [size]="'lg'"></fa-icon>
@@ -16,6 +16,63 @@
       </a>
     </div>
     <div class="navbar-nav navbar-right">
+      <div class="col">
+        <button *ngIf="!isAuthorised()" class="btn" (click)="openModal(loginTemplate)">
+          <i class="fas fa-sign-in-alt fa-xl" title="Login"></i>
+        </button>
+        <button *ngIf="isAuthorised()" class="btn" (click)="logOut()">
+          <i class="fas fa-sign-out-alt fa-xl" title="Logout"></i>
+        </button>
+      </div>
     </div>
   </div>
 </nav>
+
+<ng-template #loginTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Login</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="loginForm">
+      <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Username </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="username" id="username" class="form-control" name="username" required>
+            <div *ngIf="loginForm.controls['username'].touched && loginForm.controls['username'].invalid" class="alert alert-danger">
+              A username is required
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Password </label>
+          </div>
+          <div class="col">
+            <input type="password" formControlName="password" id="password" class="form-control" name="password" required>
+            <div *ngIf="loginForm.controls['password'].touched && loginForm.controls['password'].invalid" class="alert alert-danger">
+              A password is required
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <div class="row mx-auto justify-content-center">
+              <button class="btn btn-outline-success" style="width: 80%;"
+                      [disabled]="!loginForm.valid"
+                      (click)="onLoginFormSubmit()">Save</button>
+            </div>
+            <div class="row mx-auto pt-2 justify-content-center">
+              <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
