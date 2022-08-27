@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MediaCreateService } from './media-create.service';
+import { PhotosDeleteService } from './photos-delete.service';
 
-describe('MediaCreateService', () => {
-  let service: MediaCreateService;
+describe('PhotoDeleteService', () => {
+  let service: PhotosDeleteService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MediaCreateService);
+    service = TestBed.inject(PhotosDeleteService);
   });
 
   it('should be created', () => {

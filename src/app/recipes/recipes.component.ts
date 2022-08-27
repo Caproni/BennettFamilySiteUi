@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
@@ -46,9 +46,9 @@ export class RecipesComponent implements OnInit {
   loadedEquipment = false;
 
   newRecipeForm: FormGroup = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', Validators.required),
     description: new FormControl(''),
-    duration_in_minutes: new FormControl(''),
+    duration_in_minutes: new FormControl('', Validators.required),
     source: new FormControl(''),
     ingredients: new FormControl(''),
     steps: new FormControl(''),
@@ -57,7 +57,7 @@ export class RecipesComponent implements OnInit {
   });
 
   newIngredientForm: FormGroup = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', Validators.required),
     description: new FormControl(''),
     recipe_id: new FormControl(''),
     quantity: new FormControl(''),
@@ -65,7 +65,7 @@ export class RecipesComponent implements OnInit {
   });
 
   newEquipmentForm: FormGroup = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', Validators.required),
     description: new FormControl(''),
   });
 
