@@ -30,8 +30,8 @@ export class NavbarComponent implements OnInit {
   modalRef: BsModalRef = new BsModalRef();
 
   loginForm: FormGroup = new FormGroup({
-    username: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
   });
 
   constructor(

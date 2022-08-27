@@ -3,9 +3,9 @@
   <h1>Photos</h1>
 </div>
 <br>
-<!--<div class="mx-auto text-center">-->
-<!--  <button class="btn btn-dark" (click)="openModal(addMediaTemplate)">Add Photo</button>-->
-<!--</div>-->
+<div class="mx-auto text-center">
+  <button class="btn btn-outline-dark" (click)="openModal(addPhotoTemplate)">Add Photo</button>
+</div>
 <br>
 
 <ng-template #addPhotoTemplate>
@@ -41,6 +41,34 @@
                       matAutosizeMaxRows=10
             ></textarea>
           </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Taken Date </label>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              placeholder="Select date"
+              class="form-control"
+              bsDatepicker
+              formControlName="taken_date"
+              [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+            />
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Photo </label>
+          </div>
+          <input
+            type="file"
+            class="file-upload"
+            formControlName="image"
+            onchange="console.log(event.target.files)">
         </div>
         <div class="row mt-3">
           <div class="col">

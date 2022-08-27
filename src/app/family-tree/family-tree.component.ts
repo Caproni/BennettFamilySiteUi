@@ -1,8 +1,10 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { takeWhile } from "rxjs/operators";
+import { ToastrService } from 'ngx-toastr';
+import { takeWhile } from 'rxjs/operators';
 
+import { LoginService } from 'src/app/_services/login/login.service';
 import { FamilyTreePersonCreateService } from 'src/app/_services/api/family-tree/family-tree-person-create.service';
 import { FamilyTreePersonReadService } from 'src/app/_services/api/family-tree/family-tree-person-read.service';
 import { FamilyTreePersonUpdateService } from 'src/app/_services/api/family-tree/family-tree-person-update.service';
@@ -53,22 +55,24 @@ export class FamilyTreeComponent implements OnInit {
   });
 
   newRelationshipForm: FormGroup = new FormGroup({
-    person_one: new FormControl('', Validators.required),
-    person_two: new FormControl('', Validators.required),
-    relationship_type: new FormControl('', Validators.required),
+    person_one: new FormControl('', [Validators.required]),
+    person_two: new FormControl('', [Validators.required]),
+    relationship_type: new FormControl('', [Validators.required]),
     start_time: new FormControl(''),
     end_time: new FormControl(''),
-    narrative: new FormControl('', Validators.required),
+    narrative: new FormControl('', [Validators.required]),
   });
 
   newDataSourceForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
+    name: new FormControl('', [Validators.required]),
     description: new FormControl(''),
     url: new FormControl(''),
-    source_date: new FormControl('', Validators.required),
+    source_date: new FormControl('', [Validators.required]),
   });
 
   constructor(
+    private loginService: LoginService,
+    private toasterService: ToastrService,
     private modalService: BsModalService,
     private familyTreePersonCreateService: FamilyTreePersonCreateService,
     private familyTreePersonReadService: FamilyTreePersonReadService,
@@ -127,6 +131,12 @@ export class FamilyTreeComponent implements OnInit {
 
   onPersonFormSubmit(): void {
 
+    if (!this.loginService.getAuthorised()) {
+      this.toasterService.error('Not authenticated. Please login.', 'Error');
+      this.modalRef.hide();
+      return;
+    }
+
     const payload = JSON.parse(JSON.stringify(this.personForm.value));
 
     this.familyTreePersonCreateService.createFamilyTreePerson(
@@ -168,6 +178,12 @@ export class FamilyTreeComponent implements OnInit {
 
   onRelationshipFormSubmit(): void {
 
+    if (!this.loginService.getAuthorised()) {
+      this.toasterService.error('Not authenticated. Please login.', 'Error');
+      this.modalRef.hide();
+      return;
+    }
+
     const payload = JSON.parse(JSON.stringify(this.newRelationshipForm.value));
 
     this.familyTreeRelationshipCreateService.createFamilyTreeRelationship(
@@ -195,6 +211,12 @@ export class FamilyTreeComponent implements OnInit {
   }
 
   onDataSourceFormSubmit(): void {
+
+    if (!this.loginService.getAuthorised()) {
+      this.toasterService.error('Not authenticated. Please login.', 'Error');
+      this.modalRef.hide();
+      return;
+    }
 
     const payload = JSON.parse(JSON.stringify(this.newDataSourceForm.value));
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Medium } from 'src/app/_models/media/medium';
+import { Photo } from 'src/app/_models/photos/photo';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,9 +15,9 @@ export class PhotosCreateService {
     private http: HttpClient,
   ) { }
 
-  createPhoto(medium: Medium) {
+  createPhoto(photo: Photo) {
     const url = `${this.baseUrl}/createPhoto`;
-    return this.http.post(url, medium);
+    return this.http.post(url, photo);
   }
 
 }

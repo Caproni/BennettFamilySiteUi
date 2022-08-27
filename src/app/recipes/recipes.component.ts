@@ -19,6 +19,7 @@ import { EquipmentDeleteService } from 'src/app/_services/api/recipes/equipment-
 import { EquipmentUpdateService } from 'src/app/_services/api/recipes/equipment-update.service';
 import { EquipmentReadService } from 'src/app/_services/api/recipes/equipment-read.service';
 import { EquipmentCreateService } from 'src/app/_services/api/recipes/equipment-create.service';
+import { LoginService } from 'src/app/_services/login/login.service';
 
 @Component({
   selector: 'fam-app-recipes',
@@ -46,9 +47,9 @@ export class RecipesComponent implements OnInit {
   loadedEquipment = false;
 
   newRecipeForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
+    name: new FormControl('', [Validators.required]),
     description: new FormControl(''),
-    duration_in_minutes: new FormControl('', Validators.required),
+    duration_in_minutes: new FormControl('', [Validators.required]),
     source: new FormControl(''),
     ingredients: new FormControl(''),
     steps: new FormControl(''),
@@ -57,7 +58,7 @@ export class RecipesComponent implements OnInit {
   });
 
   newIngredientForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
+    name: new FormControl('', [Validators.required]),
     description: new FormControl(''),
     recipe_id: new FormControl(''),
     quantity: new FormControl(''),
@@ -65,11 +66,12 @@ export class RecipesComponent implements OnInit {
   });
 
   newEquipmentForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
+    name: new FormControl('', [Validators.required]),
     description: new FormControl(''),
   });
 
   constructor(
+    private loginService: LoginService,
     private toasterService: ToastrService,
     private recipeCreateService: RecipeCreateService,
     private recipeReadService: RecipeReadService,
@@ -179,6 +181,12 @@ export class RecipesComponent implements OnInit {
   }
 
   onEquipmentFormSubmit(): void {
+
+    if (!this.loginService.getAuthorised()) {
+      this.toasterService.error('Not authenticated. Please login.', 'Error');
+      this.modalRef.hide();
+      return;
+    }
 
     const payload = JSON.parse(JSON.stringify(this.newEquipmentForm.value));
 

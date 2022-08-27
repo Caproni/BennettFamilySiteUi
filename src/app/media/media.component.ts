@@ -4,8 +4,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { takeWhile } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
+import { LoginService } from 'src/app/_services/login/login.service';
 import { MediaReadService } from 'src/app/_services/api/media/media-read.service';
-import { MediaCreateService } from '../_services/api/media/media-create.service';
+import { MediaCreateService } from 'src/app/_services/api/media/media-create.service';
 import { Medium } from 'src/app/_models/media/medium';
 
 @Component({
@@ -44,6 +45,7 @@ export class MediaComponent implements OnInit {
   searchPhrase = '';
 
   constructor(
+    private loginService: LoginService,
     private mediaReadService: MediaReadService,
     private mediaCreateService: MediaCreateService,
     private modalService: BsModalService,
@@ -126,6 +128,12 @@ export class MediaComponent implements OnInit {
   }
 
   onMediaFormSubmit(): void {
+
+    if (!this.loginService.getAuthorised()) {
+      this.toasterService.error('Not authenticated. Please login.', 'Error');
+      this.modalRef.hide();
+      return;
+    }
 
     const payload = JSON.parse(JSON.stringify(this.newMediaForm.value));
 

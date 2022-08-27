@@ -5,15 +5,17 @@
 <br>
 
 <div class="row">
+  <div class="col"></div>
   <div class="col mx-auto text-center">
-    <button class="btn btn-dark" (click)="openModal(addRecipeTemplate)">Add Recipe</button>
+    <button class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">Add Recipe</button>
   </div>
   <div class="col mx-auto text-center">
-    <button class="btn btn-dark" (click)="openModal(addIngredientTemplate)">Add Ingredient</button>
+    <button class="btn btn-outline-dark" (click)="openModal(addIngredientTemplate)">Add Ingredient</button>
   </div>
   <div class="col mx-auto text-center">
-    <button class="btn btn-dark" (click)="openModal(addEquipmentTemplate)">Add Equipment</button>
+    <button class="btn btn-outline-dark" (click)="openModal(addEquipmentTemplate)">Add Equipment</button>
   </div>
+  <div class="col"></div>
 </div>
 
 <br>
@@ -23,7 +25,7 @@
       <input class="form-control search-bar" type="text"
              placeholder="Search for recipes by name, ingredient, source, or tags" id="textSearch"
              name="dataSearch" [(ngModel)]="searchPhrase">
-      <button type="button" class="btn btn-dark" aria-label="Search" (click)="filterRecipes()">
+      <button type="button" class="btn btn-outline-dark" aria-label="Search" (click)="filterRecipes()">
         <i class="fas fa-search fa-lg"></i>
       </button>
     </div>

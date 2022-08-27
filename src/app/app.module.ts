@@ -56,7 +56,13 @@ import { AccountComponent } from './account/account.component';
         BrowserAnimationsModule,
         HttpClientModule,
         FontAwesomeModule,
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot(
+          {
+            timeOut: 2000,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true,
+          }
+        ),
         ReactiveFormsModule,
         MatCardModule,
         MatInputModule,

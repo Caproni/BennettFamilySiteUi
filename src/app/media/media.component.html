@@ -4,7 +4,7 @@
 </div>
 <br>
 <div class="mx-auto text-center">
-  <button class="btn btn-dark" (click)="openModal(addMediaTemplate)">Add Media</button>
+  <button class="btn btn-outline-dark" (click)="openModal(addMediaTemplate)">Add Media</button>
 </div>
 <br>
 <div class="col">
@@ -13,7 +13,7 @@
       <input class="form-control search-bar" type="text"
              placeholder="Search for media by name, director, release year or actors" id="textSearch"
              name="dataSearch" [(ngModel)]="searchPhrase">
-      <button type="button" class="btn btn-dark" aria-label="Search" (click)="filterMedia()">
+      <button type="button" class="btn btn-outline-dark" aria-label="Search" (click)="filterMedia()">
         <i class="fas fa-search fa-lg"></i>
       </button>
     </div>
