@@ -7,6 +7,11 @@
   <button class="btn btn-outline-dark" (click)="openModal(addPhotoTemplate)">Add Photo</button>
 </div>
 <br>
+<ngx-masonry>
+  <div ngxMasonryItem class="masonry-item" *ngFor="let photo of photos">
+    {{photo.name}}
+  </div>
+</ngx-masonry>
 
 <ng-template #addPhotoTemplate>
   <div class="modal-header">
@@ -36,12 +41,17 @@
           <div class="col">
             <textarea matInput
                       formControlName="description"
-                      cdkTextareaAutosize
-                      matAutosizeMinRows=3
-                      matAutosizeMaxRows=10
             ></textarea>
           </div>
         </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Taken By </label>
+          </div>
+        <div class="col">
+          <input type="text" formControlName="taken_by" id="taken-by" class="form-control" name="taken-by">
+        </div>
+      </div>
         <div class="row mb-1">
           <div class="col form-group">
             <label class="control-label">Taken Date </label>
@@ -62,13 +72,35 @@
         </div>
         <div class="row mb-1">
           <div class="col form-group">
+            <label class="control-label">Camera Details </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="camera_details" id="camera-details" class="form-control" name="camera-details" required>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
             <label class="control-label">Photo </label>
           </div>
-          <input
-            type="file"
-            class="file-upload"
-            formControlName="image"
-            onchange="console.log(event.target.files)">
+          <div class="col">
+            <input
+              #photoUpload
+              type="file"
+              class="file-upload"
+              style="display: none;"
+              (change)="onPhotoSelected($event)">
+
+              <button class="btn btn-outline-dark"
+                      (click)="photoUpload.click()">
+                <i class="fas fa-upload"> Browse</i>
+              </button>
+              <div class="file-upload">
+                <input type="text" formControlName="image" id="image" class="form-control" name="image" required>
+                <div *ngIf="newPhotoForm.controls['image'].touched && newPhotoForm.controls['image'].invalid" class="alert alert-danger">
+                  An image file is required
+                </div>
+            </div>
+          </div>
         </div>
         <div class="row mt-3">
           <div class="col">

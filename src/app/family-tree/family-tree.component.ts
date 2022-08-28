@@ -89,19 +89,16 @@ export class FamilyTreeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.familyTreePersonReadService.readFamilyTreePeople()
       this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
         this.loadedPeople = b;
         this.people = this.familyTreePersonReadService.getFamilyTreePeople();
       });
 
-    this.familyTreeRelationshipReadService.readFamilyTreeRelationships()
     this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
       this.loadedRelationships = b;
       this.relationships = this.familyTreeRelationshipReadService.getFamilyTreeRelationships();
     });
 
-    this.familyTreeDataSourceReadService.readFamilyTreeDataSources()
     this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
       this.loadedDataSources = b;
       this.dataSources = this.familyTreeDataSourceReadService.getFamilyTreeDataSources();

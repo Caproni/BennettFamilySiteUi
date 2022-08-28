@@ -1,13 +1,14 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
-import { PhotosCreateService } from "src/app/_services/api/photos/photos-create.service";
-import { PhotosUpdateService } from "src/app/_services/api/photos/photos-update.service";
-import { PhotosReadService } from "src/app/_services/api/photos/photos-read.service";
-import { PhotosDeleteService } from "src/app/_services/api/photos/photos-delete.service";
+import { Photo } from 'src/app/_models/photos/photo';
+import { PhotosCreateService } from 'src/app/_services/api/photos/photos-create.service';
+import { PhotosUpdateService } from 'src/app/_services/api/photos/photos-update.service';
+import { PhotosReadService } from 'src/app/_services/api/photos/photos-read.service';
+import { PhotosDeleteService } from 'src/app/_services/api/photos/photos-delete.service';
 import { LoginService } from 'src/app/_services/login/login.service';
 
 @Component({
@@ -18,12 +19,18 @@ import { LoginService } from 'src/app/_services/login/login.service';
 export class PhotosComponent implements OnInit {
 
   isActive = true;
+  loadedPhotos = false;
+  photos!: Photo[];
 
   modalRef: BsModalRef = new BsModalRef();
+
+  allowedMimeTypes = ['image/png', 'image/jpeg'];
+  photoFile = new File([], '');
 
   newPhotoForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl(''),
+    taken_by: new FormControl(''),
     taken_date: new FormControl(''),
     image: new FormControl('', [Validators.required]),
   });
@@ -39,10 +46,37 @@ export class PhotosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.photosReadService.readPhotos().subscribe((b) => {
+      this.loadedPhotos = b;
+      this.photos = this.photosReadService.getPhotos();
+    });
   }
 
   openModal(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template);
+  }
+
+  onPhotoSelected(event: any) {
+
+    const target = event.target as HTMLInputElement;
+
+    if (!target.files) {
+      return;
+    }
+
+    const file: File = target.files && target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (this.allowedMimeTypes.includes(file.type)) {
+      this.photoFile = file;
+      this.newPhotoForm.controls['image'].setValue(file.name);
+    } else {
+      console.log('Invalid file: ', file);
+    }
+
   }
 
   onNewPhotoFormSubmit() {
@@ -59,13 +93,13 @@ export class PhotosComponent implements OnInit {
       {
         name: payload.name,
         description: payload.description ?? null,
-        taken_date: payload.taken_date ?? null,
-        image: payload.image ?? null,
-        format: payload.name ?? null,
-        height: payload.name ?? null,
-        width: payload.name ?? null,
+        taken_by: payload.taken_by?? null,
+        taken_date: payload.taken_date? new Date(payload.taken_date): null,
+        image: null,
+        camera_details: payload.camera_details ?? null,
         id: null,
-      }
+      },
+      this.photoFile,
     )
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(

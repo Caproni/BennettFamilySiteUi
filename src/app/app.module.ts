@@ -10,6 +10,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxMasonryModule } from 'ngx-masonry';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,7 +23,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { PhotosComponent } from './photos/photos.component';
 import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.component';
-import { PhotoCardComponent } from './photos/photo-card/photo-card.component';
 import { MediumDetailComponent } from './media/medium-detail/medium-detail.component';
 import { LoadingTableComponent } from './loading-table/loading-table.component';
 import { RecipeViewComponent } from './recipes/recipe-view/recipe-view.component';
@@ -41,34 +41,34 @@ import { AccountComponent } from './account/account.component';
     HomeComponent,
     PhotosComponent,
     RecipeDetailsComponent,
-    PhotoCardComponent,
     MediumDetailComponent,
     LoadingTableComponent,
     RecipeViewComponent,
     NoPageComponent,
     AccountComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        ModalModule.forRoot(),
-        BrowserAnimationsModule,
-        HttpClientModule,
-        FontAwesomeModule,
-        ToastrModule.forRoot(
-          {
-            timeOut: 2000,
-            positionClass: 'toast-bottom-right',
-            preventDuplicates: true,
-          }
-        ),
-        ReactiveFormsModule,
-        MatCardModule,
-        MatInputModule,
-        BsDatepickerModule,
-        MatGridListModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ModalModule.forRoot(),
+    BrowserAnimationsModule,
+    HttpClientModule,
+    FontAwesomeModule,
+    ToastrModule.forRoot(
+      {
+        timeOut: 2000,
+        positionClass: 'toast-bottom-right',
+        preventDuplicates: true,
+      }
+    ),
+    ReactiveFormsModule,
+    MatCardModule,
+    MatInputModule,
+    BsDatepickerModule,
+    MatGridListModule,
+    NgxMasonryModule,
+  ],
   providers: [],
   exports: [],
   bootstrap: [AppComponent]

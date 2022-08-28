@@ -17,7 +17,10 @@
     </div>
     <div class="navbar-nav navbar-right">
       <div class="col">
-        <button *ngIf="!isAuthorised()" class="btn" (click)="openModal(loginTemplate)">
+        <button *ngIf="!isAuthorised() && authenticating" class="btn">
+          <i class="fas fa-spinner fa-pulse fa-xl" title="Authorising"></i>
+        </button>
+        <button *ngIf="!isAuthorised() && !authenticating" class="btn" (click)="openModal(loginTemplate)">
           <i class="fas fa-sign-in-alt fa-xl" title="Login"></i>
         </button>
         <button *ngIf="isAuthorised()" class="btn" (click)="logOut()">

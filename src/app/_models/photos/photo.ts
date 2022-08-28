@@ -1,10 +1,9 @@
 export interface Photo {
   name: string;
   description: string | null;
+  camera_details: string | null;
   taken_date: Date | null;
-  image: string;
-  format: string;
-  height: number;
-  width: number;
+  taken_by: string | null;
+  image: File | null;
   id: string | null;
 }
