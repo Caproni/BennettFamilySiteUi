@@ -28,6 +28,7 @@ import { LoadingTableComponent } from './loading-table/loading-table.component';
 import { RecipeViewComponent } from './recipes/recipe-view/recipe-view.component';
 import { NoPageComponent } from './no-page/no-page.component';
 import { AccountComponent } from './account/account.component';
+import { PhotoDetailsComponent } from './photos/photo-details/photo-details.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AccountComponent } from './account/account.component';
     RecipeViewComponent,
     NoPageComponent,
     AccountComponent,
+    PhotoDetailsComponent,
   ],
   imports: [
     BrowserModule,

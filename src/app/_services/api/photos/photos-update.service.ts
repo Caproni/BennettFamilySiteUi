@@ -16,7 +16,7 @@ export class PhotosUpdateService {
   ) {}
 
   updatePhoto(id: string, patch: Object) {
-    const url = `${this.baseUrl}/updatePhoto?photo_id=${id}`;
+    const url = `${this.baseUrl}/updatePhotoMetadata?photo_id=${id}`;
     return this.http.patch<ApiResponse>(url, patch);
   }
 

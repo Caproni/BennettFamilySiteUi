@@ -143,11 +143,14 @@ export class RecipesComponent implements OnInit {
       .subscribe(
         (_) => {
           this.ngOnInit();
-          this.toasterService.success('Added ' + payload.name, 'Success');
+          this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
           console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Added ' + payload.name, 'Success');
         },
       );
 
@@ -169,11 +172,14 @@ export class RecipesComponent implements OnInit {
       .subscribe(
         (_) => {
           this.ngOnInit();
-          this.toasterService.success('Added ' + payload.name, 'Success');
+          this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
           console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Added ' + payload.name, 'Success');
         },
       );
 
@@ -201,11 +207,14 @@ export class RecipesComponent implements OnInit {
       .subscribe(
         (_) => {
           this.ngOnInit();
-          this.toasterService.success('Added ' + payload.name, 'Success');
+          this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
           console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Added ' + payload.name, 'Success');
         },
       );
 

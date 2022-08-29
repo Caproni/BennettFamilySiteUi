@@ -121,8 +121,15 @@ export class RecipeViewComponent implements OnInit {
         .subscribe(
           (res) => {
             console.log(res);
+            this.toasterService.info('Deleting ' + this.recipeDetails.recipe.name, 'Info');
           },
-          (err) => console.log(err),
+        (err) => {
+            console.log(err);
+            this.toasterService.error('Could not delete ' + this.recipeDetails.recipe.name, 'Error');
+          },
+          () => {
+            this.toasterService.success('Deleted ' + this.recipeDetails.recipe.name, 'Success');
+          },
         );
       modalRef.hide();
       this.router.navigate(['recipes']);
@@ -155,11 +162,14 @@ export class RecipeViewComponent implements OnInit {
       .subscribe(
         (_) => {
           this.ngOnInit();
-          this.toasterService.success('Added ' + payload.name, 'Success');
+          this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
           console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Added ' + payload.name, 'Success');
         },
       );
 

@@ -165,12 +165,15 @@ export class FamilyTreeComponent implements OnInit {
           this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
             this.loadedPeople = b;
             this.people = this.familyTreePersonReadService.getFamilyTreePeople();
-            this.toasterService.success('Added person', 'Success');
+            this.toasterService.info('Adding person', 'Info');
           });
         },
         (err) => {
           console.log(err);
           this.toasterService.error('Could not add person', 'Error');
+        },
+        () => {
+          this.toasterService.success('Added person', 'Success');
         },
       );
 
@@ -203,12 +206,15 @@ export class FamilyTreeComponent implements OnInit {
           this.familyTreeRelationshipReadService.readFamilyTreeRelationships().subscribe((b) => {
             this.loadedRelationships = b;
             this.relationships = this.familyTreeRelationshipReadService.getFamilyTreeRelationships();
-            this.toasterService.success('Added relationship', 'Success');
+            this.toasterService.info('Adding relationship', 'Info');
           });
         },
         (err) => {
           console.log(err);
           this.toasterService.error('Could not add relationship', 'Error');
+        },
+        () => {
+          this.toasterService.success('Added relationship', 'Success');
         },
       );
 
@@ -238,11 +244,14 @@ export class FamilyTreeComponent implements OnInit {
       .subscribe(
         (_) => {
           this.familyTreeDataSourceReadService.readFamilyTreeDataSources();
-          this.toasterService.success('Added ' + payload.name, 'Success');
+          this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
           console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Added ' + payload.name, 'Success');
         },
       );
 

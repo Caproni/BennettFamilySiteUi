@@ -36,6 +36,14 @@ export class PhotosCreateService {
       url += `&taken_by=${photo.taken_by}`;
     }
 
+    if (photo.height) {
+      url += `&height=${photo.height}`;
+    }
+
+    if (photo.width) {
+      url += `&width=${photo.width}`;
+    }
+
     const formData = new FormData();
     formData.append('image', file);
     return this.http.post<ApiResponse>(

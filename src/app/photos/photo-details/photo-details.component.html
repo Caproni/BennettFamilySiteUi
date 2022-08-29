@@ -1,0 +1,19 @@
+<div class="container mx-auto text-center">
+  <div class="row">
+    <div class="col">
+      <h1>{{photo.name}}</h1>
+    </div>
+    <div class="col-1">
+      <button type="button" class="btn" aria-label="Edit" (click)="editPhoto()">
+        <i class="fas fa-edit fa-pull-right" title="Edit"></i>
+      </button>
+    </div>
+  </div>
+
+  <h4 *ngIf="photo.description">Description: {{photo.description}}</h4>
+  <h4 *ngIf="photo.camera_details">Camera: {{photo.camera_details}}</h4>
+  <h4 *ngIf="photo.taken_date">Taken On: {{photo.taken_date}}</h4>
+  <h4 *ngIf="photo.taken_by">Taken By: {{photo.taken_by}}</h4>
+</div>
+<br>
+<img [src]="photo.blob_url" alt="{{photo.name}}" width="100%">

@@ -4,14 +4,18 @@
 </div>
 <br>
 <div class="mx-auto text-center">
-  <button class="btn btn-outline-dark" (click)="openModal(addPhotoTemplate)">Add Photo</button>
+  <button class="btn btn-outline-dark" (click)="openModal(addPhotoTemplate, {})">Add Photo</button>
 </div>
 <br>
-<ngx-masonry>
-  <div ngxMasonryItem class="masonry-item" *ngFor="let photo of photos">
-    {{photo.name}}
+<ngx-masonry [options]="masonryOptions" style="width: 90vw;" (itemsLoaded)="photosLoaded()">
+  <div ngxMasonryItem class="masonry-item" *ngFor="let photo of photos" style="width: 20%;">
+    <img class="image-container" [src]="photo.blob_url" alt="{{photo.name}}" width="100%" (click)="populatePhoto(photo); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
   </div>
 </ngx-masonry>
+
+<ng-template class="modal-lg" #viewPhotoTemplate>
+  <fam-app-photo-details [photo]="photo"></fam-app-photo-details>
+</ng-template>
 
 <ng-template #addPhotoTemplate>
   <div class="modal-header">
@@ -86,6 +90,7 @@
             <input
               #photoUpload
               type="file"
+              accept="image/*"
               class="file-upload"
               style="display: none;"
               (change)="onPhotoSelected($event)">

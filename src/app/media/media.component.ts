@@ -158,12 +158,15 @@ export class MediaComponent implements OnInit {
       .subscribe(
         (_) => {
           this.ngOnInit();
-          this.toasterService.success('Added ' + payload.title, 'Success');
+          this.toasterService.info('Adding ' + payload.title, 'Info');
         },
         (err) => {
           console.log(err);
           this.toasterService.error('Could not add ' + payload.title, 'Error');
-        }
+        },
+        () => {
+          this.toasterService.success('Added ' + payload.title, 'Success');
+        },
       );
 
     this.modalRef.hide();

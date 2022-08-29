@@ -105,11 +105,14 @@ export class MediumDetailComponent implements OnInit {
         .subscribe(
           (res) => {
             console.log(res);
-            this.toasterService.success('Updated ' + this.medium.title, 'Success');
+            this.toasterService.info('Updating ' + this.medium.title, 'Info');
           },
           (err) => {
             console.log(err);
             this.toasterService.error('Could not update ' + this.medium.title, 'Error');
+          },
+          () => {
+            this.toasterService.success('Updated ' + this.medium.title, 'Success');
           },
         );
       modalRef.hide();
@@ -124,11 +127,14 @@ export class MediumDetailComponent implements OnInit {
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (res) => {
-            this.toasterService.success('Deleted ' + this.medium.title, 'Success');
+            this.toasterService.info('Deleting ' + this.medium.title, 'Info');
           },
           (err) => {
             console.log(err);
             this.toasterService.error('Could not delete ' + this.medium.title, 'Error');
+          },
+          () => {
+            this.toasterService.success('Deleted ' + this.medium.title, 'Success');
           },
         );
       modalRef.hide();
