@@ -9,11 +9,18 @@
       </button>
     </div>
   </div>
-
-  <h4 *ngIf="photo.description">Description: {{photo.description}}</h4>
-  <h4 *ngIf="photo.camera_details">Camera: {{photo.camera_details}}</h4>
-  <h4 *ngIf="photo.taken_by">Taken by {{photo.taken_by}} on {{photo.taken_date}}</h4>
-  <h4 *ngIf="!photo.taken_by">Taken on {{photo.taken_date}}</h4>
+  <div class="row pl-2">
+    <h4 *ngIf="photo.description" class="sub-text">{{photo.description}}</h4>
+  </div>
+  <div class="row pl-2">
+    <h4 *ngIf="photo.taken_by" class="sub-text">Taken by {{photo.taken_by}} on {{photo.taken_date}}</h4>
+  </div>
+  <div class="row pl-2">
+    <h4 *ngIf="!photo.taken_by" class="sub-text">Taken on {{photo.taken_date}}</h4>
+  </div>
+  <div class="row pl-2">
+    <h4 *ngIf="photo.camera_details" class="sub-text">Camera Details: {{photo.camera_details}}</h4>
+  </div>
 </div>
 <br>
 <img [src]="photo.blob_url" alt="{{photo.name}}" width="100%">
