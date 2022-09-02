@@ -25,6 +25,7 @@
   <div class="container-fluid text-center table-outer">
     <div *ngIf="windowWidth > 1000" class="row row-chart row-header m-1 p-2">
       <div class="col"><b>Title</b></div>
+      <div class="col"><b>Location</b></div>
       <div class="col"><b>Director</b></div>
       <div class="col"><b>Publisher</b></div>
       <div class="col"><b>Actors</b></div>
@@ -35,13 +36,12 @@
       <div class="col"><b>No. Episodes</b></div>
       <div class="col"><b>Duration (mins)</b></div>
       <div class="col"><b>Language</b></div>
-      <div class="col"><b>Location</b></div>
-      <div class="col"><b>Edit</b></div>
+      <div class="col"></div>
     </div>
 
     <div *ngIf="windowWidth <= 1000" class="row row-chart row-header m-1 p-2">
       <div class="col"><b>Title</b></div>
-      <div class="col"><b>Edit</b></div>
+      <div class="col"><b>Location</b></div>
     </div>
 
     <div *ngIf="media && media.length < 1 && !loadedMedia">
@@ -93,10 +93,25 @@
         </div>
         <div class="row mb-1">
           <div class="col form-group">
-            <label class="control-label">Actors ( ; separated) </label>
+            <label class="control-label">Actors </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="actors" id="actors" class="form-control" name="actors">
+            <mat-form-field class="actor-chip-list" appearance="fill">
+              <mat-label>Recipe Tags</mat-label>
+              <mat-chip-list #mediaActorList aria-label="Actor selection">
+                <mat-chip *ngFor="let actor of mediaActors" (removed)="removeMediaActor(actor)">
+                  {{actor}}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip>
+                <input placeholder="New actor..."
+                       [matChipInputFor]="mediaActorList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="addMediaActor($event)">
+              </mat-chip-list>
+            </mat-form-field>
           </div>
         </div>
         <div class="row mb-1">

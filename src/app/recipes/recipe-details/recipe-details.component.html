@@ -3,7 +3,13 @@
   <div class="col">{{recipe? recipe.description: ''}}</div>
   <div class="col">{{recipe? recipe.duration_in_minutes: ''}}</div>
   <div class="col">{{recipe? recipe.source: ''}}</div>
-  <div class="col">{{recipe? recipe.tags: ''}}</div>
+  <div class="col">
+    <mat-chip-list aria-label="Recipe tags">
+      <mat-chip *ngFor="let tag of recipe.tags">
+        {{tag}}
+      </mat-chip>
+    </mat-chip-list>
+  </div>
   <div class="col">
     <a class="btn btn-outline-dark" routerLink="/recipe-detail/{{recipe? recipe.id: ''}}" routerLinkActive="active" title="View">
       <i class="fas fa-eye"></i>

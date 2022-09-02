@@ -1,8 +1,15 @@
 <div *ngIf="windowWidth > 1000" class="row row-chart m-1 p-2 align-items-center">
   <div class="col">{{medium.title}}</div>
+  <div class="col">{{medium.location}}</div>
   <div class="col">{{medium.director}}</div>
   <div class="col">{{medium.publisher}}</div>
-  <div class="col">{{medium.actors}}</div>
+  <div class="col">
+    <mat-chip-list aria-label="Media actors">
+      <mat-chip *ngFor="let actor of medium.actors?.split(',')">
+        {{actor}}
+      </mat-chip>
+    </mat-chip-list>
+  </div>
   <div class="col">{{medium.format}}</div>
   <div class="col">{{medium.release_year}}</div>
   <div class="col">{{medium.series_or_film}}</div>
@@ -10,13 +17,13 @@
   <div class="col">{{medium.episodes}}</div>
   <div class="col">{{medium.duration_in_minutes}}</div>
   <div class="col">{{medium.language}}</div>
-  <div class="col">{{medium.location}}</div>
-  <div class="col"><button class="btn btn-outline-dark" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit"></i></button></div>
+  <div class="col"><button class="btn" title="Edit" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit fa-sm"></i></button></div>
 </div>
 
 <div *ngIf="windowWidth <= 1000" class="row row-chart m-1 p-2 align-items-center">
   <div class="col">{{medium.title}}</div>
-  <div class="col"><button class="btn btn-outline-dark" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit"></i></button></div>
+  <div class="col">{{medium.location}}</div>
+  <div class="col"><button class="btn" title="Edit" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit fa-sm"></i></button></div>
 </div>
 
 <ng-template #editMediaTemplate>
@@ -59,7 +66,7 @@
         </div>
         <div class="row mb-1">
           <div class="col form-group">
-            <label class="control-label">Actors ( ; separated) </label>
+            <label class="control-label">Actors </label>
           </div>
           <div class="col">
             <input type="text" formControlName="actors" id="actors" class="form-control" name="actors">

@@ -41,7 +41,7 @@
       <div class="col"><b>Cooking Time (mins)</b></div>
       <div class="col"><b>Source</b></div>
       <div class="col"><b>Tags</b></div>
-      <div class="col"><b>View</b></div>
+      <div class="col"></div>
     </div>
     <div *ngIf="recipes && recipes.length < 1 && !loadedRecipes">
       <fam-app-loading-table></fam-app-loading-table>
@@ -103,6 +103,29 @@
           </div>
           <div class="col">
             <input type="text" formControlName="source" id="source" class="form-control" name="source">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Tags </label>
+          </div>
+          <div class="col">
+            <mat-form-field class="recipe-chip-list" appearance="fill">
+              <mat-label>Recipe Tags</mat-label>
+              <mat-chip-list #recipeTagList aria-label="Recipe tag selection">
+                <mat-chip *ngFor="let tag of recipeTags" (removed)="removeRecipeTag(tag)">
+                  {{tag}}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip>
+                <input placeholder="New tag..."
+                       [matChipInputFor]="recipeTagList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="addRecipeTag($event)">
+              </mat-chip-list>
+            </mat-form-field>
           </div>
         </div>
         <div class="row mt-3">

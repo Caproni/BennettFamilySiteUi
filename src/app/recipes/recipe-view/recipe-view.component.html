@@ -14,6 +14,12 @@
       <h5 *ngIf="loadedRecipeDetail">Source: {{ recipeDetails.recipe.source }}</h5>
       <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
 
+      <mat-chip-list aria-label="Recipe tags">
+        <mat-chip *ngFor="let tag of recipeDetails.recipe.tags">
+          {{tag}}
+        </mat-chip>
+      </mat-chip-list>
+
     </div>
     <br>
     <br>

@@ -1,8 +1,10 @@
 import { Component, OnInit, TemplateRef, HostListener } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { takeWhile } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 import { LoginService } from 'src/app/_services/login/login.service';
 import { MediaReadService } from 'src/app/_services/api/media/media-read.service';
@@ -25,6 +27,10 @@ export class MediaComponent implements OnInit {
   media: Medium[] = [];
   filteredMedia: Medium[] = [];
   modalRef: BsModalRef = new BsModalRef();
+
+  mediaActors: string[] = [];
+  addOnBlur = true;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
   newMediaForm: FormGroup = new FormGroup({
     director: new FormControl(''),
@@ -125,6 +131,23 @@ export class MediaComponent implements OnInit {
         true
       );
     });
+  }
+
+  addMediaActor(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      this.mediaActors.push(value);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  removeMediaActor(actor: string) {
+    const index = this.mediaActors.indexOf(actor);
+    if (index >= 0) {
+      this.mediaActors.splice(index, 1);
+    }
   }
 
   onMediaFormSubmit(): void {

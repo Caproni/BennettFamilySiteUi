@@ -1,5 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
@@ -38,6 +40,10 @@ export class RecipesComponent implements OnInit {
   filteredRecipes: Recipe[] = [];
   filteredIngredients: Ingredient[] = [];
   filteredEquipment: Equipment[] = [];
+
+  recipeTags: string[] = [];
+  addOnBlur = true;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
   modalRef: BsModalRef = new BsModalRef();
   private isActive = true;
@@ -119,10 +125,77 @@ export class RecipesComponent implements OnInit {
   }
 
   filterRecipes() {
+    const searchTerms: string[] = [];
+    // @ts-ignore
+    const groups = this.searchPhrase.matchAll(this.searchRegex);
+    let group = groups.next();
+    while (!group.done) {
+      for (let i = 1; i < group.value.length; i++) {
+        if (group.value[i] !== undefined) {
+          searchTerms.push(group.value[i].toLowerCase());
+        }
+      }
+      group = groups.next();
+    }
 
+    this.filteredRecipes = this.recipes.filter(item => {
+
+      const included: boolean[] = [];
+
+      const name = item.name?.toLowerCase();
+      const source = item.source?.toLowerCase();
+
+      for (const searchTerm of searchTerms) {
+        const includedForThisTerm: boolean[] = [];
+
+        if (name) {
+          includedForThisTerm.push(name.includes(searchTerm));
+        }
+
+        if (source) {
+          includedForThisTerm.push(source.includes(searchTerm));
+        }
+
+        included.push(includedForThisTerm.reduceRight(
+          (accumulator, currentValue) => {
+            return accumulator || currentValue;
+          },
+          false
+        ));
+      }
+      return included.reduceRight(
+        (accumulator, currentValue) => {
+          return accumulator && currentValue;
+        },
+        true
+      );
+    });
+  }
+
+  addRecipeTag(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      this.recipeTags.push(value);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  removeRecipeTag(tag: string) {
+    const index = this.recipeTags.indexOf(tag);
+    if (index >= 0) {
+      this.recipeTags.splice(index, 1);
+    }
   }
 
   onRecipeFormSubmit(): void {
+
+    if (!this.loginService.getAuthorised()) {
+      this.toasterService.error('Not authenticated. Please login.', 'Error');
+      this.modalRef.hide();
+      return;
+    }
 
     const payload = JSON.parse(JSON.stringify(this.newRecipeForm.value));
 
@@ -135,7 +208,7 @@ export class RecipesComponent implements OnInit {
         added_date: new Date(),
         steps: [],
         equipment: [],
-        tags: [],
+        tags: this.recipeTags,
         id: null,
       }
     )
@@ -158,6 +231,12 @@ export class RecipesComponent implements OnInit {
   }
 
   onIngredientFormSubmit(): void {
+
+    if (!this.loginService.getAuthorised()) {
+      this.toasterService.error('Not authenticated. Please login.', 'Error');
+      this.modalRef.hide();
+      return;
+    }
 
     const payload = JSON.parse(JSON.stringify(this.newIngredientForm.value));
 

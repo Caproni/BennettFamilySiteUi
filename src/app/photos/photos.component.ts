@@ -22,7 +22,7 @@ export class PhotosComponent implements OnInit {
   public masonryOptions: NgxMasonryOptions = {
     gutter: 10,
     columnWidth: 200,
-    fitWidth: true,
+    fitWidth: false,
     animations: {
       show: [
         style({opacity: 0}),

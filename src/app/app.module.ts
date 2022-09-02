@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
@@ -29,6 +30,7 @@ import { RecipeViewComponent } from './recipes/recipe-view/recipe-view.component
 import { NoPageComponent } from './no-page/no-page.component';
 import { AccountComponent } from './account/account.component';
 import { PhotoDetailsComponent } from './photos/photo-details/photo-details.component';
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -70,6 +72,8 @@ import { PhotoDetailsComponent } from './photos/photo-details/photo-details.comp
     BsDatepickerModule,
     MatGridListModule,
     NgxMasonryModule,
+    MatChipsModule,
+    MatIconModule,
   ],
   providers: [],
   exports: [],
