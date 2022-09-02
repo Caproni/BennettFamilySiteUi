@@ -22,6 +22,7 @@ export class PhotosComponent implements OnInit {
   public masonryOptions: NgxMasonryOptions = {
     gutter: 10,
     columnWidth: 200,
+    fitWidth: true,
     animations: {
       show: [
         style({opacity: 0}),
@@ -129,7 +130,7 @@ export class PhotosComponent implements OnInit {
         name: payload.name,
         description: payload.description ?? null,
         taken_by: payload.taken_by?? null,
-        taken_date: payload.taken_date? new Date(payload.taken_date): null,
+        taken_date: payload.taken_date? new Date(payload.taken_date): new Date(this.photoFile.lastModified),
         image: null,
         blob_url: null,
         height: this.photoHeight,
