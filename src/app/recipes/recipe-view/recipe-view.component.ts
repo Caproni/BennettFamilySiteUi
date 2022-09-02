@@ -1,6 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
@@ -39,6 +41,10 @@ export class RecipeViewComponent implements OnInit {
   currentIngredientId = '';
   currentEquipmentId = '';
 
+  recipeTags: string[] = [];
+  addOnBlur = true;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+
   modalRef: BsModalRef = new BsModalRef();
 
   editRecipeForm: FormGroup = new FormGroup({
@@ -52,6 +58,11 @@ export class RecipeViewComponent implements OnInit {
   });
 
   addRecipeStepForm: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    description: new FormControl(''),
+  });
+
+  editRecipeStepForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl(''),
   });
@@ -103,6 +114,23 @@ export class RecipeViewComponent implements OnInit {
 
   openModal(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template);
+  }
+
+  addRecipeTag(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      this.recipeTags.push(value);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  removeRecipeTag(tag: string) {
+    const index = this.recipeTags.indexOf(tag);
+    if (index >= 0) {
+      this.recipeTags.splice(index, 1);
+    }
   }
 
   deleteRecipe(modalRef: BsModalRef): void {
@@ -176,6 +204,46 @@ export class RecipeViewComponent implements OnInit {
     this.modalRef.hide();
   }
 
+  updateRecipeStep(id: string) {
+
+    if (!this.loginService.getAuthorised()) {
+      this.toasterService.error('Not authenticated. Please login.', 'Error');
+      this.modalRef.hide();
+      return;
+    }
+
+    const payload = JSON.parse(JSON.stringify(this.editRecipeStepForm.value));
+
+    const patch: RecipeStep = {
+      name: payload.name,
+      description: payload.description ?? null,
+      image: null,
+      ingredients_used: [],
+      equipment_used: [],
+      recipe_id: this.recipeId,
+      index: this.recipeDetails.steps.length,
+      id: id,
+    };
+
+    this.recipeStepUpdateService.updateRecipeStep(id, patch)
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.ngOnInit();
+          this.toasterService.info('Updating ' + payload.name, 'Info');
+        },
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not update ' + payload.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Updated ' + payload.name, 'Success');
+        },
+      );
+
+    this.modalRef.hide();
+  }
+
   deleteRecipeStep(modalRef: BsModalRef): void {
 
     if (!this.loginService.getAuthorised()) {
@@ -220,7 +288,7 @@ export class RecipeViewComponent implements OnInit {
       added_date: this.recipeDetails.recipe.added_date,
       steps: this.recipeDetails.recipe.steps,
       equipment: this.recipeDetails.recipe.equipment,
-      tags: this.recipeDetails.recipe.tags,
+      tags: this.recipeTags,
       id: this.recipeDetails.recipe.id,
     };
 

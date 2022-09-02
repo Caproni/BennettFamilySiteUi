@@ -9,7 +9,7 @@
 <br>
 <ngx-masonry [options]="masonryOptions" style="width: 90vw;" (itemsLoaded)="photosLoaded()">
   <div ngxMasonryItem class="masonry-item" *ngFor="let photo of photos" style="width: 20%;">
-    <img class="image-container" [src]="photo.blob_url" alt="{{photo.name}}" width="100%" (click)="populatePhoto(photo); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
+    <img class="image-container" [src]="photo.blob_url" alt="{{photo.name}}" width="90%" (click)="populatePhoto(photo); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
   </div>
 </ngx-masonry>
 

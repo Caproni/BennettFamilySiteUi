@@ -71,7 +71,7 @@
                 </div>
                 <div class="col-1">
                   <div class="col-1">
-                    <button type="button" class="btn" aria-label="Edit Description" (click)="openModal(deleteRecipeStepTemplate)">
+                    <button type="button" class="btn" aria-label="Edit Description" (click)="openModal(editRecipeStepTemplate)">
                       <i class="fas fa-edit" title="Edit Description"></i>
                     </button>
                     <button type="button" class="btn" aria-label="Add Ingredient" (click)="openModal(deleteRecipeStepTemplate)">
@@ -129,7 +129,7 @@
           <label class="control-label">Name </label>
         </div>
         <div class="col">
-          <input type="text" formControlName="name" id="recipe-step-name" class="form-control" name="recipe-step-name" required>
+          <input type="text" formControlName="name" id="edit-recipe-step-name" class="form-control" name="edit-recipe-step-name" required>
           <div *ngIf="addRecipeStepForm.controls['name'].touched && addRecipeStepForm.controls['name'].invalid" class="alert alert-danger">
             A name is required
           </div>
@@ -158,6 +158,62 @@
           </div>
           <div class="row mx-auto pt-2 justify-content-center">
             <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #editRecipeStepTemplate let-id="id">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit Step</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="editRecipeStepForm">
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Name </label>
+        </div>
+        <div class="col">
+          <input type="text" formControlName="name" id="add-recipe-step-name" class="form-control" name="add-recipe-step-name" required>
+          <div *ngIf="editRecipeStepForm.controls['name'].touched && editRecipeStepForm.controls['name'].invalid" class="alert alert-danger">
+            A name is required
+          </div>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Description </label>
+        </div>
+        <div class="col">
+            <textarea matInput
+                      formControlName="description"
+                      cdkTextareaAutosize
+                      matAutosizeMinRows=1
+                      matAutosizeMaxRows=5
+            ></textarea>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col">
+          <div class="row mx-auto justify-content-center">
+            <button class="btn btn-outline-success" style="width: 80%;"
+                    [disabled]="!editRecipeStepForm.valid"
+                    (click)="updateRecipeStep(id)">Update</button>
+          </div>
+          <div class="row mx-auto pt-2 justify-content-center">
+            <button class="btn btn-outline-danger" (click)="modalRef.hide(); openModal(deleteRecipeStepTemplate)" style="width: 80%;">Delete</button>
           </div>
         </div>
       </div>
@@ -273,6 +329,29 @@
             </div>
             <div class="col">
               <input type="text" formControlName="source" id="source" class="form-control" name="source">
+            </div>
+          </div>
+          <div class="row mb-1">
+            <div class="col form-group">
+              <label class="control-label">Tags </label>
+            </div>
+            <div class="col">
+              <mat-form-field class="recipe-chip-list" appearance="fill">
+                <mat-label>Recipe Tags</mat-label>
+                <mat-chip-list #recipeTagList aria-label="Recipe tag selection">
+                  <mat-chip *ngFor="let tag of recipeDetails.recipe.tags" (removed)="removeRecipeTag(tag)">
+                    {{tag}}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip>
+                  <input placeholder="New tag..."
+                         [matChipInputFor]="recipeTagList"
+                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                         [matChipInputAddOnBlur]="addOnBlur"
+                         (matChipInputTokenEnd)="addRecipeTag($event)">
+                </mat-chip-list>
+              </mat-form-field>
             </div>
           </div>
           <div class="row mt-3">
