@@ -21,7 +21,7 @@ import { PhotoDetailsComponent } from './photo-details/photo-details.component';
 export class PhotosComponent implements OnInit {
 
   public masonryOptions: NgxMasonryOptions = {
-    gutter: 10,
+    gutter: 0,
     columnWidth: 200,
     fitWidth: false,
     animations: {
@@ -113,15 +113,11 @@ export class PhotosComponent implements OnInit {
 
     const target = event.target as HTMLInputElement;
 
-    if (!target.files) {
-      return;
-    }
+    if (!target.files) return;
 
     const file: File = target.files && target.files[0];
 
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     if (this.allowedMimeTypes.includes(file.type)) {
       this.photoFile = file;

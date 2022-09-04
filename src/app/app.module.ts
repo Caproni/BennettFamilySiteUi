@@ -34,6 +34,8 @@ import { AccountComponent } from './account/account.component';
 import { PhotoDetailsComponent } from './photos/photo-details/photo-details.component';
 import { DatetimeSliderComponent } from './_shared/datetime-slider/datetime-slider.component';
 import { RecipeStepComponent } from './recipes/recipe-view/recipe-step/recipe-step.component';
+import { IngredientsComponent } from './recipes/ingredients/ingredients.component';
+import { EquipmentComponent } from './recipes/equipment/equipment.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { RecipeStepComponent } from './recipes/recipe-view/recipe-step/recipe-st
     PhotoDetailsComponent,
     DatetimeSliderComponent,
     RecipeStepComponent,
+    IngredientsComponent,
+    EquipmentComponent,
   ],
   imports: [
     BrowserModule,

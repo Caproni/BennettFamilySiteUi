@@ -32,6 +32,8 @@ export class FamilyTreeComponent implements OnInit {
   relationships!: FamilyTreeRelationship[];
   dataSources!: FamilyTreeDataSource[];
 
+  person!: FamilyTreePerson;
+
   loadedPeople = false;
   loadedRelationships = false;
   loadedDataSources = false;
@@ -105,20 +107,24 @@ export class FamilyTreeComponent implements OnInit {
     });
   }
 
-  populatePersonForm(id: string) {
+  populatePersonForm(id: string | null) {
+
+    if (!id) return;
 
     let person = this.people.filter(x => x.id == id)[0]
 
+    this.person = person;
+
     this.personForm.controls['first_name'].setValue(person.first_name);
-    this.personForm.controls['middle_names'].setValue(person.middle_names);
+    this.personForm.controls['middle_names'].setValue(person.middle_names.join(' '));
     this.personForm.controls['chosen_name'].setValue(person.chosen_name);
     this.personForm.controls['surname'].setValue(person.surname);
-    this.personForm.controls['previous_surnames'].setValue(person.previous_surnames);
+    this.personForm.controls['previous_surnames'].setValue(person.previous_surnames.join(' '));
     this.personForm.controls['title'].setValue(person.title);
     this.personForm.controls['birthplace'].setValue(person.birthplace);
     this.personForm.controls['sex'].setValue(person.sex);
-    this.personForm.controls['date_of_birth'].setValue(person.date_of_birth);
-    this.personForm.controls['date_of_death'].setValue(person.date_of_death);
+    this.personForm.controls['date_of_birth'].setValue(person.date_of_birth ? new Date(person.date_of_birth) : '');
+    this.personForm.controls['date_of_death'].setValue(person.date_of_death ? new Date(person.date_of_death) : '');
     this.personForm.controls['narrative'].setValue(person.narrative);
   }
 
@@ -126,7 +132,7 @@ export class FamilyTreeComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  onPersonFormSubmit(): void {
+  onNewPersonFormSubmit(): void {
 
     if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
@@ -145,7 +151,7 @@ export class FamilyTreeComponent implements OnInit {
         sex: payload.sex,
         date_of_birth: payload.date_of_birth? new Date(payload.date_of_birth): null,
         date_of_death: payload.date_of_death? new Date(payload.date_of_death): null,
-        image: null,
+        blob_url: null,
         previous_surnames: payload.previous_surnames ? payload.previous_surnames.split(" "): [],
         relationships: [],
         narrative: payload.narrative ?? null,
@@ -172,6 +178,61 @@ export class FamilyTreeComponent implements OnInit {
         },
         () => {
           this.toasterService.success('Added person', 'Success');
+        },
+      );
+
+    this.modalRef.hide();
+  }
+
+  onEditPersonFormSubmit(): void {
+
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
+      return;
+    }
+
+    if (!this.person.id) return;
+
+    const payload = JSON.parse(JSON.stringify(this.personForm.value));
+
+    this.familyTreePersonUpdateService.updateFamilyTreePerson(
+      this.person.id,
+      {
+        first_name: payload.first_name ?? null,
+        middle_names: payload.middle_names ? payload.middle_names.split(' '): [],
+        chosen_name: payload.chosen_name ?? null,
+        surname: payload.surname ?? null,
+        title: payload.title ?? null,
+        birthplace: payload.birthplace,
+        sex: payload.sex,
+        date_of_birth: payload.date_of_birth? new Date(payload.date_of_birth): null,
+        date_of_death: payload.date_of_death? new Date(payload.date_of_death): null,
+        image: null,
+        previous_surnames: payload.previous_surnames ? payload.previous_surnames.split(' '): [],
+        relationships: [],
+        narrative: payload.narrative ?? null,
+        generation_index: this.person.generation_index,
+        column_index: this.person.column_index,
+        facts: this.person.facts,
+        photos: this.person.photos,
+        sources: this.person.sources,
+        id: this.person.id,
+      }
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
+            this.loadedPeople = b;
+            this.people = this.familyTreePersonReadService.getFamilyTreePeople();
+            this.toasterService.info('Updating person', 'Info');
+          });
+        },
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not update person', 'Error');
+        },
+        () => {
+          this.toasterService.success('Updated person', 'Success');
         },
       );
 

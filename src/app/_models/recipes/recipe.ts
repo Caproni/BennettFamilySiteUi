@@ -6,6 +6,7 @@ export interface Recipe {
   description: string | null;
   duration_in_minutes: number;
   source: string | null;
+  blob_url: string | null;
   added_date: Date;
   steps: RecipeStep[];
   equipment: Equipment[];

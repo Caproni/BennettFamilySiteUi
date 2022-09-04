@@ -209,6 +209,7 @@ export class RecipesComponent implements OnInit {
         duration_in_minutes: payload.duration_in_minutes,
         source: payload.source ?? null,
         added_date: new Date(),
+        blob_url: null,
         steps: [],
         equipment: [],
         tags: this.recipeTags,
@@ -245,6 +246,7 @@ export class RecipesComponent implements OnInit {
       {
         name: payload.name,
         description: payload.description ?? null,
+        blob_url: null,
         id: null,
       }
     )

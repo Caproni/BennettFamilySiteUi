@@ -12,14 +12,10 @@ import { RecipeDetails } from 'src/app/_models/recipes/recipe-details';
 import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
 import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe/recipe-delete.service';
 import { RecipeStepCreateService } from 'src/app/_services/api/recipes/recipe-step/recipe-step-create.service';
-import { IngredientDeleteService } from 'src/app/_services/api/recipes/ingredient/ingredient-delete.service';
-import { EquipmentDeleteService } from 'src/app/_services/api/recipes/equipment/equipment-delete.service';
 import { RecipeUpdateService } from 'src/app/_services/api/recipes/recipe/recipe-update.service';
-import { IngredientCreateService } from 'src/app/_services/api/recipes/ingredient/ingredient-create.service';
-import { IngredientUpdateService } from 'src/app/_services/api/recipes/ingredient/ingredient-update.service';
-import { EquipmentCreateService } from 'src/app/_services/api/recipes/equipment/equipment-create.service';
-import { EquipmentUpdateService } from 'src/app/_services/api/recipes/equipment/equipment-update.service';
 import { RecipeDetailReadService } from 'src/app/_services/api/recipes/recipe/recipe-detail-read.service';
+import { RecipeImagePutService } from 'src/app/_services/api/recipes/recipe/recipe-image-put.service';
+import { RecipeImageDeleteService } from 'src/app/_services/api/recipes/recipe/recipe-image-delete.service';
 import { LoginService } from 'src/app/_services/login/login.service';
 
 @Component({
@@ -35,9 +31,6 @@ export class RecipeViewComponent implements OnInit {
   loadedRecipeDetail = false;
   isActive = true;
 
-  currentIngredientId = '';
-  currentEquipmentId = '';
-
   recipeTags: string[] = [];
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
@@ -45,6 +38,8 @@ export class RecipeViewComponent implements OnInit {
   modalRef: BsModalRef = new BsModalRef();
 
   allowedMimeTypes = ['image/png', 'image/jpeg'];
+
+  photoFile = new File([], '');
 
   editRecipeForm: FormGroup = new FormGroup({
     name: new FormControl(''),
@@ -65,11 +60,6 @@ export class RecipeViewComponent implements OnInit {
     description: new FormControl(''),
   });
 
-  addIngredientForm: FormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl(''),
-  });
-
   constructor(
     private loginService: LoginService,
     private activatedRoute: ActivatedRoute,
@@ -79,13 +69,9 @@ export class RecipeViewComponent implements OnInit {
     private recipeDetailReadService: RecipeDetailReadService,
     private recipeUpdateService: RecipeUpdateService,
     private recipeDeleteService: RecipeDeleteService,
+    private recipeImagePutService: RecipeImagePutService,
+    private recipeImageDeleteService: RecipeImageDeleteService,
     private recipeStepCreateService: RecipeStepCreateService,
-    private ingredientCreateService: IngredientCreateService,
-    private ingredientUpdateService: IngredientUpdateService,
-    private ingredientDeleteService: IngredientDeleteService,
-    private equipmentCreateService: EquipmentCreateService,
-    private equipmentUpdateService: EquipmentUpdateService,
-    private equipmentDeleteService: EquipmentDeleteService,
   ) { }
 
   ngOnInit(): void {
@@ -196,19 +182,15 @@ export class RecipeViewComponent implements OnInit {
 
     const target = event.target as HTMLInputElement;
 
-    if (!target.files) {
-      return;
-    }
+    if (!target.files) return;
 
     const file: File = target.files && target.files[0];
 
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     if (this.allowedMimeTypes.includes(file.type)) {
+      this.photoFile = file;
       const image = new Image();
-
       image.src = URL.createObjectURL(file);
       this.recipeImageForm.controls['image'].setValue(file.name);
     } else {
@@ -232,6 +214,7 @@ export class RecipeViewComponent implements OnInit {
       ingredients_used: [],
       equipment_used: [],
       recipe_id: this.recipeId,
+      blob_url: null,
       index: this.recipeDetails.steps.length,
       id: null,
     };
@@ -270,6 +253,7 @@ export class RecipeViewComponent implements OnInit {
       description: payload.description ?? null,
       duration_in_minutes: payload.duration_in_minutes ?? null,
       source: payload.source ?? null,
+      blob_url: null,
       added_date: this.recipeDetails.recipe.added_date,
       steps: this.recipeDetails.recipe.steps,
       equipment: this.recipeDetails.recipe.equipment,
@@ -298,36 +282,29 @@ export class RecipeViewComponent implements OnInit {
       return;
     }
 
-  }
+    if (!this.recipeDetails.recipe.id) return;
 
-  onIngredientFormSubmit() {
+    this.recipeImagePutService.putRecipeImage(
+      this.recipeDetails.recipe.id,
+      this.photoFile,
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.ngOnInit();
+          this.toasterService.info('Adding image for ' + this.recipeDetails.recipe.name, 'Info');
+        },
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not add image for ' + this.recipeDetails.recipe.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Added image for ' + this.recipeDetails.recipe.name, 'Success');
+        },
+      );
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    this.modalRef.hide();
 
-  }
-
-  deleteIngredient(modalRef: BsModalRef): void {
-
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
-
-    if (this.currentIngredientId) {
-      this.ingredientDeleteService.deleteIngredient(
-        this.currentIngredientId,
-      )
-        .pipe(takeWhile(_ => this.isActive))
-        .subscribe(
-          (res) => {
-            console.log(res);
-          },
-          (err) => console.log(err),
-        );
-      modalRef.hide();
-      this.ngOnInit();
-    }
   }
 
 }

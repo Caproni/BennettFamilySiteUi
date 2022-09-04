@@ -62,6 +62,7 @@ export class RecipeStepComponent implements OnInit {
         ingredients_used: [],
         equipment_used: [],
         recipe_id: this.step.recipe_id,
+        blob_url: this.step.blob_url,
         index: this.step.index,
         id: this.step.id,
       };

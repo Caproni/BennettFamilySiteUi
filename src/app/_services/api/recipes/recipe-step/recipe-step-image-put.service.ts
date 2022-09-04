@@ -15,9 +15,11 @@ export class RecipeStepImagePutService {
     private http: HttpClient,
   ) {}
 
-  putRecipeStepImage(id: string, patch: Object) {
+  putRecipeStepImage(id: string, file: File) {
     const url = `${this.baseUrl}/putRecipeStepImage?recipe_step_id=${id}`;
-    return this.http.patch<ApiResponse>(url, patch);
+    const formData = new FormData();
+    formData.append('image', file);
+    return this.http.put<ApiResponse>(url, formData);
   }
 
 }

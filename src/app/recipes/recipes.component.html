@@ -10,10 +10,14 @@
     <button class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">Add Recipe</button>
   </div>
   <div class="col mx-auto text-center">
-    <button class="btn btn-outline-dark" (click)="openModal(addIngredientTemplate)">Add Ingredient</button>
+    <a class="btn" routerLink="/cooking-ingredients" routerLinkActive="active" title="Ingredients">
+      <button class="btn btn-outline-dark">View Ingredients</button>
+    </a>
   </div>
   <div class="col mx-auto text-center">
-    <button class="btn btn-outline-dark" (click)="openModal(addEquipmentTemplate)">Add Equipment</button>
+    <a class="btn" routerLink="/cooking-equipment" routerLinkActive="active" title="Equipment">
+      <button class="btn btn-outline-dark">View Equipment</button>
+    </a>
   </div>
   <div class="col"></div>
 </div>

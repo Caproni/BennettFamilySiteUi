@@ -8,7 +8,7 @@ export interface FamilyTreePerson {
   sex: string | null;
   date_of_birth: Date | null;
   date_of_death: Date | null;
-  image: string | null;
+  blob_url: string | null;
   previous_surnames: string[];
   relationships: string[];
   narrative: string | null;
