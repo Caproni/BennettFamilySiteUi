@@ -5,18 +5,18 @@ import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
 import { LoginService } from 'src/app/_services/login/login.service';
-import { FamilyTreePersonCreateService } from 'src/app/_services/api/family-tree/family-tree-person-create.service';
-import { FamilyTreePersonReadService } from 'src/app/_services/api/family-tree/family-tree-person-read.service';
-import { FamilyTreePersonUpdateService } from 'src/app/_services/api/family-tree/family-tree-person-update.service';
-import { FamilyTreePersonDeleteService } from 'src/app/_services/api/family-tree/family-tree-person-delete.service';
-import { FamilyTreeRelationshipCreateService } from 'src/app/_services/api/family-tree/family-tree-relationship-create.service';
-import { FamilyTreeRelationshipReadService } from 'src/app/_services/api/family-tree/family-tree-relationship-read.service';
-import { FamilyTreeRelationshipUpdateService } from 'src/app/_services/api/family-tree/family-tree-relationship-update.service';
-import { FamilyTreeRelationshipDeleteService } from 'src/app/_services/api/family-tree/family-tree-relationship-delete.service';
-import { FamilyTreeDataSourceCreateService } from 'src/app/_services/api/family-tree/family-tree-data-source-create.service';
-import { FamilyTreeDataSourceReadService } from 'src/app/_services/api/family-tree/family-tree-data-source-read.service';
-import { FamilyTreeDataSourceUpdateService } from 'src/app/_services/api/family-tree/family-tree-data-source-update.service';
-import { FamilyTreeDataSourceDeleteService } from 'src/app/_services/api/family-tree/family-tree-data-source-delete.service';
+import { FamilyTreePersonCreateService } from 'src/app/_services/api/family-tree/family-tree-person/family-tree-person-create.service';
+import { FamilyTreePersonReadService } from 'src/app/_services/api/family-tree/family-tree-person/family-tree-person-read.service';
+import { FamilyTreePersonUpdateService } from 'src/app/_services/api/family-tree/family-tree-person/family-tree-person-update.service';
+import { FamilyTreePersonDeleteService } from 'src/app/_services/api/family-tree/family-tree-person/family-tree-person-delete.service';
+import { FamilyTreeRelationshipCreateService } from 'src/app/_services/api/family-tree/family-tree-relationship/family-tree-relationship-create.service';
+import { FamilyTreeRelationshipReadService } from 'src/app/_services/api/family-tree/family-tree-relationship/family-tree-relationship-read.service';
+import { FamilyTreeRelationshipUpdateService } from 'src/app/_services/api/family-tree/family-tree-relationship/family-tree-relationship-update.service';
+import { FamilyTreeRelationshipDeleteService } from 'src/app/_services/api/family-tree/family-tree-relationship/family-tree-relationship-delete.service';
+import { FamilyTreeDataSourceCreateService } from 'src/app/_services/api/family-tree/family-tree-data-source/family-tree-data-source-create.service';
+import { FamilyTreeDataSourceReadService } from 'src/app/_services/api/family-tree/family-tree-data-source/family-tree-data-source-read.service';
+import { FamilyTreeDataSourceUpdateService } from 'src/app/_services/api/family-tree/family-tree-data-source/family-tree-data-source-update.service';
+import { FamilyTreeDataSourceDeleteService } from 'src/app/_services/api/family-tree/family-tree-data-source/family-tree-data-source-delete.service';
 import { FamilyTreePerson } from 'src/app/_models/family-tree/family-tree-person';
 import { FamilyTreeRelationship } from 'src/app/_models/family-tree/family-tree-relationship';
 import { FamilyTreeDataSource } from 'src/app/_models/family-tree/family-tree-data-source';
@@ -128,9 +128,7 @@ export class FamilyTreeComponent implements OnInit {
 
   onPersonFormSubmit(): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
@@ -182,9 +180,7 @@ export class FamilyTreeComponent implements OnInit {
 
   onRelationshipFormSubmit(): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
@@ -223,9 +219,7 @@ export class FamilyTreeComponent implements OnInit {
 
   onDataSourceFormSubmit(): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 

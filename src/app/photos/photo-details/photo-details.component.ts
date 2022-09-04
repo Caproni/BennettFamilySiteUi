@@ -35,10 +35,9 @@ export class PhotoDetailsComponent implements OnInit {
 
   }
 
-  deletePhoto(): void {
+  deletePhoto(modalRef: BsModalRef): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
+    if (!this.loginService.checkModalAuthorised(modalRef)) {
       return;
     }
 

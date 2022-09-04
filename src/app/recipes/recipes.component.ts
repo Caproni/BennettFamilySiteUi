@@ -9,18 +9,18 @@ import { takeWhile } from 'rxjs/operators';
 import { Recipe } from 'src/app/_models/recipes/recipe';
 import { Ingredient } from 'src/app/_models/recipes/ingredient';
 import { Equipment } from 'src/app/_models/recipes/equipment';
-import { RecipeCreateService } from 'src/app/_services/api/recipes/recipe-create.service';
-import { RecipeReadService } from 'src/app/_services/api/recipes/recipe-read.service';
-import { RecipeUpdateService } from 'src/app/_services/api/recipes/recipe-update.service';
-import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe-delete.service';
-import { IngredientDeleteService } from 'src/app/_services/api/recipes/ingredient-delete.service';
-import { IngredientUpdateService } from 'src/app/_services/api/recipes/ingredient-update.service';
-import { IngredientReadService } from 'src/app/_services/api/recipes/ingredient-read.service';
-import { IngredientCreateService } from 'src/app/_services/api/recipes/ingredient-create.service';
-import { EquipmentDeleteService } from 'src/app/_services/api/recipes/equipment-delete.service';
-import { EquipmentUpdateService } from 'src/app/_services/api/recipes/equipment-update.service';
-import { EquipmentReadService } from 'src/app/_services/api/recipes/equipment-read.service';
-import { EquipmentCreateService } from 'src/app/_services/api/recipes/equipment-create.service';
+import { RecipeCreateService } from 'src/app/_services/api/recipes/recipe/recipe-create.service';
+import { RecipeReadService } from 'src/app/_services/api/recipes/recipe/recipe-read.service';
+import { RecipeUpdateService } from 'src/app/_services/api/recipes/recipe/recipe-update.service';
+import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe/recipe-delete.service';
+import { IngredientDeleteService } from 'src/app/_services/api/recipes/ingredient/ingredient-delete.service';
+import { IngredientUpdateService } from 'src/app/_services/api/recipes/ingredient/ingredient-update.service';
+import { IngredientReadService } from 'src/app/_services/api/recipes/ingredient/ingredient-read.service';
+import { IngredientCreateService } from 'src/app/_services/api/recipes/ingredient/ingredient-create.service';
+import { EquipmentDeleteService } from 'src/app/_services/api/recipes/equipment/equipment-delete.service';
+import { EquipmentUpdateService } from 'src/app/_services/api/recipes/equipment/equipment-update.service';
+import { EquipmentReadService } from 'src/app/_services/api/recipes/equipment/equipment-read.service';
+import { EquipmentCreateService } from 'src/app/_services/api/recipes/equipment/equipment-create.service';
 import { LoginService } from 'src/app/_services/login/login.service';
 
 @Component({
@@ -144,6 +144,7 @@ export class RecipesComponent implements OnInit {
 
       const name = item.name?.toLowerCase();
       const source = item.source?.toLowerCase();
+      const tags = item.tags.join(" ").toLowerCase();
 
       for (const searchTerm of searchTerms) {
         const includedForThisTerm: boolean[] = [];
@@ -154,6 +155,10 @@ export class RecipesComponent implements OnInit {
 
         if (source) {
           includedForThisTerm.push(source.includes(searchTerm));
+        }
+
+        if (tags) {
+          includedForThisTerm.push(tags.includes(searchTerm));
         }
 
         included.push(includedForThisTerm.reduceRight(
@@ -191,9 +196,7 @@ export class RecipesComponent implements OnInit {
 
   onRecipeFormSubmit(): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
@@ -232,9 +235,7 @@ export class RecipesComponent implements OnInit {
 
   onIngredientFormSubmit(): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
@@ -267,9 +268,7 @@ export class RecipesComponent implements OnInit {
 
   onEquipmentFormSubmit(): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 

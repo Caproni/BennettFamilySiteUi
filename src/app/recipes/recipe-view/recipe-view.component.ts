@@ -10,18 +10,16 @@ import { takeWhile } from 'rxjs/operators';
 import { Recipe } from 'src/app/_models/recipes/recipe';
 import { RecipeDetails } from 'src/app/_models/recipes/recipe-details';
 import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
-import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe-delete.service';
-import { RecipeStepCreateService } from 'src/app/_services/api/recipes/recipe-step-create.service';
-import { RecipeStepDeleteService } from 'src/app/_services/api/recipes/recipe-step-delete.service';
-import { RecipeStepUpdateService } from 'src/app/_services/api/recipes/recipe-step-update.service';
-import { IngredientDeleteService } from 'src/app/_services/api/recipes/ingredient-delete.service';
-import { EquipmentDeleteService } from 'src/app/_services/api/recipes/equipment-delete.service';
-import { RecipeUpdateService } from 'src/app/_services/api/recipes/recipe-update.service';
-import { IngredientCreateService } from 'src/app/_services/api/recipes/ingredient-create.service';
-import { IngredientUpdateService } from 'src/app/_services/api/recipes/ingredient-update.service';
-import { EquipmentCreateService } from 'src/app/_services/api/recipes/equipment-create.service';
-import { EquipmentUpdateService } from 'src/app/_services/api/recipes/equipment-update.service';
-import { RecipeDetailReadService } from 'src/app/_services/api/recipes/recipe-detail-read.service';
+import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe/recipe-delete.service';
+import { RecipeStepCreateService } from 'src/app/_services/api/recipes/recipe-step/recipe-step-create.service';
+import { IngredientDeleteService } from 'src/app/_services/api/recipes/ingredient/ingredient-delete.service';
+import { EquipmentDeleteService } from 'src/app/_services/api/recipes/equipment/equipment-delete.service';
+import { RecipeUpdateService } from 'src/app/_services/api/recipes/recipe/recipe-update.service';
+import { IngredientCreateService } from 'src/app/_services/api/recipes/ingredient/ingredient-create.service';
+import { IngredientUpdateService } from 'src/app/_services/api/recipes/ingredient/ingredient-update.service';
+import { EquipmentCreateService } from 'src/app/_services/api/recipes/equipment/equipment-create.service';
+import { EquipmentUpdateService } from 'src/app/_services/api/recipes/equipment/equipment-update.service';
+import { RecipeDetailReadService } from 'src/app/_services/api/recipes/recipe/recipe-detail-read.service';
 import { LoginService } from 'src/app/_services/login/login.service';
 
 @Component({
@@ -37,7 +35,6 @@ export class RecipeViewComponent implements OnInit {
   loadedRecipeDetail = false;
   isActive = true;
 
-  currentRecipeStepId = '';
   currentIngredientId = '';
   currentEquipmentId = '';
 
@@ -46,6 +43,8 @@ export class RecipeViewComponent implements OnInit {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
   modalRef: BsModalRef = new BsModalRef();
+
+  allowedMimeTypes = ['image/png', 'image/jpeg'];
 
   editRecipeForm: FormGroup = new FormGroup({
     name: new FormControl(''),
@@ -57,12 +56,11 @@ export class RecipeViewComponent implements OnInit {
     tags: new FormControl(''),
   });
 
-  addRecipeStepForm: FormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl(''),
+  recipeImageForm: FormGroup = new FormGroup({
+    image: new FormControl('', [Validators.required]),
   });
 
-  editRecipeStepForm: FormGroup = new FormGroup({
+  addRecipeStepForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl(''),
   });
@@ -82,8 +80,6 @@ export class RecipeViewComponent implements OnInit {
     private recipeUpdateService: RecipeUpdateService,
     private recipeDeleteService: RecipeDeleteService,
     private recipeStepCreateService: RecipeStepCreateService,
-    private recipeStepUpdateService: RecipeStepUpdateService,
-    private recipeStepDeleteService: RecipeStepDeleteService,
     private ingredientCreateService: IngredientCreateService,
     private ingredientUpdateService: IngredientUpdateService,
     private ingredientDeleteService: IngredientDeleteService,
@@ -101,13 +97,17 @@ export class RecipeViewComponent implements OnInit {
         ).subscribe((b) => {
           this.loadedRecipeDetail = b;
           this.recipeDetails = this.recipeDetailReadService.getRecipeDetails();
-          this.editRecipeForm.controls['name'].setValue(this.recipeDetails.recipe.name);
-          this.editRecipeForm.controls['description'].setValue(this.recipeDetails.recipe.description);
-          this.editRecipeForm.controls['duration_in_minutes'].setValue(this.recipeDetails.recipe.duration_in_minutes);
-          this.editRecipeForm.controls['source'].setValue(this.recipeDetails.recipe.source);
-          this.editRecipeForm.controls['steps'].setValue(this.recipeDetails.recipe.steps);
-          this.editRecipeForm.controls['equipment'].setValue(this.recipeDetails.recipe.equipment);
-          this.editRecipeForm.controls['tags'].setValue(this.recipeDetails.recipe.tags);
+          if (this.recipeDetails) {
+            console.log('Recipe Details: ', this.recipeDetails);
+            this.recipeTags = this.recipeDetails.recipe.tags;
+            this.editRecipeForm.controls['name'].setValue(this.recipeDetails.recipe.name);
+            this.editRecipeForm.controls['description'].setValue(this.recipeDetails.recipe.description);
+            this.editRecipeForm.controls['duration_in_minutes'].setValue(this.recipeDetails.recipe.duration_in_minutes);
+            this.editRecipeForm.controls['source'].setValue(this.recipeDetails.recipe.source);
+            this.editRecipeForm.controls['steps'].setValue(this.recipeDetails.recipe.steps);
+            this.editRecipeForm.controls['equipment'].setValue(this.recipeDetails.recipe.equipment);
+            this.editRecipeForm.controls['tags'].setValue(this.recipeDetails.recipe.tags);
+          }
         });
       }});
   }
@@ -133,11 +133,9 @@ export class RecipeViewComponent implements OnInit {
     }
   }
 
-  deleteRecipe(modalRef: BsModalRef): void {
+  deleteRecipe(): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
@@ -159,16 +157,69 @@ export class RecipeViewComponent implements OnInit {
             this.toasterService.success('Deleted ' + this.recipeDetails.recipe.name, 'Success');
           },
         );
-      modalRef.hide();
+      this.modalRef.hide();
       this.router.navigate(['recipes']);
     }
   }
 
+  deleteRecipeImage() {
+
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
+      return;
+    }
+
+    if (this.recipeDetails.recipe.id) {
+      this.recipeDeleteService.deleteRecipe(
+        this.recipeDetails.recipe.id,
+      )
+        .pipe(takeWhile(_ => this.isActive))
+        .subscribe(
+          (res) => {
+            console.log(res);
+            this.toasterService.info('Deleting ' + this.recipeDetails.recipe.name, 'Info');
+          },
+          (err) => {
+            console.log(err);
+            this.toasterService.error('Could not delete ' + this.recipeDetails.recipe.name, 'Error');
+          },
+          () => {
+            this.toasterService.success('Deleted ' + this.recipeDetails.recipe.name, 'Success');
+          },
+        );
+      this.modalRef.hide();
+      this.router.navigate(['recipes']);
+    }
+
+  }
+
+  onRecipeImageSelected(event: any) {
+
+    const target = event.target as HTMLInputElement;
+
+    if (!target.files) {
+      return;
+    }
+
+    const file: File = target.files && target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (this.allowedMimeTypes.includes(file.type)) {
+      const image = new Image();
+
+      image.src = URL.createObjectURL(file);
+      this.recipeImageForm.controls['image'].setValue(file.name);
+    } else {
+      console.log('Invalid file: ', file);
+    }
+
+  }
+
   addRecipeStep() {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
@@ -204,75 +255,9 @@ export class RecipeViewComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  updateRecipeStep(id: string) {
-
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
-      return;
-    }
-
-    const payload = JSON.parse(JSON.stringify(this.editRecipeStepForm.value));
-
-    const patch: RecipeStep = {
-      name: payload.name,
-      description: payload.description ?? null,
-      image: null,
-      ingredients_used: [],
-      equipment_used: [],
-      recipe_id: this.recipeId,
-      index: this.recipeDetails.steps.length,
-      id: id,
-    };
-
-    this.recipeStepUpdateService.updateRecipeStep(id, patch)
-      .pipe(takeWhile(_ => this.isActive))
-      .subscribe(
-        (_) => {
-          this.ngOnInit();
-          this.toasterService.info('Updating ' + payload.name, 'Info');
-        },
-        (err) => {
-          console.log(err);
-          this.toasterService.error('Could not update ' + payload.name, 'Error');
-        },
-        () => {
-          this.toasterService.success('Updated ' + payload.name, 'Success');
-        },
-      );
-
-    this.modalRef.hide();
-  }
-
-  deleteRecipeStep(modalRef: BsModalRef): void {
-
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
-      return;
-    }
-
-    if (this.currentRecipeStepId) {
-      this.recipeStepDeleteService.deleteRecipeStep(
-        this.currentRecipeStepId,
-      )
-        .pipe(takeWhile(_ => this.isActive))
-        .subscribe(
-          (res) => {
-            console.log(res);
-          },
-          (err) => console.log(err),
-        );
-      modalRef.hide();
-      this.ngOnInit();
-    }
-  }
-
   onEditRecipeFormSubmit() {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
@@ -307,11 +292,17 @@ export class RecipeViewComponent implements OnInit {
     this.modalRef.hide();
   }
 
+  onRecipeImageFormSubmit() {
+
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
+      return;
+    }
+
+  }
+
   onIngredientFormSubmit() {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
@@ -319,9 +310,7 @@ export class RecipeViewComponent implements OnInit {
 
   deleteIngredient(modalRef: BsModalRef): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 

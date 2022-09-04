@@ -1,17 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxMasonryModule } from 'ngx-masonry';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,7 +32,8 @@ import { RecipeViewComponent } from './recipes/recipe-view/recipe-view.component
 import { NoPageComponent } from './no-page/no-page.component';
 import { AccountComponent } from './account/account.component';
 import { PhotoDetailsComponent } from './photos/photo-details/photo-details.component';
-import {MatIconModule} from "@angular/material/icon";
+import { DatetimeSliderComponent } from './_shared/datetime-slider/datetime-slider.component';
+import { RecipeStepComponent } from './recipes/recipe-view/recipe-step/recipe-step.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,8 @@ import {MatIconModule} from "@angular/material/icon";
     NoPageComponent,
     AccountComponent,
     PhotoDetailsComponent,
+    DatetimeSliderComponent,
+    RecipeStepComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +79,7 @@ import {MatIconModule} from "@angular/material/icon";
     NgxMasonryModule,
     MatChipsModule,
     MatIconModule,
+    NgxSliderModule,
   ],
   providers: [],
   exports: [],

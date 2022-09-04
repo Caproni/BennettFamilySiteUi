@@ -152,9 +152,7 @@ export class MediaComponent implements OnInit {
 
   onMediaFormSubmit(): void {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 

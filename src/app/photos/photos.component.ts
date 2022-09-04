@@ -1,16 +1,17 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { animate, style } from '@angular/animations';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { NgxMasonryComponent, NgxMasonryOptions } from 'ngx-masonry';
-import { animate, style } from '@angular/animations';
+import { BehaviorSubject } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
 import { Photo } from 'src/app/_models/photos/photo';
 import { PhotosCreateService } from 'src/app/_services/api/photos/photos-create.service';
 import { PhotosReadService } from 'src/app/_services/api/photos/photos-read.service';
 import { LoginService } from 'src/app/_services/login/login.service';
-import {PhotoDetailsComponent} from "./photo-details/photo-details.component";
+import { PhotoDetailsComponent } from './photo-details/photo-details.component';
 
 @Component({
   selector: 'fam-app-photos',
@@ -41,6 +42,7 @@ export class PhotosComponent implements OnInit {
   isActive = true;
   loadedPhotos = false;
   photos!: Photo[];
+  filteredPhotos!: Photo[];
 
   modalRef: BsModalRef = new BsModalRef();
 
@@ -58,6 +60,17 @@ export class PhotosComponent implements OnInit {
     camera_details: new FormControl(''),
   });
 
+  startDate: BehaviorSubject<Date> = new BehaviorSubject<Date>(
+    new Date(2021, 0, 1)
+  );
+  endDate: BehaviorSubject<Date> = new BehaviorSubject<Date>(
+    new Date(2022, 11, 31)
+  );
+  filterStartDate: Date = new Date();
+  filterEndDate: Date = new Date();
+
+  searchPhrase = '';
+
   constructor(
     private loginService: LoginService,
     private modalService: BsModalService,
@@ -67,9 +80,24 @@ export class PhotosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    const distantFuture = new Date(2901, 0, 1);
+
     this.photosReadService.readPhotos().subscribe((b) => {
       this.loadedPhotos = b;
-      this.photos = this.photosReadService.getPhotos();
+      const photos = this.photosReadService.getPhotos();
+      if (photos.length > 0) {
+        this.photos = photos.sort(
+          (x, y) => {
+            if ((x.taken_date ? x.taken_date: distantFuture) > (y.taken_date ? y.taken_date : distantFuture)) return -1;
+            if ((x.taken_date ? x.taken_date: distantFuture) <= (y.taken_date ? y.taken_date : distantFuture)) return 1;
+            return 0;
+          }
+        );
+        this.filteredPhotos = this.photos;
+        this.startDate = new BehaviorSubject<Date>(this.photos[0].taken_date?? new Date(2021, 0, 1));
+        this.endDate = new BehaviorSubject<Date>(this.photos[this.photos.length - 1].taken_date?? new Date(2022, 11, 31));
+      }
     });
   }
 
@@ -115,11 +143,80 @@ export class PhotosComponent implements OnInit {
     this.toasterService.success('Photo album loaded.', 'Success');
   }
 
+  updateStartDate(value: number): void {
+    this.filterStartDate = new Date(value);
+    this.filterPhotos();
+  }
+
+  updateEndDate(highValue: number): void {
+    this.filterEndDate = new Date(highValue);
+    this.filterPhotos();
+  }
+
+  public filterPhotos(): void {
+    this.filteredPhotos = this.temporalFilterPhotos(
+      this.searchPhrase
+        ? this.searchBarFilterPhotos(this.photos, this.searchPhrase)
+        : this.photos,
+      this.filterStartDate,
+      this.filterEndDate
+    );
+  }
+
+  private temporalFilterPhotos(
+    inputPhotos: Photo[],
+    startDate: Date,
+    endDate: Date,
+    nullsIncluded: boolean = false
+  ): Photo[] {
+    return inputPhotos.filter((item) => {
+      const nullValue = nullsIncluded ? startDate : new Date(2901, 1, 1);
+      const timestamp = new Date(item.taken_date ?? nullValue);
+      return startDate <= timestamp && timestamp <= endDate;
+    });
+  }
+
+  private searchBarFilterPhotos(
+    inputPhotos: Photo[],
+    searchValue: string
+  ): Photo[] {
+    const searchTerms: string[] = [];
+    // @ts-ignore
+    const groups = searchValue.matchAll(this.searchRegex);
+    let group = groups.next();
+    while (!group.done) {
+      for (let i = 1; i < group.value.length; i++) {
+        if (group.value[i] !== undefined) {
+          searchTerms.push(group.value[i].toLowerCase());
+        }
+      }
+      group = groups.next();
+    }
+    return inputPhotos.filter((item) => {
+      const included: boolean[] = [];
+
+      const name = item.name.toLowerCase();
+      const description = (item.description ?? '').toLowerCase();
+
+      for (const searchTerm of searchTerms) {
+        const includedForThisTerm: boolean[] = [];
+        includedForThisTerm.push(name.includes(searchTerm));
+        includedForThisTerm.push(description.includes(searchTerm));
+        included.push(
+          includedForThisTerm.reduceRight((accumulator, currentValue) => {
+            return accumulator || currentValue;
+          }, false)
+        );
+      }
+      return included.reduceRight((accumulator, currentValue) => {
+        return accumulator && currentValue;
+      }, true);
+    });
+  }
+
   onNewPhotoFormSubmit() {
 
-    if (!this.loginService.getAuthorised()) {
-      this.toasterService.error('Not authenticated. Please login.', 'Error');
-      this.modalRef.hide();
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
