@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import {Component, HostListener, OnInit, TemplateRef} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -29,6 +29,9 @@ import { FamilyTreeDataSource } from 'src/app/_models/family-tree/family-tree-da
   styleUrls: ['./family-tree.component.css']
 })
 export class FamilyTreeComponent implements OnInit {
+
+  windowWidth!: number;
+  windowHeight!: number;
 
   people!: FamilyTreePerson[];
   relationships!: FamilyTreeRelationship[];
@@ -103,10 +106,14 @@ export class FamilyTreeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
-        this.loadedPeople = b;
-        this.people = this.familyTreePersonReadService.getFamilyTreePeople();
-      });
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
+    this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
+      this.loadedPeople = b;
+      this.people = this.familyTreePersonReadService.getFamilyTreePeople();
+    });
 
     this.familyTreePersonReadService.readFamilyTreePeople().subscribe((b) => {
       this.loadedRelationships = b;
@@ -117,6 +124,16 @@ export class FamilyTreeComponent implements OnInit {
       this.loadedDataSources = b;
       this.dataSources = this.familyTreeDataSourceReadService.getFamilyTreeDataSources();
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+  }
+
+  getColumns(): number {
+    return this.windowWidth / 512
   }
 
   populatePerson(id: string | null) {
