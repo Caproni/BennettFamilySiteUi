@@ -133,7 +133,7 @@ export class FamilyTreeComponent implements OnInit {
   }
 
   getColumns(): number {
-    return this.windowWidth / 512
+    return this.windowWidth / 400
   }
 
   populatePerson(id: string | null) {

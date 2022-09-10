@@ -7,16 +7,11 @@ import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
 import { Recipe } from 'src/app/_models/recipes/recipe';
-import { Ingredient } from 'src/app/_models/recipes/ingredient';
 import { Equipment } from 'src/app/_models/recipes/equipment';
 import { RecipeCreateService } from 'src/app/_services/api/recipes/recipe/recipe-create.service';
 import { RecipeReadService } from 'src/app/_services/api/recipes/recipe/recipe-read.service';
 import { RecipeUpdateService } from 'src/app/_services/api/recipes/recipe/recipe-update.service';
 import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe/recipe-delete.service';
-import { IngredientDeleteService } from 'src/app/_services/api/recipes/ingredient/ingredient-delete.service';
-import { IngredientUpdateService } from 'src/app/_services/api/recipes/ingredient/ingredient-update.service';
-import { IngredientReadService } from 'src/app/_services/api/recipes/ingredient/ingredient-read.service';
-import { IngredientCreateService } from 'src/app/_services/api/recipes/ingredient/ingredient-create.service';
 import { EquipmentDeleteService } from 'src/app/_services/api/recipes/equipment/equipment-delete.service';
 import { EquipmentUpdateService } from 'src/app/_services/api/recipes/equipment/equipment-update.service';
 import { EquipmentReadService } from 'src/app/_services/api/recipes/equipment/equipment-read.service';
@@ -34,11 +29,9 @@ export class RecipesComponent implements OnInit {
   searchPhrase = '';
 
   recipes: Recipe[] = [];
-  ingredients: Ingredient[] = [];
   equipment: Equipment[] = [];
 
   filteredRecipes: Recipe[] = [];
-  filteredIngredients: Ingredient[] = [];
   filteredEquipment: Equipment[] = [];
 
   recipeTags: string[] = [];
@@ -49,7 +42,6 @@ export class RecipesComponent implements OnInit {
   private isActive = true;
 
   loadedRecipes = false;
-  loadedIngredients = false;
   loadedEquipment = false;
 
   newRecipeForm: FormGroup = new FormGroup({
@@ -61,14 +53,6 @@ export class RecipesComponent implements OnInit {
     steps: new FormControl(''),
     equipment: new FormControl(''),
     tags: new FormControl(''),
-  });
-
-  newIngredientForm: FormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl(''),
-    recipe_id: new FormControl(''),
-    quantity: new FormControl(''),
-    quantity_units: new FormControl(''),
   });
 
   newEquipmentForm: FormGroup = new FormGroup({
@@ -83,10 +67,6 @@ export class RecipesComponent implements OnInit {
     private recipeReadService: RecipeReadService,
     private recipeUpdateService: RecipeUpdateService,
     private recipeDeleteService: RecipeDeleteService,
-    private ingredientCreateService: IngredientCreateService,
-    private ingredientReadService: IngredientReadService,
-    private ingredientUpdateService: IngredientUpdateService,
-    private ingredientDeleteService: IngredientDeleteService,
     private equipmentCreateService: EquipmentCreateService,
     private equipmentReadService: EquipmentReadService,
     private equipmentUpdateService: EquipmentUpdateService,
@@ -100,12 +80,6 @@ export class RecipesComponent implements OnInit {
       this.loadedRecipes = b;
       this.recipes = this.recipeReadService.getRecipes();
       this.filteredRecipes = this.recipes;
-    });
-
-    this.ingredientReadService.readIngredients().subscribe((b) => {
-      this.loadedIngredients = b;
-      this.ingredients = this.ingredientReadService.getIngredients();
-      this.filteredIngredients = this.ingredients;
     });
 
     this.equipmentReadService.readEquipments().subscribe((b) => {
@@ -213,40 +187,6 @@ export class RecipesComponent implements OnInit {
         steps: [],
         equipment: [],
         tags: this.recipeTags,
-        id: null,
-      }
-    )
-      .pipe(takeWhile(_ => this.isActive))
-      .subscribe(
-        (_) => {
-          this.ngOnInit();
-          this.toasterService.info('Adding ' + payload.name, 'Info');
-        },
-        (err) => {
-          console.log(err);
-          this.toasterService.error('Could not add ' + payload.name, 'Error');
-        },
-        () => {
-          this.toasterService.success('Added ' + payload.name, 'Success');
-        },
-      );
-
-    this.modalRef.hide();
-  }
-
-  onIngredientFormSubmit(): void {
-
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
-
-    const payload = JSON.parse(JSON.stringify(this.newIngredientForm.value));
-
-    this.ingredientCreateService.createIngredient(
-      {
-        name: payload.name,
-        description: payload.description ?? null,
-        blob_url: null,
         id: null,
       }
     )

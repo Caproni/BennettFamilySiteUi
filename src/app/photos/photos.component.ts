@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { animate, style } from '@angular/animations';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -20,9 +20,12 @@ import { PhotoDetailsComponent } from './photo-details/photo-details.component';
 })
 export class PhotosComponent implements OnInit {
 
+  windowWidth!: number;
+  windowHeight!: number;
+
   public masonryOptions: NgxMasonryOptions = {
     gutter: 0,
-    columnWidth: 200,
+    columnWidth: this.getColumnWidth(),
     fitWidth: false,
     animations: {
       show: [
@@ -81,6 +84,9 @@ export class PhotosComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     const distantFuture = new Date(2901, 0, 1);
 
     this.photosReadService.readPhotos().subscribe((b) => {
@@ -99,6 +105,20 @@ export class PhotosComponent implements OnInit {
         this.endDate = new BehaviorSubject<Date>(this.photos[this.photos.length - 1].taken_date?? new Date(2022, 11, 31));
       }
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+  }
+
+  getColumnWidth(): number {
+    return 200;
+  }
+
+  getPhotoWidth(): string {
+    return 100 * (this.windowWidth / 3.5) / this.windowWidth + '%'
   }
 
   openModal(template: TemplateRef<any>, modalOptions: any): void {

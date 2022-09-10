@@ -1,8 +1,34 @@
-<div class="col">
-  <button type="button" class="btn" aria-label="Remove Ingredient" (click)="openModal(deleteIngredientTemplate)">
-    <i class="fas fa-trash-alt" title="Remove Ingredient"></i>
-  </button>
+<br>
+<div class="container mx-auto text-center">
+  <h1>Ingredients</h1>
 </div>
+<br>
+<div class="mx-auto text-center">
+  <button class="btn btn-outline-dark" (click)="openModal(addIngredientTemplate, {})">Add Ingredient</button>
+</div>
+<br>
+<ngx-masonry [options]="masonryOptions" [ordered]="true" style="width: 100%; margin: 0;" (itemsLoaded)="ingredientsLoaded()">
+  <div ngxMasonryItem class="masonry-item" *ngFor="let ingredient of ingredients" style="width:19%; background: #AA22CC">
+    <img *ngIf="ingredient.blob_url" [src]="ingredient.blob_url" alt="{{ingredient.name}}" width="100%" height="90%" (click)="populateIngredient(ingredient); openModal(viewIngredientTemplate, {class: 'modal-lg'})">
+    <img *ngIf="!ingredient.blob_url" src="/assets/hot-food-bowl-icon-vector-22417674.jpg" alt="Person Silhouette" width="100%">
+    <div class="col">
+      <div class="row">
+        <div style="font-size:8pt">
+          {{ingredient.name}}
+        </div>
+      </div>
+    </div>
+    <div class="col-1">
+      <button class="btn" (click)="populateIngredient(ingredient); openModal(viewIngredientTemplate, {})">
+        <i class="fas fa-edit fa-sm fa-inverse"></i>
+      </button>
+    </div>
+  </div>
+</ngx-masonry>
+
+<ng-template #viewIngredientTemplate>
+
+</ng-template>
 
 <ng-template #addIngredientTemplate>
   <div class="modal-header">

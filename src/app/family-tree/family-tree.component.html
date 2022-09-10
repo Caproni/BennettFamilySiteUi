@@ -20,20 +20,10 @@
 <br>
 <mat-grid-list
   cols="{{getColumns()}}"
-  rowHeight="4:3"
+  rowHeight="4:4"
   gutterSize="3%"
 >
   <mat-grid-tile *ngFor="let person of people">
-    <mat-grid-tile-header>
-      <div class="col">
-        {{person.first_name + ' ' + person.middle_names.join(" ") + ' ' + person.surname + (person.chosen_name ? ' (' + person.chosen_name + ')' : '')}}
-      </div>
-      <div class="col-1">
-        <button class="btn" (click)="populatePersonForm(person.id); openModal(editPersonTemplate)">
-          <i class="fas fa-edit fa-sm fa-inverse"></i>
-        </button>
-      </div>
-    </mat-grid-tile-header>
     <div class="image-container">
       <img *ngIf="person.blob_url" [src]="person.blob_url" alt="Person Image" width="100%">
       <img *ngIf="!person.blob_url" src="/assets/silhouette.png" alt="Person Silhouette" width="50%">
@@ -44,8 +34,28 @@
       </div>
     </div>
     <mat-grid-tile-footer>
-      {{person.date_of_birth? (person.date_of_birth | date : 'd MMM yyyy') : ''}}
-      {{person.narrative}}
+      <div class="col">
+        <div class="row">
+          <div style="font-size:8pt">
+            {{person.first_name + ' ' + person.middle_names.join(" ") + ' ' + person.surname + (person.chosen_name ? ' (' + person.chosen_name + ')' : '')}}
+          </div>
+        </div>
+      </div>
+      <div *ngIf="person.date_of_birth" class="col">
+        <div class="row" style="font-size:8pt">
+          {{person.date_of_birth? (person.date_of_birth | date : 'd MMM yyyy') : ''}}
+        </div>
+      </div>
+      <div class="col-1">
+        <button class="btn" (click)="populatePersonForm(person.id); openModal(editPersonTemplate)">
+          <i class="fas fa-edit fa-sm fa-inverse"></i>
+        </button>
+      </div>
+      <div *ngIf="person.narrative" class="row">
+        <div class="col">
+          {{person.narrative}}
+        </div>
+      </div>
     </mat-grid-tile-footer>
   </mat-grid-tile>
 </mat-grid-list>
