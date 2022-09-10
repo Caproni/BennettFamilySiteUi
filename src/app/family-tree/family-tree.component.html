@@ -21,7 +21,7 @@
 <mat-grid-list
   cols="5"
   rowHeight="4:3"
-  gutterSize="100px"
+  gutterSize="3%"
 >
   <mat-grid-tile *ngFor="let person of people">
     <mat-grid-tile-header>
@@ -35,11 +35,11 @@
       </div>
     </mat-grid-tile-header>
     <div class="image-container">
-      <img *ngIf="!person.blob_url" src="/assets/silhouette.png" alt="Person Silhouette" style="width: 50%">
-      <img *ngIf="person.blob_url" [src]="person.blob_url" alt="Person Image" height="100%">
+      <img *ngIf="person.blob_url" [src]="person.blob_url" alt="Person Image" style="max-width: 100%; max-height: 100%;">
+      <img *ngIf="!person.blob_url" src="/assets/silhouette.png" alt="Person Silhouette" width="50%">
       <div class="image-text">
-        <button type="button" class="btn" aria-label="Update Person Image" (click)="openModal(personImageTemplate)">
-          <i class="fas fa-image fa-lg fa-fw fa-inverse" title="Update Person Image"></i>
+        <button type="button" class="btn" aria-label="Update Person Image" (click)="populatePerson(person.id); openModal(personImageTemplate)">
+          <i class="fas fa-image fa-lg fa-fw fa-inverse" title="Update Person's Image"></i>
         </button>
       </div>
     </div>
@@ -52,7 +52,55 @@
 <div class="family-tree-image"></div>
 
 <ng-template #personImageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Update Person Image</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="personImageForm">
+      <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Image </label>
+          </div>
+          <div class="col">
+            <input
+              #photoUpload
+              type="file"
+              accept="image/*"
+              class="file-upload"
+              style="display: none;"
+              (change)="onPersonImageSelected($event)">
 
+            <button class="btn btn-outline-dark"
+                    (click)="photoUpload.click()">
+              <i class="fas fa-upload"> Browse</i>
+            </button>
+            <div class="file-upload">
+              <input type="text" formControlName="image" id="image" class="form-control" name="image" required>
+              <div *ngIf="personImageForm.controls['image'].touched && personImageForm.controls['image'].invalid" class="alert alert-danger">
+                An image file is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <div class="row mx-auto justify-content-center">
+              <button class="btn btn-outline-success" style="width: 80%;"
+                      [disabled]="!personImageForm.valid"
+                      (click)="onPersonImageFormSubmit()">Update</button>
+            </div>
+            <div class="row mx-auto pt-2 justify-content-center">
+              <button class="btn btn-outline-danger" (click)="modalRef.hide(); openModal(deleteFamilyTreePersonImageTemplate);" style="width: 80%;">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </ng-template>
 
 <ng-template #addPersonTemplate>
@@ -528,5 +576,41 @@
         </div>
       </div>
     </form>
+  </div>
+</ng-template>
+
+<ng-template #deleteFamilyTreePersonImageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">
+      Are you sure you want to delete the image for this person?
+    </h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row justify-content-center">
+      <button
+        class="btn btn-outline-danger"
+        (click)="onDeleteFamilyTreePersonImage()"
+        style="width: 80%"
+      >
+        Confirm
+      </button>
+    </div>
+    <div class="row justify-content-center pt-2">
+      <button
+        class="btn btn-outline-secondary"
+        (click)="modalRef.hide()"
+        style="width: 80%"
+      >
+        Cancel
+      </button>
+    </div>
   </div>
 </ng-template>

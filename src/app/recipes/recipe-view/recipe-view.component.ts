@@ -119,7 +119,7 @@ export class RecipeViewComponent implements OnInit {
     }
   }
 
-  deleteRecipe(): void {
+  onDeleteRecipe(): void {
 
     if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
@@ -148,32 +148,31 @@ export class RecipeViewComponent implements OnInit {
     }
   }
 
-  deleteRecipeImage() {
+  onDeleteRecipeImage() {
 
     if (!this.loginService.checkModalAuthorised(this.modalRef)) {
       return;
     }
 
     if (this.recipeDetails.recipe.id) {
-      this.recipeDeleteService.deleteRecipe(
+      this.recipeImageDeleteService.deleteRecipeImage(
         this.recipeDetails.recipe.id,
       )
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (res) => {
             console.log(res);
-            this.toasterService.info('Deleting ' + this.recipeDetails.recipe.name, 'Info');
+            this.toasterService.info('Deleting image for ' + this.recipeDetails.recipe.name, 'Info');
           },
           (err) => {
             console.log(err);
-            this.toasterService.error('Could not delete ' + this.recipeDetails.recipe.name, 'Error');
+            this.toasterService.error('Could not delete image for ' + this.recipeDetails.recipe.name, 'Error');
           },
           () => {
-            this.toasterService.success('Deleted ' + this.recipeDetails.recipe.name, 'Success');
+            this.toasterService.success('Deleted image for ' + this.recipeDetails.recipe.name, 'Success');
           },
         );
       this.modalRef.hide();
-      this.router.navigate(['recipes']);
     }
 
   }

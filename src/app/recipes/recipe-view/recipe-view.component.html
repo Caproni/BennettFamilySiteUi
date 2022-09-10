@@ -288,7 +288,7 @@
           <div class="col">
             <div class="row mx-auto justify-content-center">
               <button class="btn btn-outline-success" style="width: 80%;"
-                      [disabled]="!editRecipeForm.valid"
+                      [disabled]="!recipeImageForm.valid"
                       (click)="onRecipeImageFormSubmit()">Update</button>
             </div>
             <div class="row mx-auto pt-2 justify-content-center">
@@ -319,7 +319,7 @@
     <div class="row justify-content-center">
       <button
         class="btn btn-outline-danger"
-        (click)="deleteRecipe()"
+        (click)="onDeleteRecipe()"
         style="width: 80%"
       >
         Confirm
@@ -355,7 +355,7 @@
     <div class="row justify-content-center">
       <button
         class="btn btn-outline-danger"
-        (click)="deleteRecipeImage()"
+        (click)="onDeleteRecipeImage()"
         style="width: 80%"
       >
         Confirm

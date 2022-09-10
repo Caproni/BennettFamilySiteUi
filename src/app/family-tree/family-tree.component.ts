@@ -9,6 +9,8 @@ import { FamilyTreePersonCreateService } from 'src/app/_services/api/family-tree
 import { FamilyTreePersonReadService } from 'src/app/_services/api/family-tree/family-tree-person/family-tree-person-read.service';
 import { FamilyTreePersonUpdateService } from 'src/app/_services/api/family-tree/family-tree-person/family-tree-person-update.service';
 import { FamilyTreePersonDeleteService } from 'src/app/_services/api/family-tree/family-tree-person/family-tree-person-delete.service';
+import { FamilyTreePersonImagePutService } from 'src/app/_services/api/family-tree/family-tree-person/family-tree-person-image-put.service';
+import { FamilyTreePersonImageDeleteService } from 'src/app/_services/api/family-tree/family-tree-person/family-tree-person-image-delete.service';
 import { FamilyTreeRelationshipCreateService } from 'src/app/_services/api/family-tree/family-tree-relationship/family-tree-relationship-create.service';
 import { FamilyTreeRelationshipReadService } from 'src/app/_services/api/family-tree/family-tree-relationship/family-tree-relationship-read.service';
 import { FamilyTreeRelationshipUpdateService } from 'src/app/_services/api/family-tree/family-tree-relationship/family-tree-relationship-update.service';
@@ -42,6 +44,10 @@ export class FamilyTreeComponent implements OnInit {
 
   modalRef: BsModalRef = new BsModalRef();
 
+  allowedMimeTypes = ['image/png', 'image/jpeg'];
+
+  photoFile = new File([], '');
+
   personForm: FormGroup = new FormGroup({
     first_name: new FormControl(''),
     middle_names: new FormControl(''),
@@ -54,6 +60,10 @@ export class FamilyTreeComponent implements OnInit {
     date_of_birth: new FormControl(''),
     date_of_death: new FormControl(''),
     narrative: new FormControl(''),
+  });
+
+  personImageForm: FormGroup = new FormGroup({
+    image: new FormControl('', [Validators.required]),
   });
 
   newRelationshipForm: FormGroup = new FormGroup({
@@ -80,6 +90,8 @@ export class FamilyTreeComponent implements OnInit {
     private familyTreePersonReadService: FamilyTreePersonReadService,
     private familyTreePersonUpdateService: FamilyTreePersonUpdateService,
     private familyTreePersonDeleteService: FamilyTreePersonDeleteService,
+    private familyTreePersonImagePutService: FamilyTreePersonImagePutService,
+    private familyTreePersonImageDeleteService: FamilyTreePersonImageDeleteService,
     private familyTreeRelationshipCreateService: FamilyTreeRelationshipCreateService,
     private familyTreeRelationshipReadService: FamilyTreeRelationshipReadService,
     private familyTreeRelationshipUpdateService: FamilyTreeRelationshipUpdateService,
@@ -107,25 +119,31 @@ export class FamilyTreeComponent implements OnInit {
     });
   }
 
+  populatePerson(id: string | null) {
+
+    if (!id) return;
+    let person = this.people.filter(x => x.id == id)[0]
+    this.person = person;
+
+  }
+
   populatePersonForm(id: string | null) {
 
     if (!id) return;
 
-    let person = this.people.filter(x => x.id == id)[0]
+    this.populatePerson(id);
 
-    this.person = person;
-
-    this.personForm.controls['first_name'].setValue(person.first_name);
-    this.personForm.controls['middle_names'].setValue(person.middle_names.join(' '));
-    this.personForm.controls['chosen_name'].setValue(person.chosen_name);
-    this.personForm.controls['surname'].setValue(person.surname);
-    this.personForm.controls['previous_surnames'].setValue(person.previous_surnames.join(' '));
-    this.personForm.controls['title'].setValue(person.title);
-    this.personForm.controls['birthplace'].setValue(person.birthplace);
-    this.personForm.controls['sex'].setValue(person.sex);
-    this.personForm.controls['date_of_birth'].setValue(person.date_of_birth ? new Date(person.date_of_birth) : '');
-    this.personForm.controls['date_of_death'].setValue(person.date_of_death ? new Date(person.date_of_death) : '');
-    this.personForm.controls['narrative'].setValue(person.narrative);
+    this.personForm.controls['first_name'].setValue(this.person.first_name);
+    this.personForm.controls['middle_names'].setValue(this.person.middle_names.join(' '));
+    this.personForm.controls['chosen_name'].setValue(this.person.chosen_name);
+    this.personForm.controls['surname'].setValue(this.person.surname);
+    this.personForm.controls['previous_surnames'].setValue(this.person.previous_surnames.join(' '));
+    this.personForm.controls['title'].setValue(this.person.title);
+    this.personForm.controls['birthplace'].setValue(this.person.birthplace);
+    this.personForm.controls['sex'].setValue(this.person.sex);
+    this.personForm.controls['date_of_birth'].setValue(this.person.date_of_birth ? new Date(this.person.date_of_birth) : '');
+    this.personForm.controls['date_of_death'].setValue(this.person.date_of_death ? new Date(this.person.date_of_death) : '');
+    this.personForm.controls['narrative'].setValue(this.person.narrative);
   }
 
   openModal(template: TemplateRef<any>): void {
@@ -239,6 +257,58 @@ export class FamilyTreeComponent implements OnInit {
     this.modalRef.hide();
   }
 
+  onPersonImageSelected(event: any) {
+
+    const target = event.target as HTMLInputElement;
+
+    if (!target.files) return;
+
+    const file: File = target.files && target.files[0];
+
+    if (!file) return;
+
+    if (this.allowedMimeTypes.includes(file.type)) {
+      this.photoFile = file;
+      const image = new Image();
+      image.src = URL.createObjectURL(file);
+      this.personImageForm.controls['image'].setValue(file.name);
+    } else {
+      console.log('Invalid file: ', file);
+    }
+
+  }
+
+  onPersonImageFormSubmit() {
+
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
+      return;
+    }
+
+    if (!this.person.id) return;
+
+    this.familyTreePersonImagePutService.putFamilyTreePersonImage(
+      this.person.id,
+      this.photoFile,
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.ngOnInit();
+          this.toasterService.info('Adding image for person', 'Info');
+        },
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not add image for person', 'Error');
+        },
+        () => {
+          this.toasterService.success('Added image for person', 'Success');
+        },
+      );
+
+    this.modalRef.hide();
+
+  }
+
   onRelationshipFormSubmit(): void {
 
     if (!this.loginService.checkModalAuthorised(this.modalRef)) {
@@ -311,6 +381,33 @@ export class FamilyTreeComponent implements OnInit {
       );
 
     this.modalRef.hide();
+  }
+
+  onDeleteFamilyTreePersonImage() {
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
+      return;
+    }
+
+    if (this.person.id) {
+      this.familyTreePersonImageDeleteService.deleteFamilyTreePersonImage(
+        this.person.id,
+      )
+        .pipe(takeWhile(_ => this.isActive))
+        .subscribe(
+          (res) => {
+            console.log(res);
+            this.toasterService.info('Deleting image for person', 'Info');
+          },
+          (err) => {
+            console.log(err);
+            this.toasterService.error('Could not delete image for person', 'Error');
+          },
+          () => {
+            this.toasterService.success('Deleted image for person', 'Success');
+          },
+        );
+      this.modalRef.hide();
+    }
   }
 
 }
