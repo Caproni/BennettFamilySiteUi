@@ -1,6 +1,6 @@
 <div class="row row-chart m-1 p-2 align-items-center">
   <div class="col">{{recipe? recipe.name: ''}}</div>
-  <div class="col">{{recipe? recipe.description: ''}}</div>
+  <div  *ngIf="windowWidth > 1000" class="col">{{recipe? recipe.description: ''}}</div>
   <div class="col">{{recipe? recipe.duration_in_minutes: ''}}</div>
   <div class="col">{{recipe? recipe.source: ''}}</div>
   <div class="col">

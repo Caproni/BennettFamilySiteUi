@@ -54,6 +54,10 @@ export class IngredientsComponent implements OnInit {
     description: new FormControl(''),
   });
 
+  ingredientImageForm: FormGroup = new FormGroup({
+    image: new FormControl('', [Validators.required]),
+  });
+
   isActive = true;
 
   constructor(
@@ -130,6 +134,14 @@ export class IngredientsComponent implements OnInit {
       );
 
     this.modalRef.hide();
+  }
+
+  onIngredientImageSelected(event: any) {
+
+  }
+
+  onIngredientImageFormSubmit() {
+
   }
 
   deleteIngredient(modalRef: BsModalRef): void {

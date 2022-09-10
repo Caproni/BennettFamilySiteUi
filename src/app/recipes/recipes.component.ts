@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import {Component, HostListener, OnInit, TemplateRef} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -24,6 +24,9 @@ import { LoginService } from 'src/app/_services/login/login.service';
   styleUrls: ['./recipes.component.css']
 })
 export class RecipesComponent implements OnInit {
+
+  windowWidth!: number;
+  windowHeight!: number;
 
   searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;
   searchPhrase = '';
@@ -76,6 +79,9 @@ export class RecipesComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.recipeReadService.readRecipes().subscribe((b) => {
       this.loadedRecipes = b;
       this.recipes = this.recipeReadService.getRecipes();
@@ -88,6 +94,12 @@ export class RecipesComponent implements OnInit {
       this.filteredEquipment = this.equipment;
     });
 
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
   }
 
   ngOnDestroy(): void {
