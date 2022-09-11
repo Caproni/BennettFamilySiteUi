@@ -2,20 +2,20 @@
   <div class="spacing primary-border row">
     <div class="spacing col-2">
 
-      <h3 *ngIf="loadedRecipeDetail">{{ recipeDetails.recipe.name }}</h3>
-      <h3 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h3>
+      <h3 *ngIf="loadedRecipeDetail" [@inOutAnimation]>{{ recipeDetails.recipe.name }}</h3>
+      <h3 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h3>
 
-      <h5 *ngIf="loadedRecipeDetail">Recipe added: {{ recipeDetails.recipe.added_date | date: 'd MMM YYYY' }}</h5>
-      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
+      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]>Recipe added: {{ recipeDetails.recipe.added_date | date: 'd MMM YYYY' }}</h5>
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
 
-      <h5 *ngIf="loadedRecipeDetail">Cooking time: {{ recipeDetails.recipe.duration_in_minutes }} minutes</h5>
-      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
+      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]>Cooking time: {{ recipeDetails.recipe.duration_in_minutes }} minutes</h5>
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
 
-      <h5 *ngIf="loadedRecipeDetail">Source: {{ recipeDetails.recipe.source }}</h5>
-      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
+      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]>Source: {{ recipeDetails.recipe.source }}</h5>
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
 
       <mat-chip-list aria-label="Recipe tags">
-        <mat-chip *ngFor="let tag of recipeTags">
+        <mat-chip *ngFor="let tag of recipeTags" [@inOutAnimation]>
           {{tag}}
         </mat-chip>
       </mat-chip-list>
@@ -24,13 +24,13 @@
     <br>
     <br>
     <div class="spacing col-2">
-      <h5 *ngIf="loadedRecipeDetail">{{recipeDetails.recipe.description}}</h5>
-      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
+      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]>{{recipeDetails.recipe.description}}</h5>
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
     </div>
 
     <div class="spacing col image-container">
-      <h5 *ngIf="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
-      <div *ngIf="loadedRecipeDetail && recipeDetails.recipe.blob_url">
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
+      <div *ngIf="loadedRecipeDetail && recipeDetails.recipe.blob_url" [@inOutAnimation]>
         <img alt="Recipe Image" [src]="recipeDetails.recipe.blob_url" width="400px">
         <div class="image-text">
           <button type="button" class="btn" aria-label="Update Recipe Image" (click)="openModal(recipeImageTemplate)">
@@ -38,7 +38,7 @@
           </button>
         </div>
       </div>
-      <p *ngIf="loadedRecipeDetail && !recipeDetails.recipe.blob_url">Add an image of this recipe!</p>
+      <p *ngIf="loadedRecipeDetail && !recipeDetails.recipe.blob_url" [@inOutAnimation]>Add an image of this recipe!</p>
     </div>
 
     <div class="spacing col-1">
@@ -55,7 +55,7 @@
         </button>
       </div>
       <br>
-      <div *ngIf="loadedRecipeDetail && !recipeDetails.recipe.blob_url" class="row">
+      <div *ngIf="loadedRecipeDetail && !recipeDetails.recipe.blob_url" [@inOutAnimation] class="row">
         <button type="button" class="btn" aria-label="Update Recipe Image" (click)="openModal(recipeImageTemplate)">
           <i class="fas fa-image fa-lg fa-fw" title="Update Recipe Image"></i>
         </button>
@@ -64,7 +64,7 @@
 
   </div>
   <br>
-  <div *ngIf="loadedRecipeDetail" class="spacing primary-border row">
+  <div *ngIf="loadedRecipeDetail" [@inOutAnimation] class="spacing primary-border row">
     <div class="spacing col">
       <div class="row">
 
@@ -76,7 +76,7 @@
             </button>
           </div>
 
-          <div *ngIf="recipeDetails.steps.length > 0" class="col">
+          <div *ngIf="recipeDetails.steps.length > 0" [@inOutAnimation] class="col">
             <div *ngFor="let step of recipeDetails.steps" class="secondary-border">
               <fam-app-recipe-step [step]="step"></fam-app-recipe-step>
             </div>
@@ -84,7 +84,7 @@
 
         </div>
 
-        <div *ngIf="recipeDetails.ingredients.length > 0" class="secondary-border col">
+        <div *ngIf="recipeDetails.ingredients.length > 0" [@inOutAnimation] class="secondary-border col">
           <div *ngFor="let ingredient of recipeDetails.ingredients">
             <div class="row">
               <div class="col">
@@ -121,7 +121,7 @@
         </div>
         <div class="col">
           <input type="text" formControlName="name" id="edit-recipe-step-name" class="form-control" name="edit-recipe-step-name" required>
-          <div *ngIf="addRecipeStepForm.controls['name'].touched && addRecipeStepForm.controls['name'].invalid" class="alert alert-danger">
+          <div *ngIf="addRecipeStepForm.controls['name'].touched && addRecipeStepForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
             A name is required
           </div>
         </div>
@@ -172,7 +172,7 @@
             </div>
             <div class="col">
               <input type="text" formControlName="name" id="recipe-name" class="form-control" name="recipe-name" required>
-              <div *ngIf="editRecipeForm.controls['name'].touched && editRecipeForm.controls['name'].invalid" class="alert alert-danger">
+              <div *ngIf="editRecipeForm.controls['name'].touched && editRecipeForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
                 A name is required
               </div>
             </div>
@@ -196,7 +196,7 @@
             </div>
             <div class="col">
               <input type="text" formControlName="duration_in_minutes" id="duration_in_minutes" class="form-control" name="duration_in_minutes" required>
-              <div *ngIf="editRecipeForm.controls['duration_in_minutes'].touched && editRecipeForm.controls['duration_in_minutes'].invalid" class="alert alert-danger">
+              <div *ngIf="editRecipeForm.controls['duration_in_minutes'].touched && editRecipeForm.controls['duration_in_minutes'].invalid" [@inOutAnimation] class="alert alert-danger">
                 A duration is required (even just a guess)
               </div>
             </div>
@@ -278,7 +278,7 @@
             </button>
             <div class="file-upload">
               <input type="text" formControlName="image" id="image" class="form-control" name="image" required>
-              <div *ngIf="recipeImageForm.controls['image'].touched && recipeImageForm.controls['image'].invalid" class="alert alert-danger">
+              <div *ngIf="recipeImageForm.controls['image'].touched && recipeImageForm.controls['image'].invalid" [@inOutAnimation] class="alert alert-danger">
                 An image file is required
               </div>
             </div>

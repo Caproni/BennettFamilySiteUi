@@ -36,6 +36,8 @@ import { DatetimeSliderComponent } from './_shared/datetime-slider/datetime-slid
 import { RecipeStepComponent } from './recipes/recipe-view/recipe-step/recipe-step.component';
 import { IngredientsComponent } from './recipes/ingredients/ingredients.component';
 import { EquipmentComponent } from './recipes/equipment/equipment.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -84,6 +86,12 @@ import { EquipmentComponent } from './recipes/equipment/equipment.component';
     MatChipsModule,
     MatIconModule,
     NgxSliderModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [],
   exports: [],

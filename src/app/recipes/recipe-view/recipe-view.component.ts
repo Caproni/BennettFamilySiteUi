@@ -1,6 +1,7 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import {Component, HostListener, OnInit, TemplateRef} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -21,9 +22,35 @@ import { LoginService } from 'src/app/_services/login/login.service';
 @Component({
   selector: 'fam-app-recipe-view',
   templateUrl: './recipe-view.component.html',
-  styleUrls: ['./recipe-view.component.css']
+  styleUrls: ['./recipe-view.component.css'],
+  animations: [
+    trigger(
+      'inOutAnimation',
+      [
+        transition(
+          ':enter',
+          [
+            style({ opacity: 0 }),
+            animate('0.3s ease-out',
+              style({ opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({ opacity: 1 }),
+            animate('0.3s ease-in',
+              style({ opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ],
 })
 export class RecipeViewComponent implements OnInit {
+
+  windowWidth!: number;
+  windowHeight!: number;
 
   recipeId!: string;
   recipeDetails!: RecipeDetails;
@@ -75,6 +102,10 @@ export class RecipeViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.activatedRoute.paramMap.subscribe(params => {
       this.recipeId = params.get('recipeId')?? '';
       if (this.recipeId) {
@@ -96,6 +127,12 @@ export class RecipeViewComponent implements OnInit {
           }
         });
       }});
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
   }
 
   openModal(template: TemplateRef<any>): void {
