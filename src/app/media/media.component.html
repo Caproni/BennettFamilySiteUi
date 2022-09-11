@@ -11,7 +11,7 @@
   <div class="row justify-content-center">
     <div class="input-group col-8" id="searchContainer">
       <input class="form-control search-bar" type="text"
-             placeholder="Search for media by name, director, release year or actors" id="textSearch"
+             placeholder="Search for media" id="textSearch"
              name="dataSearch" [(ngModel)]="searchPhrase">
       <button type="button" class="btn btn-outline-dark" aria-label="Search" (click)="filterMedia()">
         <i class="fas fa-search fa-lg"></i>
@@ -23,7 +23,7 @@
 <div>
   <br>
   <div class="container-fluid text-center table-outer">
-    <div *ngIf="windowWidth > 1000" class="row row-chart row-header m-1 p-2">
+    <div *ngIf="windowWidth > 1000" [@columnInOutAnimation] class="row row-chart row-header m-1 p-2">
       <div class="col"><b>Title</b></div>
       <div class="col"><b>Location</b></div>
       <div class="col"><b>Director</b></div>
@@ -39,7 +39,7 @@
       <div class="col"></div>
     </div>
 
-    <div *ngIf="windowWidth <= 1000" class="row row-chart row-header m-1 p-2">
+    <div *ngIf="windowWidth <= 1000" [@columnInOutAnimation] class="row row-chart row-header m-1 p-2">
       <div class="col"><b>Title</b></div>
       <div class="col"><b>Location</b></div>
       <div class="col"></div>
@@ -49,7 +49,7 @@
       <fam-app-loading-table></fam-app-loading-table>
     </div>
     <div *ngFor="let medium of filteredMedia">
-      <fam-app-medium-detail [medium]="medium"></fam-app-medium-detail>
+      <fam-app-media-detail [medium]="medium"></fam-app-media-detail>
     </div>
   </div>
 </div>

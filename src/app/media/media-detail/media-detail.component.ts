@@ -1,5 +1,6 @@
-import {ChangeDetectorRef, Component, HostListener, Input, OnInit, TemplateRef} from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
@@ -9,11 +10,34 @@ import { MediaUpdateService } from 'src/app/_services/api/media/media-update.ser
 import { MediaDeleteService } from 'src/app/_services/api/media/media-delete.service';
 
 @Component({
-  selector: 'fam-app-medium-detail',
-  templateUrl: './medium-detail.component.html',
-  styleUrls: ['./medium-detail.component.css']
+  selector: 'fam-app-media-detail',
+  templateUrl: './media-detail.component.html',
+  styleUrls: ['./media-detail.component.css'],
+  animations: [
+    trigger(
+      'columnInOutAnimation',
+      [
+        transition(
+          ':enter',
+          [
+            style({ opacity: 0 }),
+            animate('0.3s ease-out',
+              style({ opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({ opacity: 1 }),
+            animate('0.3s ease-in',
+              style({ opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ],
 })
-export class MediumDetailComponent implements OnInit {
+export class MediaDetailComponent implements OnInit {
 
   windowWidth!: number;
   windowHeight!: number;

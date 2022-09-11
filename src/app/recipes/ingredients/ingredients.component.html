@@ -11,13 +11,13 @@
   <div ngxMasonryItem class="masonry-item" *ngFor="let ingredient of ingredients" style="width: 19%;">
     <div class="image-container">
       <img *ngIf="ingredient.blob_url" [src]="ingredient.blob_url" alt="{{ingredient.name}}" width="100%" height="90%" (click)="populateIngredient(ingredient); openModal(viewIngredientTemplate, {class: 'modal-lg'})">
-      <img *ngIf="!ingredient.blob_url" src="/assets/bowl.png" alt="Food Silhouette" width="588" style="opacity: 0.2">
-      <div class="image-text">
-        {{ingredient.name}}
-        <button class="btn" (click)="populateIngredient(ingredient); openModal(ingredientImageTemplate, {})">
-          <i class="fas fa-edit fa-sm fa-inverse"></i>
-        </button>
-      </div>
+      <img *ngIf="!ingredient.blob_url" src="/assets/bowl.png" alt="Food Silhouette" width="100%" style="opacity: 0.2" (click)="populateIngredient(ingredient); openModal(viewIngredientTemplate, {class: 'modal-lg'})">
+    </div>
+    <div class="d-flex justify-content-center">
+      <div style="font-color: black">{{ingredient.name}}</div>
+      <button class="btn" (click)="populateIngredient(ingredient); openModal(ingredientImageTemplate, {})">
+        <i class="fas fa-edit fa-sm"></i>
+      </button>
     </div>
   </div>
 </ngx-masonry>
@@ -121,7 +121,7 @@
 
 <ng-template #ingredientImageTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Update Ingredient Image</h4>
+    <h4 class="modal-title pull-left">Update {{ingredient.name}} Image</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>

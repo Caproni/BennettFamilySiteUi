@@ -26,7 +26,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { PhotosComponent } from './photos/photos.component';
 import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.component';
-import { MediumDetailComponent } from './media/medium-detail/medium-detail.component';
+import { MediaDetailComponent } from './media/media-detail/media-detail.component';
 import { LoadingTableComponent } from './loading-table/loading-table.component';
 import { RecipeViewComponent } from './recipes/recipe-view/recipe-view.component';
 import { NoPageComponent } from './no-page/no-page.component';
@@ -49,7 +49,7 @@ import { EquipmentComponent } from './recipes/equipment/equipment.component';
     HomeComponent,
     PhotosComponent,
     RecipeDetailsComponent,
-    MediumDetailComponent,
+    MediaDetailComponent,
     LoadingTableComponent,
     RecipeViewComponent,
     NoPageComponent,

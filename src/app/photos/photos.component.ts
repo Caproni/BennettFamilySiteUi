@@ -232,9 +232,7 @@ export class PhotosComponent implements OnInit {
 
   onNewPhotoFormSubmit() {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.newPhotoForm.value));
 

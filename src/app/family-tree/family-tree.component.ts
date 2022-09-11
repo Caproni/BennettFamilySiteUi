@@ -169,9 +169,7 @@ export class FamilyTreeComponent implements OnInit {
 
   onNewPersonFormSubmit(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.personForm.value));
 
@@ -221,9 +219,7 @@ export class FamilyTreeComponent implements OnInit {
 
   onEditPersonFormSubmit(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (!this.person.id) return;
 
@@ -297,9 +293,7 @@ export class FamilyTreeComponent implements OnInit {
 
   onPersonImageFormSubmit() {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (!this.person.id) return;
 
@@ -328,9 +322,7 @@ export class FamilyTreeComponent implements OnInit {
 
   onRelationshipFormSubmit(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.newRelationshipForm.value));
 
@@ -367,9 +359,7 @@ export class FamilyTreeComponent implements OnInit {
 
   onDataSourceFormSubmit(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.newDataSourceForm.value));
 
@@ -401,9 +391,7 @@ export class FamilyTreeComponent implements OnInit {
   }
 
   onDeleteFamilyTreePersonImage() {
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (this.person.id) {
       this.familyTreePersonImageDeleteService.deleteFamilyTreePersonImage(

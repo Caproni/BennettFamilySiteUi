@@ -9,14 +9,15 @@ import { takeWhile } from 'rxjs/operators';
 import { IngredientUpdateService } from 'src/app/_services/api/recipes/ingredient/ingredient-update.service';
 import { IngredientDeleteService } from 'src/app/_services/api/recipes/ingredient/ingredient-delete.service';
 import { IngredientCreateService } from 'src/app/_services/api/recipes/ingredient/ingredient-create.service';
-import { LoginService } from 'src/app/_services/login/login.service';
+import { IngredientImagePutService } from 'src/app/_services/api/recipes/ingredient/ingredient-image-put.service';
 import { IngredientReadService } from 'src/app/_services/api/recipes/ingredient/ingredient-read.service';
+import { LoginService } from 'src/app/_services/login/login.service';
 import { Ingredient } from 'src/app/_models/recipes/ingredient';
 
 @Component({
-  selector: 'app-ingredients',
+  selector: 'fam-app-ingredients',
   templateUrl: './ingredients.component.html',
-  styleUrls: ['./ingredients.component.css']
+  styleUrls: ['./ingredients.component.css'],
 })
 export class IngredientsComponent implements OnInit {
 
@@ -45,6 +46,8 @@ export class IngredientsComponent implements OnInit {
   filteredIngredients!: Ingredient[];
   ingredient!: Ingredient;
 
+  allowedMimeTypes = ['image/png', 'image/jpeg'];
+
   photoFile = new File([], '');
 
   modalRef: BsModalRef = new BsModalRef();
@@ -68,6 +71,7 @@ export class IngredientsComponent implements OnInit {
     private ingredientReadService: IngredientReadService,
     private ingredientUpdateService: IngredientUpdateService,
     private ingredientDeleteService: IngredientDeleteService,
+    private ingredientImagePutService: IngredientImagePutService,
   ) { }
 
   ngOnInit(): void {
@@ -104,9 +108,7 @@ export class IngredientsComponent implements OnInit {
 
   onIngredientFormSubmit(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.addIngredientForm.value));
 
@@ -137,18 +139,54 @@ export class IngredientsComponent implements OnInit {
   }
 
   onIngredientImageSelected(event: any) {
+    const target = event.target as HTMLInputElement;
 
+    if (!target.files) return;
+
+    const file: File = target.files && target.files[0];
+
+    if (!file) return;
+
+    if (this.allowedMimeTypes.includes(file.type)) {
+      this.photoFile = file;
+      const image = new Image();
+      image.src = URL.createObjectURL(file);
+      this.ingredientImageForm.controls['image'].setValue(file.name);
+    } else {
+      console.log('Invalid file: ', file);
+    }
   }
 
   onIngredientImageFormSubmit() {
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
+    if (!this.ingredient.id) return;
+
+    this.ingredientImagePutService.putIngredientImage(
+      this.ingredient.id,
+      this.photoFile,
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.ngOnInit();
+          this.toasterService.info('Adding image for ' + this.ingredient.name, 'Info');
+        },
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not add image for ' + this.ingredient.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Added image for ' + this.ingredient.name, 'Success');
+        },
+      );
+
+    this.modalRef.hide();
   }
 
   deleteIngredient(modalRef: BsModalRef): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (!this.ingredient.id) return;
 

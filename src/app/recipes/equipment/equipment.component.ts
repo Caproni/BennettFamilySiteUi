@@ -14,6 +14,8 @@ import {ToastrService} from "ngx-toastr";
 })
 export class EquipmentComponent implements OnInit {
 
+  allowedMimeTypes = ['image/png', 'image/jpeg'];
+
   photoFile = new File([], '');
 
   modalRef: BsModalRef = new BsModalRef();

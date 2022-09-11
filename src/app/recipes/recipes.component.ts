@@ -1,5 +1,6 @@
-import {Component, HostListener, OnInit, TemplateRef} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -21,7 +22,30 @@ import { LoginService } from 'src/app/_services/login/login.service';
 @Component({
   selector: 'fam-app-recipes',
   templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.css']
+  styleUrls: ['./recipes.component.css'],
+  animations: [
+    trigger(
+      'inOutAnimation',
+      [
+        transition(
+          ':enter',
+          [
+            style({ opacity: 0 }),
+            animate('0.3s ease-out',
+              style({ opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({ opacity: 1 }),
+            animate('0.3s ease-in',
+              style({ opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ],
 })
 export class RecipesComponent implements OnInit {
 
@@ -182,9 +206,7 @@ export class RecipesComponent implements OnInit {
 
   onRecipeFormSubmit(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.newRecipeForm.value));
 
@@ -222,9 +244,7 @@ export class RecipesComponent implements OnInit {
 
   onEquipmentFormSubmit(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.newEquipmentForm.value));
 
@@ -232,6 +252,7 @@ export class RecipesComponent implements OnInit {
       {
         name: payload.name,
         description: payload.description ?? null,
+        blob_url: null,
         id: null,
       }
     )

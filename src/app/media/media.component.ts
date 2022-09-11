@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, HostListener } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { trigger, style, animate, transition } from '@angular/animations';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { takeWhile } from 'rxjs/operators';
@@ -14,7 +15,30 @@ import { Medium } from 'src/app/_models/media/medium';
 @Component({
   selector: 'fam-app-media',
   templateUrl: './media.component.html',
-  styleUrls: ['./media.component.css']
+  styleUrls: ['./media.component.css'],
+  animations: [
+    trigger(
+      'columnInOutAnimation',
+      [
+        transition(
+          ':enter',
+          [
+            style({ opacity: 0 }),
+            animate('0.3s ease-out',
+              style({ opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({ opacity: 1 }),
+            animate('0.3s ease-in',
+              style({ opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ],
 })
 export class MediaComponent implements OnInit {
 
@@ -152,9 +176,7 @@ export class MediaComponent implements OnInit {
 
   onMediaFormSubmit(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.newMediaForm.value));
 

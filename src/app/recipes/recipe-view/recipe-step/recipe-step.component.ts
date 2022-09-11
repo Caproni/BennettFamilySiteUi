@@ -47,9 +47,7 @@ export class RecipeStepComponent implements OnInit {
 
   updateRecipeStep() {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.editRecipeStepForm.value));
 
@@ -90,9 +88,7 @@ export class RecipeStepComponent implements OnInit {
 
   deleteRecipeStep(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (this.step.id) {
       this.recipeStepDeleteService.deleteRecipeStep(

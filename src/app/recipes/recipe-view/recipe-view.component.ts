@@ -121,9 +121,7 @@ export class RecipeViewComponent implements OnInit {
 
   onDeleteRecipe(): void {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (this.recipeDetails.recipe.id) {
       this.recipeDeleteService.deleteRecipe(
@@ -150,9 +148,7 @@ export class RecipeViewComponent implements OnInit {
 
   onDeleteRecipeImage() {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (this.recipeDetails.recipe.id) {
       this.recipeImageDeleteService.deleteRecipeImage(
@@ -200,9 +196,7 @@ export class RecipeViewComponent implements OnInit {
 
   addRecipeStep() {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.addRecipeStepForm.value));
 
@@ -239,9 +233,7 @@ export class RecipeViewComponent implements OnInit {
 
   onEditRecipeFormSubmit() {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     const payload = JSON.parse(JSON.stringify(this.editRecipeForm.value));
 
@@ -277,9 +269,7 @@ export class RecipeViewComponent implements OnInit {
 
   onRecipeImageFormSubmit() {
 
-    if (!this.loginService.checkModalAuthorised(this.modalRef)) {
-      return;
-    }
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (!this.recipeDetails.recipe.id) return;
 
