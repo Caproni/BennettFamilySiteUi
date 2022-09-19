@@ -1,14 +1,14 @@
 import {Component, OnInit, Input, TemplateRef, HostListener} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
+import { RecipeDetails } from 'src/app/_models/recipes/recipe-details';
 import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
 import { IngredientUsage } from 'src/app/_models/recipes/ingredient-usage';
 import { EquipmentUsage } from 'src/app/_models/recipes/equipment-usage';
-import { Ingredient } from 'src/app/_models/recipes/ingredient';
-import { Equipment } from 'src/app/_models/recipes/equipment';
 import { LoginService } from 'src/app/_services/login/login.service';
 import { RecipeStepUpdateService } from 'src/app/_services/api/recipes/recipe-step/recipe-step-update.service';
 import { RecipeStepDeleteService } from 'src/app/_services/api/recipes/recipe-step/recipe-step-delete.service';
@@ -24,16 +24,38 @@ import { EquipmentUsageDeleteService } from 'src/app/_services/api/recipes/equip
 @Component({
   selector: 'fam-app-recipe-step',
   templateUrl: './recipe-step.component.html',
-  styleUrls: ['./recipe-step.component.css']
+  styleUrls: ['./recipe-step.component.css'],
+  animations: [
+    trigger(
+      'inOutAnimation',
+      [
+        transition(
+          ':enter',
+          [
+            style({ opacity: 0 }),
+            animate('0.3s ease-out',
+              style({ opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({ opacity: 1 }),
+            animate('0.3s ease-in',
+              style({ opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ],
 })
 export class RecipeStepComponent implements OnInit {
 
   windowWidth!: number;
   windowHeight!: number;
 
+  @Input() recipeDetails!: RecipeDetails;
   @Input() step!: RecipeStep;
-  @Input() ingredients!: Ingredient[];
-  @Input() equipment!: Equipment[];
 
   modalRef: BsModalRef = new BsModalRef();
 
@@ -96,6 +118,8 @@ export class RecipeStepComponent implements OnInit {
 
     if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
+    if (!this.recipeDetails.recipe.id) return;
+
     const payload = JSON.parse(JSON.stringify(this.editRecipeStepForm.value));
 
     if (this.step.id) {
@@ -106,7 +130,7 @@ export class RecipeStepComponent implements OnInit {
         image: null,
         ingredients_used: [],
         equipment_used: [],
-        recipe_id: this.step.recipe_id,
+        recipe_id: this.recipeDetails.recipe.id,
         blob_url: this.step.blob_url,
         index: this.step.index,
         id: this.step.id,
@@ -154,11 +178,11 @@ export class RecipeStepComponent implements OnInit {
   }
 
   getIngredientId(ingredientName: string): string | null {
-    return this.ingredients.filter(x => x.name === ingredientName)[0].id;
+    return this.recipeDetails.ingredients.filter(x => x.name === ingredientName)[0].id;
   }
 
   getEquipmentId(equipmentName: string): string | null {
-    return this.equipment.filter(x => x.name === equipmentName)[0].id;
+    return this.recipeDetails.equipment.filter(x => x.name === equipmentName)[0].id;
   }
 
   onIngredientUsageFormSubmit() {

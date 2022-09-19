@@ -131,7 +131,7 @@
         </div>
         <div class="col">
           <select formControlName="name" id="add-ingredient-usage-name" class="form-control" name="add-ingredient-usage-name" required>
-            <option *ngFor="let ingredient of ingredients">{{ingredient.name}}</option>
+            <option *ngFor="let ingredient of recipeDetails.ingredients">{{ingredient.name}}</option>
           </select>
           <div *ngIf="addIngredientUsageForm.controls['name'].touched && addIngredientUsageForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
             A name is required
@@ -211,7 +211,7 @@
         </div>
         <div class="col">
           <select formControlName="name" id="add-equipment-usage-name" class="form-control" name="add-equipment-usage-name" required>
-            <option *ngFor="let equip of equipment">{{equip.name}}</option>
+            <option *ngFor="let equip of recipeDetails.equipment">{{equip.name}}</option>
           </select>
           <div *ngIf="addEquipmentUsageForm.controls['name'].touched && addEquipmentUsageForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
             A name is required

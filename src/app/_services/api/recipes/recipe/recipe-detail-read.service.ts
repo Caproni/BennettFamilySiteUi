@@ -27,7 +27,14 @@ export class RecipeDetailReadService {
     let _subject = new BehaviorSubject<boolean>(false);
     this.http.get<ApiResponse>(url).subscribe((data) => {
       if (data.success) {
-        this.content = data.content;
+        this.content = {
+          recipe: data.content.recipe,
+          steps: data.content.steps,
+          ingredients: data.content.ingredients,
+          ingredientUsage: data.content.ingredient_usage,
+          equipment: data.content.equipment,
+          equipmentUsage: data.content.equipment_usage,
+        };
         _subject.next(true);
       }
     });

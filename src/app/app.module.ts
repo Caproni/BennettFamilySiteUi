@@ -39,6 +39,7 @@ import { EquipmentComponent } from './recipes/equipment/equipment.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CalendarComponent } from './calendar/calendar.component';
+import { IngredientUsageComponent } from './recipes/recipe-view/ingredient-usage/ingredient-usage.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { CalendarComponent } from './calendar/calendar.component';
     IngredientsComponent,
     EquipmentComponent,
     CalendarComponent,
+    IngredientUsageComponent,
   ],
   imports: [
     BrowserModule,

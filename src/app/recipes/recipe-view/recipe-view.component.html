@@ -49,13 +49,13 @@
         </a>
       </div>
       <br>
-      <div class="row">
+      <div *ngIf="isAuthorised()" class="row">
         <button type="button" class="btn" aria-label="Edit Recipe" (click)="openModal(editRecipeTemplate)">
           <i class="fas fa-edit fa-lg fa-fw" title="Edit Recipe"></i>
         </button>
       </div>
       <br>
-      <div *ngIf="loadedRecipeDetail && !recipeDetails.recipe.blob_url" [@inOutAnimation]="loadedRecipeDetail && !recipeDetails.recipe.blob_url" class="row">
+      <div *ngIf="isAuthorised() && loadedRecipeDetail && !recipeDetails.recipe.blob_url" [@inOutAnimation]="loadedRecipeDetail && !recipeDetails.recipe.blob_url" class="row">
         <button type="button" class="btn" aria-label="Update Recipe Image" (click)="openModal(recipeImageTemplate)">
           <i class="fas fa-image fa-lg fa-fw" title="Update Recipe Image"></i>
         </button>
@@ -79,23 +79,21 @@
           <div *ngIf="recipeDetails.steps.length > 0" [@inOutAnimation]="recipeDetails.steps.length > 0" class="col">
             <div *ngFor="let step of recipeDetails.steps" class="secondary-border">
               <fam-app-recipe-step
+                [recipeDetails]="recipeDetails"
                 [step]="step"
-                [ingredients]="recipeDetails.ingredients"
-                [equipment]="recipeDetails.equipment"
               ></fam-app-recipe-step>
             </div>
           </div>
 
         </div>
 
-        <div *ngIf="recipeDetails.ingredients.length > 0" [@inOutAnimation]="recipeDetails.ingredients.length > 0" class="secondary-border col">
-          <div *ngFor="let ingredient of recipeDetails.ingredients">
-            <div class="row">
-              <div class="col">
-                <h5>{{ingredient.name}}</h5>
-                <p>{{ingredient.description}}</p>
-              </div>
-            </div>
+        <div *ngIf="recipeDetails.ingredientUsage.length > 0" [@inOutAnimation]="recipeDetails.ingredientUsage.length > 0" class="secondary-border col">
+          <div *ngFor="let usage of recipeDetails.ingredientUsage" class="row">
+            <fam-app-recipe-ingredient-usage
+              [usage]="usage"
+              [ingredients]="recipeDetails.ingredients"
+            >
+            </fam-app-recipe-ingredient-usage>
           </div>
         </div>
 

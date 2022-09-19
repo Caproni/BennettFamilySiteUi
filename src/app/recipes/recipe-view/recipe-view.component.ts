@@ -9,6 +9,10 @@ import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
 import { Recipe } from 'src/app/_models/recipes/recipe';
+import { Ingredient } from 'src/app/_models/recipes/ingredient';
+import { Equipment } from 'src/app/_models/recipes/equipment';
+import { IngredientUsage } from 'src/app/_models/recipes/ingredient-usage';
+import { EquipmentUsage } from 'src/app/_models/recipes/equipment-usage';
 import { RecipeDetails } from 'src/app/_models/recipes/recipe-details';
 import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
 import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe/recipe-delete.service';
@@ -112,10 +116,10 @@ export class RecipeViewComponent implements OnInit {
         this.recipeDetailReadService.readRecipeDetails(
           this.recipeId
         ).subscribe((b) => {
-          this.loadedRecipeDetail = b;
           this.recipeDetails = this.recipeDetailReadService.getRecipeDetails();
+          this.loadedRecipeDetail = b;
           if (this.recipeDetails) {
-            console.log('Recipe Details: ', this.recipeDetails);
+            console.log('Details: ', this.recipeDetails);
             this.recipeTags = this.recipeDetails.recipe.tags;
             this.editRecipeForm.controls['name'].setValue(this.recipeDetails.recipe.name);
             this.editRecipeForm.controls['description'].setValue(this.recipeDetails.recipe.description);
@@ -154,6 +158,18 @@ export class RecipeViewComponent implements OnInit {
     if (index >= 0) {
       this.recipeTags.splice(index, 1);
     }
+  }
+
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised();
+  }
+
+  getEquipment(equipmentId: string): Equipment {
+    return this.recipeDetails.equipment.filter(x => x.id === equipmentId)[0]
+  }
+
+  print(note: string, content: any) {
+    console.log(note, content);
   }
 
   onDeleteRecipe(): void {
