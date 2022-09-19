@@ -2,20 +2,20 @@
   <div class="spacing primary-border row">
     <div class="spacing col-2">
 
-      <h3 *ngIf="loadedRecipeDetail" [@inOutAnimation]>{{ recipeDetails.recipe.name }}</h3>
-      <h3 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h3>
+      <h3 *ngIf="loadedRecipeDetail" [@inOutAnimation]="loadedRecipeDetail">{{ recipeDetails.recipe.name }}</h3>
+      <h3 *ngIf="!loadedRecipeDetail" [@inOutAnimation]="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h3>
 
-      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]>Recipe added: {{ recipeDetails.recipe.added_date | date: 'd MMM YYYY' }}</h5>
-      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
+      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]="loadedRecipeDetail">Recipe added: {{ recipeDetails.recipe.added_date | date: 'd MMM YYYY' }}</h5>
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
 
-      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]>Cooking time: {{ recipeDetails.recipe.duration_in_minutes }} minutes</h5>
-      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
+      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]="loadedRecipeDetail">Cooking time: {{ recipeDetails.recipe.duration_in_minutes }} minutes</h5>
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
 
-      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]>Source: {{ recipeDetails.recipe.source }}</h5>
-      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
+      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]="loadedRecipeDetail">Source: {{ recipeDetails.recipe.source }}</h5>
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
 
       <mat-chip-list aria-label="Recipe tags">
-        <mat-chip *ngFor="let tag of recipeTags" [@inOutAnimation]>
+        <mat-chip *ngFor="let tag of recipeTags" [@inOutAnimation]="loadedRecipeDetail">
           {{tag}}
         </mat-chip>
       </mat-chip-list>
@@ -24,13 +24,13 @@
     <br>
     <br>
     <div class="spacing col-2">
-      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]>{{recipeDetails.recipe.description}}</h5>
-      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
+      <h5 *ngIf="loadedRecipeDetail" [@inOutAnimation]="loadedRecipeDetail">{{recipeDetails.recipe.description}}</h5>
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
     </div>
 
     <div class="spacing col image-container">
-      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]><i class="fas fa-spinner fa-pulse"></i></h5>
-      <div *ngIf="loadedRecipeDetail && recipeDetails.recipe.blob_url" [@inOutAnimation]>
+      <h5 *ngIf="!loadedRecipeDetail" [@inOutAnimation]="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h5>
+      <div *ngIf="loadedRecipeDetail && recipeDetails.recipe.blob_url" [@inOutAnimation]="loadedRecipeDetail && recipeDetails.recipe.blob_url">
         <img alt="Recipe Image" [src]="recipeDetails.recipe.blob_url" width="400px">
         <div class="image-text">
           <button type="button" class="btn" aria-label="Update Recipe Image" (click)="openModal(recipeImageTemplate)">
@@ -38,7 +38,7 @@
           </button>
         </div>
       </div>
-      <p *ngIf="loadedRecipeDetail && !recipeDetails.recipe.blob_url" [@inOutAnimation]>Add an image of this recipe!</p>
+      <p *ngIf="loadedRecipeDetail && !recipeDetails.recipe.blob_url" [@inOutAnimation]="loadedRecipeDetail && !recipeDetails.recipe.blob_url">Add an image of this recipe!</p>
     </div>
 
     <div class="spacing col-1">
@@ -55,7 +55,7 @@
         </button>
       </div>
       <br>
-      <div *ngIf="loadedRecipeDetail && !recipeDetails.recipe.blob_url" [@inOutAnimation] class="row">
+      <div *ngIf="loadedRecipeDetail && !recipeDetails.recipe.blob_url" [@inOutAnimation]="loadedRecipeDetail && !recipeDetails.recipe.blob_url" class="row">
         <button type="button" class="btn" aria-label="Update Recipe Image" (click)="openModal(recipeImageTemplate)">
           <i class="fas fa-image fa-lg fa-fw" title="Update Recipe Image"></i>
         </button>
@@ -64,7 +64,7 @@
 
   </div>
   <br>
-  <div *ngIf="loadedRecipeDetail" [@inOutAnimation] class="spacing primary-border row">
+  <div *ngIf="loadedRecipeDetail" [@inOutAnimation]="loadedRecipeDetail" class="spacing primary-border row">
     <div class="spacing col">
       <div class="row">
 
@@ -76,15 +76,19 @@
             </button>
           </div>
 
-          <div *ngIf="recipeDetails.steps.length > 0" [@inOutAnimation] class="col">
+          <div *ngIf="recipeDetails.steps.length > 0" [@inOutAnimation]="recipeDetails.steps.length > 0" class="col">
             <div *ngFor="let step of recipeDetails.steps" class="secondary-border">
-              <fam-app-recipe-step [step]="step"></fam-app-recipe-step>
+              <fam-app-recipe-step
+                [step]="step"
+                [ingredients]="recipeDetails.ingredients"
+                [equipment]="recipeDetails.equipment"
+              ></fam-app-recipe-step>
             </div>
           </div>
 
         </div>
 
-        <div *ngIf="recipeDetails.ingredients.length > 0" [@inOutAnimation] class="secondary-border col">
+        <div *ngIf="recipeDetails.ingredients.length > 0" [@inOutAnimation]="recipeDetails.ingredients.length > 0" class="secondary-border col">
           <div *ngFor="let ingredient of recipeDetails.ingredients">
             <div class="row">
               <div class="col">

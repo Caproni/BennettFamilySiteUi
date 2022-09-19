@@ -8,10 +8,10 @@
       <button type="button" class="btn" aria-label="Edit Step" (click)="openModal(editRecipeStepTemplate)">
         <i class="fas fa-edit" title="Edit Step"></i>
       </button>
-      <button type="button" class="btn" aria-label="Add Ingredient" (click)="openModal(deleteRecipeStepTemplate)">
+      <button type="button" class="btn" aria-label="Add Ingredient" (click)="openModal(addIngredientUsageTemplate)">
         <i class="fas fa-carrot" title="Add Ingredient"></i>
       </button>
-      <button type="button" class="btn" aria-label="Add Equipment" (click)="openModal(deleteRecipeStepTemplate)">
+      <button type="button" class="btn" aria-label="Add Equipment" (click)="openModal(addEquipmentUsageTemplate)">
         <i class="fas fa-blender" title="Add Equipment"></i>
       </button>
     </div>
@@ -107,5 +107,143 @@
         Cancel
       </button>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #addIngredientUsageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">New Ingredient Usage</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="addIngredientUsageForm">
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Name </label>
+        </div>
+        <div class="col">
+          <select formControlName="name" id="add-ingredient-usage-name" class="form-control" name="add-ingredient-usage-name" required>
+            <option *ngFor="let ingredient of ingredients">{{ingredient.name}}</option>
+          </select>
+          <div *ngIf="addIngredientUsageForm.controls['name'].touched && addIngredientUsageForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
+            A name is required
+          </div>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Quantity </label>
+        </div>
+        <div class="col">
+          <input type="text" formControlName="quantity" id="add-ingredient-usage-quantity" class="form-control" name="edit-ingredients-usage-quantity" required>
+          <div *ngIf="addIngredientUsageForm.controls['quantity'].touched && addIngredientUsageForm.controls['quantity'].invalid" [@inOutAnimation] class="alert alert-danger">
+            A quantity is required
+          </div>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Quantity Units </label>
+        </div>
+        <div class="col">
+          <input type="text" formControlName="quantity_units" id="add-ingredient-usage-quantity-units" class="form-control" name="edit-ingredients-usage-quantity-units" required>
+          <div *ngIf="addIngredientUsageForm.controls['quantity_units'].touched && addIngredientUsageForm.controls['quantity_units'].invalid" [@inOutAnimation] class="alert alert-danger">
+            Quantity units are required
+          </div>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Notes </label>
+        </div>
+        <div class="col">
+          <textarea matInput
+                    formControlName="notes"
+                    cdkTextareaAutosize
+                    matAutosizeMinRows=1
+                    matAutosizeMaxRows=5
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col">
+          <div class="row mx-auto justify-content-center">
+            <button class="btn btn-outline-success" style="width: 80%;"
+                    [disabled]="!addIngredientUsageForm.valid"
+                    (click)="onIngredientUsageFormSubmit()">Save</button>
+          </div>
+          <div class="row mx-auto pt-2 justify-content-center">
+            <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #addEquipmentUsageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">New Equipment Usage</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="addEquipmentUsageForm">
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Name </label>
+        </div>
+        <div class="col">
+          <select formControlName="name" id="add-equipment-usage-name" class="form-control" name="add-equipment-usage-name" required>
+            <option *ngFor="let equip of equipment">{{equip.name}}</option>
+          </select>
+          <div *ngIf="addEquipmentUsageForm.controls['name'].touched && addEquipmentUsageForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
+            A name is required
+          </div>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Notes </label>
+        </div>
+        <div class="col">
+          <textarea matInput
+                    formControlName="notes"
+                    cdkTextareaAutosize
+                    matAutosizeMinRows=1
+                    matAutosizeMaxRows=5
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col">
+          <div class="row mx-auto justify-content-center">
+            <button class="btn btn-outline-success" style="width: 80%;"
+                    [disabled]="!addEquipmentUsageForm.valid"
+                    (click)="onEquipmentUsageFormSubmit()">Save</button>
+          </div>
+          <div class="row mx-auto pt-2 justify-content-center">
+            <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </ng-template>
