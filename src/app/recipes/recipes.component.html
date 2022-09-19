@@ -4,7 +4,7 @@
 </div>
 <br>
 
-<div *ngIf="windowWidth > 1000" [@inOutAnimation] class="d-flex justify-content-center">
+<div *ngIf="windowWidth > 1000" [@inOutAnimation]="windowWidth > 1000" class="d-flex justify-content-center">
   <div class="btn-group-horizontal">
     <a>
       <button class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">Add Recipe</button>
@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<div *ngIf="windowWidth <= 1000" [@inOutAnimation] class="d-flex justify-content-center">
+<div *ngIf="windowWidth <= 1000" [@inOutAnimation]="windowWidth <= 1000" class="d-flex justify-content-center">
   <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
     <button class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">Add Recipe</button>
     <a class="btn" routerLink="/cooking-ingredients" routerLinkActive="active" title="Ingredients">
@@ -49,7 +49,7 @@
   <div class="container-fluid text-center table-outer">
     <div class="row row-chart row-header m-1 p-2">
       <div class="col"><b>Name</b></div>
-      <div *ngIf="windowWidth > 1000" [@inOutAnimation] class="col"><b>Description</b></div>
+      <div *ngIf="windowWidth > 1000" [@inOutAnimation]="windowWidth > 1000" class="col"><b>Description</b></div>
       <div class="col"><b>Cooking Time (mins)</b></div>
       <div class="col"><b>Source</b></div>
       <div class="col"><b>Tags</b></div>
@@ -146,57 +146,6 @@
               <button class="btn btn-outline-success" style="width: 80%;"
                       [disabled]="!newRecipeForm.valid"
                       (click)="onRecipeFormSubmit()">Save</button>
-            </div>
-            <div class="row mx-auto pt-2 justify-content-center">
-              <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-</ng-template>
-
-<ng-template #addEquipmentTemplate>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">New Equipment</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="newEquipmentForm">
-      <div class="form-horizontal">
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Name </label>
-          </div>
-          <div class="col">
-            <input type="text" formControlName="name" id="equipment-name" class="form-control" name="equipment-name" required>
-            <div *ngIf="newEquipmentForm.controls['name'].touched && newEquipmentForm.controls['name'].invalid" class="alert alert-danger">
-              A name is required
-            </div>
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Description </label>
-          </div>
-          <div class="col">
-            <textarea matInput
-                      formControlName="description"
-                      cdkTextareaAutosize
-                      matAutosizeMinRows=3
-                      matAutosizeMaxRows=10
-            ></textarea>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col">
-            <div class="row mx-auto justify-content-center">
-              <button class="btn btn-outline-success" style="width: 80%;"
-                      [disabled]="!newEquipmentForm.valid"
-                      (click)="onEquipmentFormSubmit()">Save</button>
             </div>
             <div class="row mx-auto pt-2 justify-content-center">
               <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>

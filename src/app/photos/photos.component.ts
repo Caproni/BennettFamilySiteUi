@@ -25,7 +25,6 @@ export class PhotosComponent implements OnInit {
 
   public masonryOptions: NgxMasonryOptions = {
     gutter: 0,
-    columnWidth: this.getColumnWidth(),
     fitWidth: false,
     animations: {
       show: [
@@ -111,10 +110,6 @@ export class PhotosComponent implements OnInit {
   onResize(event: any) {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
-  }
-
-  getColumnWidth(): number {
-    return 200;
   }
 
   getPhotoWidth(): string {
