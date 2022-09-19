@@ -104,6 +104,10 @@ export class MediaComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised();
+  }
+
   filterMedia() {
     const searchTerms: string[] = [];
     // @ts-ignore

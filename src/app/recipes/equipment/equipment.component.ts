@@ -40,6 +40,9 @@ export class EquipmentComponent implements OnInit {
     }
   };
 
+  searchPhrase = '';
+  searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;
+
   equipments!: Equipment[];
   filteredEquipments!: Equipment[];
   equipment!: Equipment;
@@ -98,6 +101,49 @@ export class EquipmentComponent implements OnInit {
 
   populateEquipment(equipment: Equipment) {
     this.equipment = equipment;
+  }
+
+  filterEquipment() {
+    const searchTerms: string[] = [];
+    // @ts-ignore
+    const groups = this.searchPhrase.matchAll(this.searchRegex);
+    let group = groups.next();
+    while (!group.done) {
+      for (let i = 1; i < group.value.length; i++) {
+        if (group.value[i] !== undefined) {
+          searchTerms.push(group.value[i].toLowerCase());
+        }
+      }
+      group = groups.next();
+    }
+
+    this.filteredEquipments = this.equipments.filter(item => {
+
+      const included: boolean[] = [];
+
+      const name = item.name?.toLowerCase();
+
+      for (const searchTerm of searchTerms) {
+        const includedForThisTerm: boolean[] = [];
+
+        if (name) {
+          includedForThisTerm.push(name.includes(searchTerm));
+        }
+
+        included.push(includedForThisTerm.reduceRight(
+          (accumulator, currentValue) => {
+            return accumulator || currentValue;
+          },
+          false
+        ));
+      }
+      return included.reduceRight(
+        (accumulator, currentValue) => {
+          return accumulator && currentValue;
+        },
+        true
+      );
+    });
   }
 
   onEquipmentFormSubmit(): void {

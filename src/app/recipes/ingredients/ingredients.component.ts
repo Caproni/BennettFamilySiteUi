@@ -1,7 +1,7 @@
-import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
+import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { animate, style } from '@angular/animations';
-import { NgxMasonryOptions } from 'ngx-masonry';
+import { NgxMasonryComponent, NgxMasonryOptions } from 'ngx-masonry';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
@@ -41,11 +41,16 @@ export class IngredientsComponent implements OnInit {
 
   loadedIngredients = false;
 
+  searchPhrase = '';
+  searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;
+
   ingredients!: Ingredient[];
   filteredIngredients!: Ingredient[];
   ingredient!: Ingredient;
 
   allowedMimeTypes = ['image/png', 'image/jpeg'];
+
+  @ViewChild(NgxMasonryComponent) masonry!: NgxMasonryComponent;
 
   photoFile = new File([], '');
 
@@ -94,6 +99,55 @@ export class IngredientsComponent implements OnInit {
 
   openModal(template: TemplateRef<any>, modalOptions: any): void {
     this.modalRef = this.modalService.show(template, modalOptions);
+  }
+
+  reloadGallery() {
+    this.masonry.reloadItems();
+    this.masonry.layout();
+  }
+
+  filterIngredients() {
+    const searchTerms: string[] = [];
+    // @ts-ignore
+    const groups = this.searchPhrase.matchAll(this.searchRegex);
+    let group = groups.next();
+    while (!group.done) {
+      for (let i = 1; i < group.value.length; i++) {
+        if (group.value[i] !== undefined) {
+          searchTerms.push(group.value[i].toLowerCase());
+        }
+      }
+      group = groups.next();
+    }
+
+    this.filteredIngredients = this.ingredients.filter(item => {
+
+      const included: boolean[] = [];
+
+      const name = item.name?.toLowerCase();
+
+      for (const searchTerm of searchTerms) {
+        const includedForThisTerm: boolean[] = [];
+
+        if (name) {
+          includedForThisTerm.push(name.includes(searchTerm));
+        }
+
+        included.push(includedForThisTerm.reduceRight(
+          (accumulator, currentValue) => {
+            return accumulator || currentValue;
+          },
+          false
+        ));
+      }
+      return included.reduceRight(
+        (accumulator, currentValue) => {
+          return accumulator && currentValue;
+        },
+        true
+      );
+    });
+
   }
 
   populateIngredient(ingredient: Ingredient) {

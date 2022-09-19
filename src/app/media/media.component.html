@@ -3,7 +3,7 @@
   <h1>Media</h1>
 </div>
 <br>
-<div class="mx-auto text-center">
+<div *ngIf="isAuthorised()" [@inOutTransition]="isAuthorised()" class="mx-auto text-center">
   <button class="btn btn-outline-dark" (click)="openModal(addMediaTemplate)">Add Media</button>
 </div>
 <br>
