@@ -136,7 +136,6 @@ export class RecipesComponent implements OnInit {
 
   filterRecipes() {
     const searchTerms: string[] = [];
-    // @ts-ignore
     const groups = this.searchPhrase.matchAll(this.searchRegex);
     let group = groups.next();
     while (!group.done) {

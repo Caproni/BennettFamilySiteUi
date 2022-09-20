@@ -101,14 +101,8 @@ export class IngredientsComponent implements OnInit {
     this.modalRef = this.modalService.show(template, modalOptions);
   }
 
-  reloadGallery() {
-    this.masonry.reloadItems();
-    this.masonry.layout();
-  }
-
   filterIngredients() {
     const searchTerms: string[] = [];
-    // @ts-ignore
     const groups = this.searchPhrase.matchAll(this.searchRegex);
     let group = groups.next();
     while (!group.done) {

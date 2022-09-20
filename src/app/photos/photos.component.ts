@@ -71,6 +71,7 @@ export class PhotosComponent implements OnInit {
   filterStartDate: Date = new Date();
   filterEndDate: Date = new Date();
 
+  searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;
   searchPhrase = '';
 
   constructor(
@@ -110,6 +111,10 @@ export class PhotosComponent implements OnInit {
   onResize(event: any) {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
+  }
+
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised();
   }
 
   getPhotoWidth(): string {
@@ -165,10 +170,9 @@ export class PhotosComponent implements OnInit {
   }
 
   public filterPhotos(): void {
+    const searchFilteredPhotos = this.searchBarFilterPhotos(this.searchPhrase);
     this.filteredPhotos = this.temporalFilterPhotos(
-      this.searchPhrase
-        ? this.searchBarFilterPhotos(this.photos, this.searchPhrase)
-        : this.photos,
+      searchFilteredPhotos,
       this.filterStartDate,
       this.filterEndDate
     );
@@ -181,18 +185,16 @@ export class PhotosComponent implements OnInit {
     nullsIncluded: boolean = false
   ): Photo[] {
     return inputPhotos.filter((item) => {
-      const nullValue = nullsIncluded ? startDate : new Date(2901, 1, 1);
+      const nullValue = nullsIncluded ? startDate : new Date(2022, 1, 1);
       const timestamp = new Date(item.taken_date ?? nullValue);
       return startDate <= timestamp && timestamp <= endDate;
     });
   }
 
   private searchBarFilterPhotos(
-    inputPhotos: Photo[],
     searchValue: string
   ): Photo[] {
     const searchTerms: string[] = [];
-    // @ts-ignore
     const groups = searchValue.matchAll(this.searchRegex);
     let group = groups.next();
     while (!group.done) {
@@ -203,7 +205,7 @@ export class PhotosComponent implements OnInit {
       }
       group = groups.next();
     }
-    return inputPhotos.filter((item) => {
+    const filteredPhotos = this.photos.filter((item) => {
       const included: boolean[] = [];
 
       const name = item.name.toLowerCase();
@@ -223,6 +225,8 @@ export class PhotosComponent implements OnInit {
         return accumulator && currentValue;
       }, true);
     });
+
+    return filteredPhotos;
   }
 
   onNewPhotoFormSubmit() {

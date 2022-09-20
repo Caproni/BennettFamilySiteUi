@@ -20,11 +20,11 @@
   </div>
 </div>
 <br>
-<ngx-masonry [options]="masonryOptions" [ordered]="true" style="width: 100%; margin: 0;" (itemsLoaded)="equipmentLoaded()">
+<ngx-masonry *ngIf="filteredEquipments.length > 0" [options]="masonryOptions" [ordered]="true" style="width: 100%; margin: 0;" (itemsLoaded)="equipmentLoaded()">
   <div ngxMasonryItem class="masonry-item" *ngFor="let equipment of filteredEquipments" style="width: 19%;">
     <div class="image-container">
       <img *ngIf="equipment.blob_url" [src]="equipment.blob_url" alt="{{equipment.name}}" width="100%" height="90%" (click)="populateEquipment(equipment); openModal(viewEquipmentTemplate, {class: 'modal-lg'})">
-      <img *ngIf="!equipment.blob_url" src="/assets/bowl.png" alt="Food Silhouette" width="100%" style="opacity: 0.2" (click)="populateEquipment(equipment); openModal(viewEquipmentTemplate, {class: 'modal-lg'})">
+      <img *ngIf="!equipment.blob_url" src="/assets/bowl.png" alt="Food Silhouette" width="100%" height="90%" style="opacity: 0.2" (click)="populateEquipment(equipment); openModal(viewEquipmentTemplate, {class: 'modal-lg'})">
     </div>
     <div class="d-flex justify-content-center">
       <div style="font-color: black">{{equipment.name}}</div>

@@ -105,7 +105,6 @@ export class EquipmentComponent implements OnInit {
 
   filterEquipment() {
     const searchTerms: string[] = [];
-    // @ts-ignore
     const groups = this.searchPhrase.matchAll(this.searchRegex);
     let group = groups.next();
     while (!group.done) {
