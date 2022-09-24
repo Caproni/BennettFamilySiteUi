@@ -6,26 +6,44 @@
 
 <div *ngIf="windowWidth > 1000" [@inOutAnimation]="windowWidth > 1000" class="d-flex justify-content-center">
   <div class="btn-group-horizontal">
-    <a>
-      <button class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">Add Recipe</button>
+    <a *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()">
+      <button class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">
+        <i class="fas fa-utensils" title="Add Recipe"></i>
+        Add Recipe
+      </button>
     </a>
-    <a class="btn" routerLink="/cooking-ingredients" routerLinkActive="active" title="Ingredients">
-      <button class="btn btn-outline-dark">View Ingredients</button>
+    <a class="btn" routerLink="/cooking-ingredients" routerLinkActive="active" title="View Ingredients">
+      <button class="btn btn-outline-dark">
+        <i class="fas fa-carrot" title="View Ingredients"></i>
+        View Ingredients
+      </button>
     </a>
-    <a class="btn" routerLink="/cooking-equipment" routerLinkActive="active" title="Equipment">
-      <button class="btn btn-outline-dark">View Equipment</button>
+    <a class="btn" routerLink="/cooking-equipment" routerLinkActive="active" title="View Equipment">
+      <button class="btn btn-outline-dark">
+        <i class="fas fa-blender" title="View Equipment"></i>
+        View Equipment
+      </button>
     </a>
   </div>
 </div>
 
 <div *ngIf="windowWidth <= 1000" [@inOutAnimation]="windowWidth <= 1000" class="d-flex justify-content-center">
   <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-    <button class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">Add Recipe</button>
-    <a class="btn" routerLink="/cooking-ingredients" routerLinkActive="active" title="Ingredients">
-      <button class="btn btn-outline-dark">View Ingredients</button>
+    <button *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()" class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">
+      <i class="fas fa-utensils" title="Add Recipe"></i>
+      Add Recipe
+    </button>
+    <a class="btn" routerLink="/cooking-ingredients" routerLinkActive="active" title="View Ingredients">
+      <button class="btn btn-outline-dark">
+        <i class="fas fa-carrot" title="View Ingredients"></i>
+        View Ingredients
+      </button>
     </a>
-    <a class="btn" routerLink="/cooking-equipment" routerLinkActive="active" title="Equipment">
-      <button class="btn btn-outline-dark">View Equipment</button>
+    <a class="btn" routerLink="/cooking-equipment" routerLinkActive="active" title="View Equipment">
+      <button class="btn btn-outline-dark">
+        <i class="fas fa-blender" title="View Equipment"></i>
+        View Equipment
+      </button>
     </a>
   </div>
 </div>

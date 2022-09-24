@@ -130,6 +130,10 @@ export class RecipesComponent implements OnInit {
     this.isActive = false;
   }
 
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised()
+  }
+
   openModal(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template);
   }
