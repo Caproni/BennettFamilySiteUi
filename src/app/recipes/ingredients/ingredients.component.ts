@@ -11,8 +11,14 @@ import { IngredientDeleteService } from 'src/app/_services/api/recipes/ingredien
 import { IngredientCreateService } from 'src/app/_services/api/recipes/ingredient/ingredient-create.service';
 import { IngredientImagePutService } from 'src/app/_services/api/recipes/ingredient/ingredient-image-put.service';
 import { IngredientReadService } from 'src/app/_services/api/recipes/ingredient/ingredient-read.service';
+import { IngredientUsageReadService } from 'src/app/_services/api/recipes/ingredient-usage/ingredient-usage-read.service';
+import { RecipeStepReadService } from 'src/app/_services/api/recipes/recipe-step/recipe-step-read.service';
+import { RecipeReadService } from 'src/app/_services/api/recipes/recipe/recipe-read.service';
 import { LoginService } from 'src/app/_services/login/login.service';
 import { Ingredient } from 'src/app/_models/recipes/ingredient';
+import { IngredientUsage } from 'src/app/_models/recipes/ingredient-usage';
+import { Recipe } from 'src/app/_models/recipes/recipe';
+import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
 
 @Component({
   selector: 'fam-app-ingredients',
@@ -39,14 +45,23 @@ export class IngredientsComponent implements OnInit {
     }
   };
 
-  loadedIngredients = false;
-
   searchPhrase = '';
   searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;
 
+  loadedIngredients = false;
   ingredients!: Ingredient[];
   filteredIngredients!: Ingredient[];
   ingredient!: Ingredient;
+
+  loadedRecipes = false;
+  recipes!: Recipe[];
+  filteredRecipes!: Recipe[];
+
+  loadedIngredientUsages = false;
+  ingredientUsages!: IngredientUsage[];
+
+  loadedRecipeSteps = false;
+  recipeSteps!: RecipeStep[];
 
   allowedMimeTypes = ['image/png', 'image/jpeg'];
 
@@ -76,6 +91,9 @@ export class IngredientsComponent implements OnInit {
     private ingredientUpdateService: IngredientUpdateService,
     private ingredientDeleteService: IngredientDeleteService,
     private ingredientImagePutService: IngredientImagePutService,
+    private recipeReadService: RecipeReadService,
+    private ingredientUsageReadService: IngredientUsageReadService,
+    private recipeStepReadService: RecipeStepReadService,
   ) { }
 
   ngOnInit(): void {
@@ -87,6 +105,22 @@ export class IngredientsComponent implements OnInit {
       this.loadedIngredients = b;
       this.ingredients = this.ingredientReadService.getIngredients();
       this.filteredIngredients = this.ingredients;
+    });
+
+    this.recipeReadService.readRecipes().subscribe((b) => {
+      this.loadedRecipes = b;
+      this.recipes = this.recipeReadService.getRecipes();
+      this.filteredRecipes = this.recipes;
+    });
+
+    this.ingredientUsageReadService.readIngredientUsages().subscribe((b) => {
+      this.loadedIngredientUsages = b;
+      this.ingredientUsages = this.ingredientUsageReadService.getIngredientUsages();
+    });
+
+    this.recipeStepReadService.readRecipeSteps().subscribe((b) => {
+      this.loadedRecipeSteps = b;
+      this.recipeSteps = this.recipeStepReadService.getRecipeSteps();
     });
 
   }
@@ -142,6 +176,26 @@ export class IngredientsComponent implements OnInit {
       );
     });
 
+  }
+
+  filterRecipes(ingredientId: string | null) {
+
+    if (!ingredientId) return;
+
+    if (!(this.loadedRecipes && this.loadedIngredients && this.loadedIngredientUsages && this.loadedRecipeSteps)) return;
+
+    this.filteredRecipes = this.recipes.filter(
+      x => {
+        let steps = this.recipeSteps.filter(step => step.recipe_id === x.id);
+        for (let step of steps) {
+          let usages = this.ingredientUsages.filter(y => y.recipe_step_id === step.id);
+          for (let usage of usages) {
+            if (usage.ingredient_id === ingredientId) return true;
+          }
+        }
+        return false;
+      }
+    );
   }
 
   populateIngredient(ingredient: Ingredient) {

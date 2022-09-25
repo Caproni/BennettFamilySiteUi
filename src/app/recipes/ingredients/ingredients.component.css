@@ -21,3 +21,7 @@
 .image-text:hover {
   opacity:1;
 }
+
+th, td {
+  padding: 15px;
+}

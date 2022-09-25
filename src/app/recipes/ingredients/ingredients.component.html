@@ -23,8 +23,8 @@
 <ngx-masonry [options]="masonryOptions" [ordered]="true" style="width: 100%; margin: 0;" (itemsLoaded)="ingredientsLoaded()">
   <div ngxMasonryItem class="masonry-item" *ngFor="let ingredient of filteredIngredients" style="width: 19%;">
     <div class="image-container">
-      <img *ngIf="ingredient.blob_url" [src]="ingredient.blob_url" alt="{{ingredient.name}}" width="100%" height="90%" (click)="populateIngredient(ingredient); openModal(viewIngredientTemplate, {class: 'modal-lg'})">
-      <img *ngIf="!ingredient.blob_url" src="/assets/bowl.png" alt="Food Silhouette" width="100%" style="opacity: 0.2" (click)="populateIngredient(ingredient); openModal(viewIngredientTemplate, {class: 'modal-lg'})">
+      <img *ngIf="ingredient.blob_url" [src]="ingredient.blob_url" alt="{{ingredient.name}}" width="100%" height="90%" (click)="populateIngredient(ingredient); filterRecipes(ingredient.id); openModal(viewIngredientTemplate, {class: 'modal-lg'})">
+      <img *ngIf="!ingredient.blob_url" src="/assets/bowl.png" alt="Food Silhouette" width="100%" style="opacity: 0.2" (click)="populateIngredient(ingredient); filterRecipes(ingredient.id); openModal(viewIngredientTemplate, {class: 'modal-lg'})">
     </div>
     <div class="d-flex justify-content-center">
       <div style="font-color: black">{{ingredient.name}}</div>
@@ -36,7 +36,30 @@
 </ngx-masonry>
 
 <ng-template #viewIngredientTemplate>
-
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{ingredient.name}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="width: 100%;">
+    <table *ngIf="filteredRecipes.length > 0">
+      <tr style="width: 100%">
+        <th>Recipe</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let recipe of filteredRecipes" style="width: 100%">
+        <td>
+          <h3>{{recipe.name}}</h3>
+        </td>
+        <td>
+          <a class="btn btn-outline-dark" routerLink="/recipe-detail/{{recipe? recipe.id: ''}}" routerLinkActive="active" title="View">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
 </ng-template>
 
 <ng-template #addIngredientTemplate>
