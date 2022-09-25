@@ -12,7 +12,8 @@
   </div>
   <div class="col">
     <a class="btn btn-outline-dark" routerLink="/recipe-detail/{{recipe? recipe.id: ''}}" routerLinkActive="active" title="View">
-      <i class="fas fa-eye"></i>
+      <i *ngIf="windowWidth > 500" class="fas fa-eye"></i>
+      <i *ngIf="windowWidth <= 500" class="fas fa-eye fa-sm"></i>
     </a>
   </div>
 </div>
