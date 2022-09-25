@@ -1,4 +1,4 @@
-<div *ngIf="windowWidth > 1000" [@columnInOutAnimation] class="row row-chart m-1 p-2 align-items-center">
+<div *ngIf="windowWidth > 1000" [@columnInOutAnimation]="windowWidth > 1000" class="row row-chart m-1 p-2 align-items-center">
   <div class="col">{{medium.title}}</div>
   <div class="col">{{medium.location}}</div>
   <div class="col">{{medium.director}}</div>
@@ -17,13 +17,15 @@
   <div class="col">{{medium.episodes}}</div>
   <div class="col">{{medium.duration_in_minutes}}</div>
   <div class="col">{{medium.language}}</div>
-  <div class="col"><button class="btn" title="Edit" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit fa-sm"></i></button></div>
+  <div *ngIf="isAuthorised()" class="col"><button class="btn" title="Edit" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit fa-sm"></i></button></div>
+  <div *ngIf="!isAuthorised()" class="col"><button class="btn" title="View" (click)="openModal(viewMediaTemplate)"><i class="fas fa-eye fa-sm"></i></button></div>
 </div>
 
-<div *ngIf="windowWidth <= 1000" [@columnInOutAnimation] class="row row-chart m-1 p-2 align-items-center">
+<div *ngIf="windowWidth <= 1000" [@columnInOutAnimation]="windowWidth <= 1000" class="row row-chart m-1 p-2 align-items-center">
   <div class="col">{{medium.title}}</div>
   <div class="col">{{medium.location}}</div>
-  <div class="col"><button class="btn" title="Edit" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit fa-sm"></i></button></div>
+  <div *ngIf="isAuthorised()" class="col"><button class="btn" title="Edit" (click)="openModal(editMediaTemplate)"><i class="fas fa-edit fa-sm"></i></button></div>
+  <div *ngIf="!isAuthorised()" class="col"><button class="btn" title="View" (click)="openModal(viewMediaTemplate)"><i class="fas fa-eye fa-sm"></i></button></div>
 </div>
 
 <ng-template #editMediaTemplate>
@@ -42,7 +44,7 @@
             <label class="control-label">Director </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="director" id="director" class="form-control" name="director">
+            <input type="text" formControlName="director" id="edit-director" class="form-control" name="edit-director">
           </div>
         </div>
         <div class="row mb-1">
@@ -50,7 +52,7 @@
             <label class="control-label">Title </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="title" id="title" class="form-control" name="title" required>
+            <input type="text" formControlName="title" id="edit-title" class="form-control" name="edit-title" required>
             <div *ngIf="editMediumForm.controls['title'].touched && editMediumForm.controls['title'].invalid" class="alert alert-danger">
               A title is required
             </div>
@@ -61,7 +63,7 @@
             <label class="control-label">Publisher </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="publisher" id="publisher" class="form-control" name="publisher">
+            <input type="text" formControlName="publisher" id="edit-publisher" class="form-control" name="edit-publisher">
           </div>
         </div>
         <div class="row mb-1">
@@ -69,7 +71,7 @@
             <label class="control-label">Actors </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="actors" id="actors" class="form-control" name="actors">
+            <input type="text" formControlName="actors" id="edit-actors" class="form-control" name="edit-actors">
           </div>
         </div>
         <div class="row mb-1">
@@ -77,7 +79,7 @@
             <label class="control-label">Format </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="format" id="format" class="form-control" name="format">
+            <input type="text" formControlName="format" id="edit-format" class="form-control" name="edit-format">
           </div>
         </div>
         <div class="row mb-1">
@@ -85,7 +87,7 @@
             <label class="control-label">Release Year </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="release_year" id="release_year" class="form-control" name="release_year">
+            <input type="text" formControlName="release_year" id="edit-release-year" class="form-control" name="edit-release-year">
           </div>
         </div>
         <div class="row mb-1">
@@ -93,7 +95,7 @@
             <label class="control-label">Series / Film </label>
           </div>
           <div class="col">
-            <select formControlName="series_or_film" id="series_or_film" class="form-control" name="series_or_film">
+            <select formControlName="series_or_film" id="edit-series-or-film" class="form-control" name="edit-series-or-film">
               <option>Film</option>
               <option>Series</option>
             </select>
@@ -104,7 +106,7 @@
             <label class="control-label">Fiction </label>
           </div>
           <div class="col">
-            <select formControlName="fiction" id="fiction" class="form-control" name="fiction">
+            <select formControlName="fiction" id="edit-fiction" class="form-control" name="edit-fiction">
               <option>Fiction</option>
               <option>Non-Fiction</option>
             </select>
@@ -115,7 +117,7 @@
             <label class="control-label">Episodes </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="episodes" id="episodes" class="form-control" name="episodes">
+            <input type="text" formControlName="episodes" id="edit-episodes" class="form-control" name="edit-episodes">
           </div>
         </div>
         <div class="row mb-1">
@@ -123,7 +125,7 @@
             <label class="control-label">Duration (mins) </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="duration_in_minutes" id="duration_in_minutes" class="form-control" name="duration_in_minutes">
+            <input type="text" formControlName="duration_in_minutes" id="edit-duration-in-minutes" class="form-control" name="edit-duration-in-minutes">
           </div>
         </div>
         <div class="row mb-1">
@@ -131,7 +133,7 @@
             <label class="control-label">Language </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="language" id="language" class="form-control" name="language">
+            <input type="text" formControlName="language" id="edit-language" class="form-control" name="edit-language">
           </div>
         </div>
         <div class="row mb-1">
@@ -139,7 +141,7 @@
             <label class="control-label">Location </label>
           </div>
           <div class="col">
-            <select formControlName="location" id="location" class="form-control" name="location">
+            <select formControlName="location" id="edit-location" class="form-control" name="edit-location">
               <option>Attic</option>
               <option>Living Room</option>
             </select>
@@ -159,6 +161,110 @@
         </div>
       </div>
     </form>
+  </div>
+</ng-template>
+
+<ng-template #viewMediaTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{medium.title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Director </label>
+          </div>
+          <div class="col">
+            <label id="view-director">{{medium.director}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Publisher </label>
+          </div>
+          <div class="col">
+            <label id="view-publisher">{{medium.publisher}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Actors </label>
+          </div>
+          <div class="col">
+            <mat-chip-list aria-label="Media actors">
+              <mat-chip *ngFor="let actor of medium.actors?.split(',')">
+                {{actor}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Format </label>
+          </div>
+          <div class="col">
+            <label id="view-format">{{medium.format}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Release Year </label>
+          </div>
+          <div class="col">
+            <label id="view-release-year">{{medium.release_year}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Series / Film </label>
+          </div>
+          <div class="col">
+            <label id="view-series-or-film">{{medium.series_or_film}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Fiction </label>
+          </div>
+          <div class="col">
+            <label id="view-fiction">{{medium.fiction}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Episodes </label>
+          </div>
+          <div class="col">
+            <label id="view-episodes">{{medium.episodes}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Duration (mins) </label>
+          </div>
+          <div class="col">
+            <label id="view-duration-in-minutes">{{medium.duration_in_minutes}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Language </label>
+          </div>
+          <div class="col">
+            <label id="view-language">{{medium.language}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Location </label>
+          </div>
+          <div class="col">
+            <label id="view-location">{{medium.location}}</label>
+          </div>
+        </div>
   </div>
 </ng-template>
 

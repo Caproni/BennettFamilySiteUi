@@ -1,9 +1,9 @@
 <br>
 <div class="container mx-auto text-center">
-  <h1>Equipments</h1>
+  <h1>Equipment</h1>
 </div>
 <br>
-<div class="mx-auto text-center">
+<div *ngIf="isAuthorised()" class="mx-auto text-center">
   <button class="btn btn-outline-dark" (click)="openModal(addEquipmentTemplate, {})">Add Equipment</button>
 </div>
 <br>
@@ -23,8 +23,8 @@
 <ngx-masonry *ngIf="filteredEquipments.length > 0" [options]="masonryOptions" [ordered]="true" style="width: 100%; margin: 0;" (itemsLoaded)="equipmentLoaded()">
   <div ngxMasonryItem class="masonry-item" *ngFor="let equipment of filteredEquipments" style="width: 19%;">
     <div class="image-container">
-      <img *ngIf="equipment.blob_url" [src]="equipment.blob_url" alt="{{equipment.name}}" width="100%" height="90%" (click)="populateEquipment(equipment); openModal(viewEquipmentTemplate, {class: 'modal-lg'})">
-      <img *ngIf="!equipment.blob_url" src="/assets/bowl.png" alt="Food Silhouette" width="100%" height="90%" style="opacity: 0.2" (click)="populateEquipment(equipment); openModal(viewEquipmentTemplate, {class: 'modal-lg'})">
+      <img *ngIf="equipment.blob_url" [src]="equipment.blob_url" alt="{{equipment.name}}" width="100%" height="90%" (click)="populateEquipment(equipment); filterRecipes(equipment.id); openModal(viewEquipmentTemplate, {class: 'modal-lg'})">
+      <img *ngIf="!equipment.blob_url" src="/assets/bowl.png" alt="Food Silhouette" width="100%" height="90%" style="opacity: 0.2" (click)="populateEquipment(equipment); filterRecipes(equipment.id); openModal(viewEquipmentTemplate, {class: 'modal-lg'})">
     </div>
     <div class="d-flex justify-content-center">
       <div style="font-color: black">{{equipment.name}}</div>
@@ -36,7 +36,32 @@
 </ngx-masonry>
 
 <ng-template #viewEquipmentTemplate>
-
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{equipment.name}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="width: 100%;">
+    <img *ngIf="equipment.blob_url" [src]="equipment.blob_url" alt="Equipment Image" width="100%">
+    <img *ngIf="!equipment.blob_url" src="/assets/bowl.png" alt="Equipment Silhouette" width="100%">
+    <table *ngIf="filteredRecipes.length > 0">
+      <tr style="width: 100%">
+        <th>Recipe</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let recipe of filteredRecipes" style="width: 100%">
+        <td>
+          <h3>{{recipe.name}}</h3>
+        </td>
+        <td>
+          <a class="btn btn-outline-dark" (click)="viewRecipe(recipe)" title="View">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
 </ng-template>
 
 <ng-template #addEquipmentTemplate>

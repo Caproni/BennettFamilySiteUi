@@ -37,31 +37,36 @@ export class DatetimeSliderComponent implements OnInit {
       .pipe(takeWhile(x => this.isActive))
       .subscribe(
         (date) => {
-          this.sliderMin = date;
-          this.value = date.getTime();
-          // this.updateSlider();
+          this.sliderMin = new Date(date);
+          this.value = this.sliderMin.getTime();
         }
       );
     this.maxDate
       .pipe(takeWhile(x => this.isActive))
       .subscribe(
         (date) => {
-          this.sliderMax = date;
-          this.highValue = date.getTime();
+          this.sliderMax = new Date(date);
+          this.highValue = this.sliderMax.getTime();
           this.updateSlider();
         },
-        () => this.updateSlider()
+        () => {
+          console.log('Error in datetime slider');
+        }
       );
     this.updateSlider();
   }
 
   updateSlider(): void {
-    this.value = this.sliderMin.getTime();
-    this.highValue = this.sliderMax.getTime();
+
+    const minDate = new Date(this.sliderMin);
+    const maxDate = new Date(this.sliderMax);
+
+    this.value = minDate.getTime();
+    this.highValue = maxDate.getTime();
 
     const dates: Date[] = [];
-    let thisDate = this.sliderMin;
-    while (thisDate <= this.sliderMax) {
+    let thisDate = minDate;
+    while (thisDate <= maxDate) {
       dates.push(thisDate);
       thisDate = new Date(thisDate.getTime() + this.StepsInMilliseconds);
     }

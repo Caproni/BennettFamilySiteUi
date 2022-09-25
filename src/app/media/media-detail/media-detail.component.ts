@@ -8,6 +8,7 @@ import { takeWhile } from 'rxjs/operators';
 import { Medium } from 'src/app/_models/media/medium';
 import { MediaUpdateService } from 'src/app/_services/api/media/media-update.service';
 import { MediaDeleteService } from 'src/app/_services/api/media/media-delete.service';
+import { LoginService } from 'src/app/_services/login/login.service';
 
 @Component({
   selector: 'fam-app-media-detail',
@@ -64,6 +65,7 @@ export class MediaDetailComponent implements OnInit {
 
   constructor(
     private modalService: BsModalService,
+    private loginService: LoginService,
     private toasterService: ToastrService,
     private changeDetectorRef: ChangeDetectorRef,
     private mediaUpdateService: MediaUpdateService,
@@ -97,6 +99,10 @@ export class MediaDetailComponent implements OnInit {
 
   openModal(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template);
+  }
+
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised();
   }
 
   onMediaUpdate(modalRef: BsModalRef) {

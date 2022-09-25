@@ -4,7 +4,7 @@
 </div>
 <br>
 
-<div class="row">
+<div *ngIf="isAuthorised()" class="row">
   <div class="col"></div>
   <div class="col mx-auto text-center">
     <button class="btn btn-outline-dark" (click)="openModal(addPersonTemplate)">Add Person</button>

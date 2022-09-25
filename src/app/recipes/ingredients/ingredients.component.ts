@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { animate, style } from '@angular/animations';
 import { NgxMasonryComponent, NgxMasonryOptions } from 'ngx-masonry';
@@ -86,6 +87,7 @@ export class IngredientsComponent implements OnInit {
     private loginService: LoginService,
     private modalService: BsModalService,
     private toasterService: ToastrService,
+    private routerService: Router,
     private ingredientCreateService: IngredientCreateService,
     private ingredientReadService: IngredientReadService,
     private ingredientUpdateService: IngredientUpdateService,
@@ -131,8 +133,17 @@ export class IngredientsComponent implements OnInit {
     this.windowHeight = window.innerHeight;
   }
 
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised()
+  }
+
   openModal(template: TemplateRef<any>, modalOptions: any): void {
     this.modalRef = this.modalService.show(template, modalOptions);
+  }
+
+  viewRecipe(recipe: Recipe) {
+    this.modalRef.hide();
+    this.routerService.navigate([`/recipe-detail/${recipe.id}`])
   }
 
   filterIngredients() {

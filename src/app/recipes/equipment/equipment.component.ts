@@ -1,4 +1,5 @@
 import {Component, HostListener, OnInit, TemplateRef} from '@angular/core';
+import { Router } from '@angular/router';
 import { animate, style } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeWhile } from 'rxjs/operators';
@@ -6,6 +7,9 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxMasonryOptions } from 'ngx-masonry';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
+import { Recipe } from 'src/app/_models/recipes/recipe';
+import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
+import { EquipmentUsage } from 'src/app/_models/recipes/equipment-usage';
 import { Equipment } from 'src/app/_models/recipes/equipment';
 import { LoginService } from 'src/app/_services/login/login.service';
 import { EquipmentUpdateService } from 'src/app/_services/api/recipes/equipment/equipment-update.service';
@@ -13,6 +17,9 @@ import { EquipmentDeleteService } from 'src/app/_services/api/recipes/equipment/
 import { EquipmentCreateService } from 'src/app/_services/api/recipes/equipment/equipment-create.service';
 import { EquipmentReadService } from 'src/app/_services/api/recipes/equipment/equipment-read.service';
 import { EquipmentImagePutService } from 'src/app/_services/api/recipes/equipment/equipment-image-put.service';
+import { RecipeReadService } from 'src/app/_services/api/recipes/recipe/recipe-read.service';
+import { RecipeStepReadService } from 'src/app/_services/api/recipes/recipe-step/recipe-step-read.service';
+import { EquipmentUsageReadService } from 'src/app/_services/api/recipes/equipment-usage/equipment-usage-read.service';
 
 
 @Component({
@@ -47,6 +54,16 @@ export class EquipmentComponent implements OnInit {
   filteredEquipments!: Equipment[];
   equipment!: Equipment;
 
+  loadedRecipes = false;
+  recipes!: Recipe[];
+  filteredRecipes!: Recipe[];
+
+  loadedEquipmentUsages = false;
+  equipmentUsages!: EquipmentUsage[];
+
+  loadedRecipeSteps = false;
+  recipeSteps!: RecipeStep[];
+
   isActive = true;
   loadedEquipment = false;
 
@@ -70,11 +87,15 @@ export class EquipmentComponent implements OnInit {
     private loginService: LoginService,
     private modalService: BsModalService,
     private toasterService: ToastrService,
+    private routerService: Router,
     private equipmentCreateService: EquipmentCreateService,
     private equipmentReadService: EquipmentReadService,
     private equipmentUpdateService: EquipmentUpdateService,
     private equipmentDeleteService: EquipmentDeleteService,
     private equipmentImagePutService: EquipmentImagePutService,
+    private recipeReadService: RecipeReadService,
+    private equipmentUsageReadService: EquipmentUsageReadService,
+    private recipeStepReadService: RecipeStepReadService,
   ) { }
 
   ngOnInit(): void {
@@ -87,6 +108,22 @@ export class EquipmentComponent implements OnInit {
       this.filteredEquipments = this.equipments;
     });
 
+    this.recipeReadService.readRecipes().subscribe((b) => {
+      this.loadedRecipes = b;
+      this.recipes = this.recipeReadService.getRecipes();
+      this.filteredRecipes = this.recipes;
+    });
+
+    this.equipmentUsageReadService.readEquipmentUsages().subscribe((b) => {
+      this.loadedEquipmentUsages = b;
+      this.equipmentUsages = this.equipmentUsageReadService.getEquipmentUsages();
+    });
+
+    this.recipeStepReadService.readRecipeSteps().subscribe((b) => {
+      this.loadedRecipeSteps = b;
+      this.recipeSteps = this.recipeStepReadService.getRecipeSteps();
+    });
+
   }
 
   @HostListener('window:resize', ['$event'])
@@ -95,12 +132,21 @@ export class EquipmentComponent implements OnInit {
     this.windowHeight = window.innerHeight;
   }
 
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised()
+  }
+
   openModal(template: TemplateRef<any>, modalOptions: any): void {
     this.modalRef = this.modalService.show(template, modalOptions);
   }
 
   populateEquipment(equipment: Equipment) {
     this.equipment = equipment;
+  }
+
+  viewRecipe(recipe: Recipe) {
+    this.modalRef.hide();
+    this.routerService.navigate([`/recipe-detail/${recipe.id}`])
   }
 
   filterEquipment() {
@@ -143,6 +189,26 @@ export class EquipmentComponent implements OnInit {
         true
       );
     });
+  }
+
+  filterRecipes(equipmentId: string | null) {
+
+    if (!equipmentId) return;
+
+    if (!(this.loadedRecipes && this.loadedEquipment && this.loadedEquipmentUsages && this.loadedRecipeSteps)) return;
+
+    this.filteredRecipes = this.recipes.filter(
+      x => {
+        let steps = this.recipeSteps.filter(step => step.recipe_id === x.id);
+        for (let step of steps) {
+          let usages = this.equipmentUsages.filter(y => y.recipe_step_id === step.id);
+          for (let usage of usages) {
+            if (usage.equipment_id === equipmentId) return true;
+          }
+        }
+        return false;
+      }
+    );
   }
 
   onEquipmentFormSubmit(): void {

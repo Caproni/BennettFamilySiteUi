@@ -1,13 +1,8 @@
 <div class="col">
-  <h3>{{ingredient.name + ': ' + usage.quantity + ' ' + usage.quantity_units}}</h3>
+  <h3>{{ingredient.name + ': ' + usage.quantity + ' ' + usage.quantity_units}} - {{ingredient.description}}</h3>
 </div>
 <div class="col">
-  <div class="row">
-    <p>{{ingredient.description}}</p>
-  </div>
-  <div class="row">
-    <p>{{usage.notes}}</p>
-  </div>
+  <h3>{{usage.notes}}</h3>
 </div>
 <div *ngIf="ingredient.blob_url" class="col">
   <img [src]="ingredient.blob_url" alt="{{ingredient.name}}" style="border-radius: 10px;">

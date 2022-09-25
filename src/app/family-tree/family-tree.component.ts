@@ -132,6 +132,10 @@ export class FamilyTreeComponent implements OnInit {
     this.windowHeight = window.innerHeight;
   }
 
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised()
+  }
+
   getColumns(): number {
     return this.windowWidth / 400
   }
