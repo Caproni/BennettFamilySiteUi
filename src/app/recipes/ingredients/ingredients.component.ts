@@ -56,7 +56,7 @@ export class IngredientsComponent implements OnInit {
 
   loadedRecipes = false;
   recipes!: Recipe[];
-  filteredRecipes!: Recipe[];
+  filteredRecipes: Recipe[] = [];
 
   loadedIngredientUsages = false;
   ingredientUsages!: IngredientUsage[];
@@ -112,7 +112,6 @@ export class IngredientsComponent implements OnInit {
     this.recipeReadService.readRecipes().subscribe((b) => {
       this.loadedRecipes = b;
       this.recipes = this.recipeReadService.getRecipes();
-      this.filteredRecipes = this.recipes;
     });
 
     this.ingredientUsageReadService.readIngredientUsages().subscribe((b) => {

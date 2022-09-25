@@ -56,7 +56,7 @@ export class EquipmentComponent implements OnInit {
 
   loadedRecipes = false;
   recipes!: Recipe[];
-  filteredRecipes!: Recipe[];
+  filteredRecipes: Recipe[] = [];
 
   loadedEquipmentUsages = false;
   equipmentUsages!: EquipmentUsage[];
@@ -111,7 +111,6 @@ export class EquipmentComponent implements OnInit {
     this.recipeReadService.readRecipes().subscribe((b) => {
       this.loadedRecipes = b;
       this.recipes = this.recipeReadService.getRecipes();
-      this.filteredRecipes = this.recipes;
     });
 
     this.equipmentUsageReadService.readEquipmentUsages().subscribe((b) => {
