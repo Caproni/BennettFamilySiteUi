@@ -70,7 +70,7 @@
       <div *ngIf="windowWidth > 1000" [@inOutAnimation]="windowWidth > 1000" class="col"><b>Description</b></div>
       <div class="col"><b>Cooking Time (mins)</b></div>
       <div class="col"><b>Source</b></div>
-      <div class="col"><b>Tags</b></div>
+      <div *ngIf="windowWidth > 700" [@columnInOutAnimation]="windowWidth > 700" class="col"><b>Tags</b></div>
       <div class="col"></div>
     </div>
     <div *ngIf="recipes && recipes.length < 1 && !loadedRecipes">

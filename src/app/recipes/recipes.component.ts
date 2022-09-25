@@ -124,6 +124,7 @@ export class RecipesComponent implements OnInit {
   onResize(event: any) {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
+    console.log('Width: ', this.windowWidth);
   }
 
   ngOnDestroy(): void {

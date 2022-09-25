@@ -3,7 +3,7 @@
   <div  *ngIf="windowWidth > 1000" [@columnInOutAnimation]="windowWidth > 1000" class="col">{{recipe? recipe.description: ''}}</div>
   <div class="col">{{recipe? recipe.duration_in_minutes: ''}}</div>
   <div class="col">{{recipe? recipe.source: ''}}</div>
-  <div class="col">
+  <div *ngIf="windowWidth > 700" [@columnInOutAnimation]="windowWidth > 700" class="col">
     <mat-chip-list aria-label="Recipe tags">
       <mat-chip *ngFor="let tag of recipe.tags">
         {{tag}}
@@ -12,8 +12,7 @@
   </div>
   <div class="col">
     <a class="btn btn-outline-dark" routerLink="/recipe-detail/{{recipe? recipe.id: ''}}" routerLinkActive="active" title="View">
-      <i *ngIf="windowWidth > 500" [@columnInOutAnimation]="windowWidth > 500" class="fas fa-eye"></i>
-      <i *ngIf="windowWidth <= 500" [@columnInOutAnimation]="windowWidth <= 500" class="fas fa-eye fa-sm"></i>
+      <i class="fas fa-eye"></i>
     </a>
   </div>
 </div>
