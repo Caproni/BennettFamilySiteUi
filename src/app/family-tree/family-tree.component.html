@@ -7,13 +7,22 @@
 <div *ngIf="isAuthorised()" class="row">
   <div class="col"></div>
   <div class="col mx-auto text-center">
-    <button class="btn btn-outline-dark" (click)="openModal(addPersonTemplate)">Add Person</button>
+    <button class="btn btn-outline-dark" (click)="openModal(addPersonTemplate)">
+      <i class="fa-solid fa-person" title="View Ingredients"></i>
+      Add Person
+    </button>
   </div>
   <div class="col mx-auto text-center">
-    <button class="btn btn-outline-dark" (click)="openModal(addRelationshipTemplate)">Add Relationship</button>
+    <button class="btn btn-outline-dark" (click)="openModal(addRelationshipTemplate)">
+      <i class="fa-solid fa-people-arrows" title="View Ingredients"></i>
+      Add Relationship
+    </button>
   </div>
   <div class="col mx-auto text-center">
-    <button class="btn btn-outline-dark" (click)="openModal(addDataSourceTemplate)">Add Data Source</button>
+    <button class="btn btn-outline-dark" (click)="openModal(addDataSourceTemplate)">
+      <i class="fa-solid fa-receipt" title="View Ingredients"></i>
+      Add Data Source
+    </button>
   </div>
   <div class="col"></div>
 </div>
