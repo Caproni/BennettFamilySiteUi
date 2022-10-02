@@ -164,14 +164,6 @@ export class RecipeViewComponent implements OnInit {
     return this.loginService.getAuthorised();
   }
 
-  getEquipment(equipmentId: string): Equipment {
-    return this.recipeDetails.equipment.filter(x => x.id === equipmentId)[0]
-  }
-
-  print(note: string, content: any) {
-    console.log(note, content);
-  }
-
   onDeleteRecipe(): void {
 
     if (!this.loginService.checkModalAuthorised(this.modalRef)) return;

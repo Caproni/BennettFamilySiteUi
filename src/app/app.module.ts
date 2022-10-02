@@ -40,6 +40,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CalendarComponent } from './calendar/calendar.component';
 import { IngredientUsageComponent } from './recipes/recipe-view/ingredient-usage/ingredient-usage.component';
+import { FamilyNetworkChartComponent } from './family-tree/family-network-chart/family-network-chart.component';
+import { NodeComponent } from './family-tree/family-network-chart/node/node.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,8 @@ import { IngredientUsageComponent } from './recipes/recipe-view/ingredient-usage
     EquipmentComponent,
     CalendarComponent,
     IngredientUsageComponent,
+    FamilyNetworkChartComponent,
+    NodeComponent,
   ],
   imports: [
     BrowserModule,

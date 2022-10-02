@@ -16,7 +16,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
   styleUrls: ['./media-detail.component.css'],
   animations: [
     trigger(
-      'columnInOutAnimation',
+      'inOutAnimation',
       [
         transition(
           ':enter',

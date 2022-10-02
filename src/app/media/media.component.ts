@@ -18,7 +18,7 @@ import { Medium } from 'src/app/_models/media/medium';
   styleUrls: ['./media.component.css'],
   animations: [
     trigger(
-      'columnInOutAnimation',
+      'inOutAnimation',
       [
         transition(
           ':enter',

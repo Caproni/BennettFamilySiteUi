@@ -27,100 +27,13 @@
   <div class="col"></div>
 </div>
 <br>
-<mat-grid-list
-  cols="{{getColumns()}}"
-  rowHeight="4:4"
-  gutterSize="3%"
+<fam-app-family-network-chart
+  [people]="people"
+  [relationships]="relationships"
+  [dataSources]="dataSources"
 >
-  <mat-grid-tile *ngFor="let person of people">
-    <div class="image-container">
-      <img *ngIf="person.blob_url" [src]="person.blob_url" alt="Person Image" width="100%">
-      <img *ngIf="!person.blob_url" src="/assets/silhouette.png" alt="Person Silhouette" width="50%">
-      <div class="image-text">
-        <button type="button" class="btn" aria-label="Update Person Image" (click)="populatePerson(person.id); openModal(personImageTemplate)">
-          <i class="fas fa-image fa-lg fa-fw fa-inverse" title="Update Person's Image"></i>
-        </button>
-      </div>
-    </div>
-    <mat-grid-tile-footer>
-      <div class="col">
-        <div class="row">
-          <div style="font-size:8pt">
-            {{person.first_name + ' ' + person.middle_names.join(" ") + ' ' + person.surname + (person.chosen_name ? ' (' + person.chosen_name + ')' : '')}}
-          </div>
-        </div>
-      </div>
-      <div *ngIf="person.date_of_birth" class="col">
-        <div class="row" style="font-size:8pt">
-          {{person.date_of_birth? (person.date_of_birth | date : 'd MMM yyyy') : ''}}
-        </div>
-      </div>
-      <div class="col-1">
-        <button class="btn" (click)="populatePersonForm(person.id); openModal(editPersonTemplate)">
-          <i class="fas fa-edit fa-sm fa-inverse"></i>
-        </button>
-      </div>
-      <div *ngIf="person.narrative" class="row">
-        <div class="col">
-          {{person.narrative}}
-        </div>
-      </div>
-    </mat-grid-tile-footer>
-  </mat-grid-tile>
-</mat-grid-list>
-<div class="family-tree-image"></div>
 
-<ng-template #personImageTemplate>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Update Person Image</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="personImageForm">
-      <div class="form-horizontal">
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Image </label>
-          </div>
-          <div class="col">
-            <input
-              #photoUpload
-              type="file"
-              accept="image/*"
-              class="file-upload"
-              style="display: none;"
-              (change)="onPersonImageSelected($event)">
-
-            <button class="btn btn-outline-dark"
-                    (click)="photoUpload.click()">
-              <i class="fas fa-upload"> Browse</i>
-            </button>
-            <div class="file-upload">
-              <input type="text" formControlName="image" id="image" class="form-control" name="image" required>
-              <div *ngIf="personImageForm.controls['image'].touched && personImageForm.controls['image'].invalid" class="alert alert-danger">
-                An image file is required
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col">
-            <div class="row mx-auto justify-content-center">
-              <button class="btn btn-outline-success" style="width: 80%;"
-                      [disabled]="!personImageForm.valid"
-                      (click)="onPersonImageFormSubmit()">Update</button>
-            </div>
-            <div class="row mx-auto pt-2 justify-content-center">
-              <button class="btn btn-outline-danger" (click)="modalRef.hide(); openModal(deleteFamilyTreePersonImageTemplate);" style="width: 80%;">Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-</ng-template>
+</fam-app-family-network-chart>
 
 <ng-template #addPersonTemplate>
   <div class="modal-header">
@@ -272,156 +185,6 @@
   </div>
 </ng-template>
 
-<ng-template #editPersonTemplate>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Edit Person</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="personForm">
-      <div class="form-horizontal">
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">First Name </label>
-          </div>
-          <div class="col">
-            <input type="text" formControlName="first_name" id="edit-first-name" class="form-control" name="edit-first-name" required>
-            <div *ngIf="personForm.controls['first_name'].touched && personForm.controls['first_name'].invalid" class="alert alert-danger">
-              A first name is required
-            </div>
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Middle Names </label>
-          </div>
-          <div class="col">
-            <input type="text" formControlName="middle_names" id="edit-middle-names" class="form-control" name="edit-middle-names">
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Surname </label>
-          </div>
-          <div class="col">
-            <input type="text" formControlName="surname" id="edit-surname" class="form-control" name="edit-surname" required>
-            <div *ngIf="personForm.controls['surname'].touched && personForm.controls['surname'].invalid" class="alert alert-danger">
-              A surname is required
-            </div>
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Chosen Name </label>
-          </div>
-          <div class="col">
-            <input type="text" formControlName="chosen_name" id="edit-chosen-name" class="form-control" name="edit-chosen-name">
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Title </label>
-          </div>
-          <div class="col">
-            <input type="text" formControlName="title" id="edit-title" class="form-control" name="edit-title">
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Birthplace </label>
-          </div>
-          <div class="col">
-            <input type="text" formControlName="birthplace" id="edit-birthplace" class="form-control" name="edit-birthplace">
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Sex </label>
-          </div>
-          <div class="col">
-            <select formControlName="sex" id="edit-sex" class="form-control" name="edit-sex">
-              <option>Unknown</option>
-              <option>XY</option>
-              <option>XX</option>
-            </select>
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Date of Birth </label>
-          </div>
-          <div class="col">
-            <input
-              type="text"
-              placeholder="Select date of birth"
-              class="form-control"
-              bsDatepicker
-              formControlName="date_of_birth"
-              [bsConfig]="{
-              rangeInputFormat: 'YYYY-MM-DD',
-              dateInputFormat: 'DD MMM YYYY'
-            }"
-            />
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Date of Death </label>
-          </div>
-          <div class="col">
-            <input
-              type="text"
-              placeholder="Select date of death"
-              class="form-control"
-              bsDatepicker
-              formControlName="date_of_death"
-              [bsConfig]="{
-              rangeInputFormat: 'YYYY-MM-DD',
-              dateInputFormat: 'DD MMM YYYY'
-            }"
-            />
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Previous Surname </label>
-          </div>
-          <div class="col">
-            <input type="text" formControlName="previous_surnames" id="edit-previous-surnames" class="form-control" name="edit-previous-surnames">
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="col form-group">
-            <label class="control-label">Narrative </label>
-          </div>
-          <div class="col">
-            <textarea matInput
-                      formControlName="narrative"
-                      cdkTextareaAutosize
-                      matAutosizeMinRows=1
-                      matAutosizeMaxRows=5
-            ></textarea>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col">
-            <div class="row mx-auto justify-content-center">
-              <button class="btn btn-outline-success" style="width: 80%;"
-                      [disabled]="!personForm.valid"
-                      (click)="onEditPersonFormSubmit()">Save</button>
-            </div>
-            <div class="row mx-auto pt-2 justify-content-center">
-              <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-</ng-template>
-
 <ng-template #addRelationshipTemplate>
   <div class="modal-header">
     <h4 class="modal-title pull-left">New Relationship</h4>
@@ -437,8 +200,11 @@
             <label class="control-label">First Person </label>
           </div>
           <div class="col">
-            <select formControlName="person_one" id="person_one" class="form-control" name="person_one">
-              <option *ngFor="let person of people">{{person.first_name + ' ' + person.surname + (person.date_of_birth | date: ' (dd MMM Y)') || ''}}</option>
+            <select formControlName="person_one" id="person-one-id" class="form-control" name="person-one-id">
+              <option></option>
+              <option *ngFor="let person of people">
+                {{person.first_name + ' ' + person.surname + ((person.date_of_birth | date: ' (dd MMM Y)') || '') + ' [' + person.id + ']'}}
+              </option>
             </select>
           </div>
         </div>
@@ -447,8 +213,11 @@
             <label class="control-label">Second Person </label>
           </div>
           <div class="col">
-            <select formControlName="person_two" id="person_two" class="form-control" name="person_two">
-              <option *ngFor="let person of people">{{person.first_name + ' ' + person.surname + (person.date_of_birth | date: ' (dd MMM Y)') || ''}}</option>
+            <select formControlName="person_two" id="person-two-id" class="form-control" name="person-two-id">
+              <option></option>
+              <option *ngFor="let person of people">
+                {{person.first_name + ' ' + person.surname + ((person.date_of_birth | date: ' (dd MMM Y)') || '') + ' [' + person.id + ']'}}
+              </option>
             </select>
           </div>
         </div>
@@ -458,10 +227,12 @@
           </div>
           <div class="col">
             <select formControlName="relationship_type" id="relationship_type" class="form-control" name="relationship_type">
-              <option>Child</option>
+              <option></option>
               <option>Civil Partnership</option>
-              <option>Married</option>
+              <option>Child</option>
               <option>Divorced</option>
+              <option>Married</option>
+              <option>Sibling</option>
             </select>
           </div>
         </div>
@@ -475,7 +246,7 @@
               placeholder="Select relationship start date"
               class="form-control"
               bsDatepicker
-              formControlName="start_time"
+              formControlName="start_date"
               [bsConfig]="{
               rangeInputFormat: 'YYYY-MM-DD',
               dateInputFormat: 'DD MMM YYYY'
@@ -493,7 +264,7 @@
               placeholder="Select relationship end date"
               class="form-control"
               bsDatepicker
-              formControlName="end_time"
+              formControlName="end_date"
               [bsConfig]="{
               rangeInputFormat: 'YYYY-MM-DD',
               dateInputFormat: 'DD MMM YYYY'
@@ -595,41 +366,5 @@
         </div>
       </div>
     </form>
-  </div>
-</ng-template>
-
-<ng-template #deleteFamilyTreePersonImageTemplate>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">
-      Are you sure you want to delete the image for this person?
-    </h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="row justify-content-center">
-      <button
-        class="btn btn-outline-danger"
-        (click)="onDeleteFamilyTreePersonImage()"
-        style="width: 80%"
-      >
-        Confirm
-      </button>
-    </div>
-    <div class="row justify-content-center pt-2">
-      <button
-        class="btn btn-outline-secondary"
-        (click)="modalRef.hide()"
-        style="width: 80%"
-      >
-        Cancel
-      </button>
-    </div>
   </div>
 </ng-template>
