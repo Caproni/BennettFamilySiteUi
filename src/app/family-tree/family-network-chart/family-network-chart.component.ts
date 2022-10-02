@@ -10,6 +10,9 @@ interface Node {
   id: string,
   img: HTMLImageElement,
   name: string,
+  sex: string,
+  title: string,
+  birthplace: string,
 }
 
 interface Link {
@@ -52,17 +55,22 @@ export class FamilyNetworkChartComponent implements AfterViewInit {
       const img = new Image();
       img.src = person.blob_url ?? '/assets/silhouette.png';
 
+      const dob = person.date_of_birth;
+
       this.nodes.push({
         id: person.id,
-        name: person.first_name + ' ' + person.surname + ' (' + person.date_of_birth + ')',
+        name: person.first_name + ' ' + person.surname + (dob ? ' (' + new Date(dob).toLocaleDateString('en-GB') + ')' : ''),
+        sex: person.sex ?? '',
+        title: person.title ?? '',
+        birthplace: person.birthplace ?? '',
         img: img,
       });
     }
 
     for (let relationship of this.relationships) {
       this.links.push({
-        source: relationship.person_one,
-        target: relationship.person_two,
+        source: relationship.person_two,
+        target: relationship.person_one,
         relationship_type: relationship.relationship_type,
         narrative: relationship.narrative ?? '',
         start_date: relationship.start_date ? new Date(relationship.start_date) : null,
@@ -75,25 +83,79 @@ export class FamilyNetworkChartComponent implements AfterViewInit {
       links: this.links,
     }
 
+    const size = 24;
+
     this.graph = ForceGraph()(this.htmlElement);
     this.graph.linkColor('#ffffff');
     this.graph.linkLabel('relationship_type')
     this.graph.linkWidth(2);
+    // this.graph.nodePointerAreaPaint(
+    //   ({ id, x, y }, color, ctx) => {
+    //     // @ts-ignore
+    //     ctx.beginPath(); ctx.arc(x, y, 5, 0, 2 * Math.PI, false);
+    //   }
+    // );
     // @ts-ignore
     this.graph.nodeCanvasObject(({ img, x, y }, ctx) => {
-      const size = 24;
       // @ts-ignore
       ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
     });
-    this.graph.nodePointerAreaPaint((node, color, ctx) => {
-        const size = 24;
-        ctx.fillStyle = color;
+    this.graph.linkDirectionalArrowLength((link) => {
       // @ts-ignore
-        ctx.fillRect(node.x - size / 2, node.y - size / 2, size, size); // draw square as pointer trap
-      });
-    this.graph.linkDirectionalParticles(2);
-    this.graph.linkDirectionalParticleSpeed(1);
-    this.graph.onEngineStop(() => this.graph.zoomToFit(400, 200));
+      return link.relationship_type === 'Child'? 6 : 0;
+    });
+    this.graph.linkCanvasObject((link, ctx) => {
+      const MAX_FONT_SIZE = 4;
+      const LABEL_NODE_MARGIN = this.graph.nodeRelSize() * 1.5;
+
+      const start = link.source;
+      const end = link.target;
+
+      // ignore unbound links
+      if (typeof start !== 'object' || typeof end !== 'object') return;
+
+      // calculate label positioning
+      // @ts-ignore
+      const textPos = Object.assign(...['x', 'y'].map(c => ({
+      // @ts-ignore
+        [c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
+      })));
+
+      // @ts-ignore
+      const relLink = { x: end.x - start.x, y: end.y - start.y };
+
+      const maxTextLength = Math.sqrt(Math.pow(relLink.x, 2) + Math.pow(relLink.y, 2)) - LABEL_NODE_MARGIN * 2;
+
+      let textAngle = Math.atan2(relLink.y, relLink.x);
+      // maintain label vertical orientation for legibility
+      if (textAngle > Math.PI / 2) textAngle = -(Math.PI - textAngle);
+      if (textAngle < -Math.PI / 2) textAngle = -(-Math.PI - textAngle);
+
+      // @ts-ignore
+      const label = `${link.relationship_type}`;
+
+      // estimate fontSize to fit in link length
+      ctx.font = '1px Sans-Serif';
+      const fontSize = Math.min(MAX_FONT_SIZE, maxTextLength / ctx.measureText(label).width);
+      ctx.font = `${fontSize}px Sans-Serif`;
+      const textWidth = ctx.measureText(label).width;
+      const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+
+      // draw text label (with background rect)
+      ctx.save();
+      ctx.translate(textPos['x'], textPos['y']);
+      ctx.rotate(textAngle);
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      // @ts-ignore
+      ctx.fillRect(- bckgDimensions[0] / 2, - bckgDimensions[1] / 2, ...bckgDimensions);
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'darkgrey';
+      ctx.fillText(label, 0, 0);
+      ctx.restore();
+    });
     this.graph.graphData(familyTreeData);
 
     this.windowResize();
