@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Medium } from 'src/app/_models/media/medium';
+import { Content } from 'src/app/_models/content/content';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class MediaCreateService {
     private http: HttpClient,
   ) { }
 
-  createMedia(medium: Medium) {
+  createMedia(medium: Content) {
     const url = `${this.baseUrl}/createMedia`;
     return this.http.post(url, medium);
   }

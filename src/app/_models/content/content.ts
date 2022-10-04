@@ -1,4 +1,4 @@
-export interface Medium {
+export interface Content {
   director: string | null;
   title: string;
   publisher: string | null;

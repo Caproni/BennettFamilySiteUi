@@ -32,7 +32,11 @@
 
 <ngx-masonry [options]="masonryOptions" [ordered]="true" style="width: 100%; margin: 0;" (itemsLoaded)="photosLoaded()">
   <div ngxMasonryItem class="masonry-item" *ngFor="let photo of filteredPhotos" style="width: {{getPhotoWidth()}};">
-    <img [src]="photo.blob_url" alt="{{photo.name}}" width="100%" height="90%" (click)="populatePhoto(photo); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
+    <img *ngIf="photo.file_format === undefined" [src]="photo.blob_url" alt="{{photo.name}}" width="100%" height="90%" (click)="populatePhoto(photo); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
+    <img *ngIf="photo.file_format?.includes('image')" [src]="photo.blob_url" alt="{{photo.name}}" width="100%" height="90%" (click)="populatePhoto(photo); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
+    <video *ngIf="photo.file_format?.includes('video')" [src]="photo.blob_url" width="100%" height="90%" (click)="populatePhoto(photo); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
+      This browser does not support native videos
+    </video>
   </div>
 </ngx-masonry>
 
@@ -113,7 +117,7 @@
             <input
               #photoUpload
               type="file"
-              accept="image/*"
+              accept="image/*,video/*"
               class="file-upload"
               style="display: none;"
               (change)="onPhotoSelected($event)">

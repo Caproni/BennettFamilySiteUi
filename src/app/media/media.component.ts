@@ -10,10 +10,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { LoginService } from 'src/app/_services/login/login.service';
 import { MediaReadService } from 'src/app/_services/api/media/media-read.service';
 import { MediaCreateService } from 'src/app/_services/api/media/media-create.service';
-import { Medium } from 'src/app/_models/media/medium';
+import { Content } from 'src/app/_models/content/content';
 
 @Component({
-  selector: 'fam-app-media',
+  selector: 'fam-app-content',
   templateUrl: './media.component.html',
   styleUrls: ['./media.component.css'],
   animations: [
@@ -24,7 +24,7 @@ import { Medium } from 'src/app/_models/media/medium';
           ':enter',
           [
             style({ opacity: 0 }),
-            animate('0.3s ease-out',
+            animate('400ms ease-out',
               style({ opacity: 1 }))
           ]
         ),
@@ -32,7 +32,7 @@ import { Medium } from 'src/app/_models/media/medium';
           ':leave',
           [
             style({ opacity: 1 }),
-            animate('0.3s ease-in',
+            animate('400ms ease-in',
               style({ opacity: 0 }))
           ]
         )
@@ -48,8 +48,8 @@ export class MediaComponent implements OnInit {
   isActive = true;
   loadedMedia = false;
 
-  media: Medium[] = [];
-  filteredMedia: Medium[] = [];
+  media: Content[] = [];
+  filteredMedia: Content[] = [];
   modalRef: BsModalRef = new BsModalRef();
 
   mediaActors: string[] = [];
@@ -95,7 +95,7 @@ export class MediaComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
   }

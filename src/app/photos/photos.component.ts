@@ -48,10 +48,11 @@ export class PhotosComponent implements OnInit {
 
   modalRef: BsModalRef = new BsModalRef();
 
-  allowedMimeTypes = ['image/png', 'image/jpeg'];
-  photoFile = new File([], '');
+  allowedMimeTypes = ['image/png', 'image/jpeg', 'video/mp4'];
+  file = new File([], '');
   photoHeight = 0;
   photoWidth = 0;
+  fileFormat = '';
 
   newPhotoForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -108,7 +109,7 @@ export class PhotosComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
   }
@@ -140,10 +141,11 @@ export class PhotosComponent implements OnInit {
     if (!file) return;
 
     if (this.allowedMimeTypes.includes(file.type)) {
-      this.photoFile = file;
+      this.file = file;
+      this.fileFormat = file.type;
       const image = new Image();
 
-      image.src = URL.createObjectURL(this.photoFile);
+      image.src = URL.createObjectURL(this.file);
       image.onload = (e: any) => {
         this.photoHeight = e.path[0].height;
         this.photoWidth = e.path[0].width;
@@ -205,7 +207,8 @@ export class PhotosComponent implements OnInit {
       }
       group = groups.next();
     }
-    const filteredPhotos = this.photos.filter((item) => {
+
+    return this.photos.filter((item) => {
       const included: boolean[] = [];
 
       const name = item.name.toLowerCase();
@@ -225,8 +228,6 @@ export class PhotosComponent implements OnInit {
         return accumulator && currentValue;
       }, true);
     });
-
-    return filteredPhotos;
   }
 
   onNewPhotoFormSubmit() {
@@ -240,15 +241,16 @@ export class PhotosComponent implements OnInit {
         name: payload.name,
         description: payload.description ?? null,
         taken_by: payload.taken_by?? null,
-        taken_date: payload.taken_date? new Date(payload.taken_date): new Date(this.photoFile.lastModified),
-        image: null,
+        taken_date: payload.taken_date? new Date(payload.taken_date): new Date(this.file.lastModified),
+        file: null,
+        file_format: this.fileFormat,
         blob_url: null,
         height: this.photoHeight,
         width: this.photoWidth,
         camera_details: payload.camera_details ?? null,
         id: null,
       },
-      this.photoFile,
+      this.file,
     )
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(

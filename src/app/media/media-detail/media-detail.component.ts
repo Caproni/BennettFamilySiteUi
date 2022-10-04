@@ -5,7 +5,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
-import { Medium } from 'src/app/_models/media/medium';
+import { Content } from 'src/app/_models/content/content';
 import { MediaUpdateService } from 'src/app/_services/api/media/media-update.service';
 import { MediaDeleteService } from 'src/app/_services/api/media/media-delete.service';
 import { LoginService } from 'src/app/_services/login/login.service';
@@ -22,7 +22,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
           ':enter',
           [
             style({ opacity: 0 }),
-            animate('0.3s ease-out',
+            animate('300ms ease-out',
               style({ opacity: 1 }))
           ]
         ),
@@ -30,7 +30,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
           ':leave',
           [
             style({ opacity: 1 }),
-            animate('0.3s ease-in',
+            animate('300ms ease-in',
               style({ opacity: 0 }))
           ]
         )
@@ -43,7 +43,7 @@ export class MediaDetailComponent implements OnInit {
   windowWidth!: number;
   windowHeight!: number;
 
-  @Input() medium!: Medium;
+  @Input() medium!: Content;
   isActive = true;
 
   modalRef: BsModalRef = new BsModalRef();
@@ -92,7 +92,7 @@ export class MediaDetailComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
   }
@@ -107,68 +107,67 @@ export class MediaDetailComponent implements OnInit {
 
   onMediaUpdate(modalRef: BsModalRef) {
 
-    if (this.medium.id) {
+    if (!this.medium.id) return;
 
-      const payload = JSON.parse(JSON.stringify(this.editMediumForm.value));
+    const payload = JSON.parse(JSON.stringify(this.editMediumForm.value));
 
-      const patch: Medium = {
-        director: payload.director ?? null,
-        title: payload.title,
-        publisher: payload.publisher ?? null,
-        actors: payload.actors ?? null,
-        format: payload.format ?? null,
-        release_year: payload.release_year ? parseInt(payload.release_year) : null,
-        series_or_film: payload.series_or_film ?? null,
-        fiction: payload.fiction ?? null,
-        episodes: payload.episodes ?? null,
-        duration_in_minutes: payload.duration_in_minutes ? parseInt(payload.duration_in_minutes) : null,
-        language: payload.language ?? null,
-        location: payload.location ?? null,
-        id: this.medium.id,
-      };
+    const patch: Content = {
+      director: payload.director ?? null,
+      title: payload.title,
+      publisher: payload.publisher ?? null,
+      actors: payload.actors ?? null,
+      format: payload.format ?? null,
+      release_year: payload.release_year ? parseInt(payload.release_year) : null,
+      series_or_film: payload.series_or_film ?? null,
+      fiction: payload.fiction ?? null,
+      episodes: payload.episodes ?? null,
+      duration_in_minutes: payload.duration_in_minutes ? parseInt(payload.duration_in_minutes) : null,
+      language: payload.language ?? null,
+      location: payload.location ?? null,
+      id: this.medium.id,
+    };
 
-      this.mediaUpdateService.updateMedia(
-        this.medium.id,
-        patch,
-      )
-        .pipe(takeWhile(_ => this.isActive))
-        .subscribe(
-          (res) => {
-            console.log(res);
-            this.toasterService.info('Updating ' + this.medium.title, 'Info');
-          },
-          (err) => {
-            console.log(err);
-            this.toasterService.error('Could not update ' + this.medium.title, 'Error');
-          },
-          () => {
-            this.toasterService.success('Updated ' + this.medium.title, 'Success');
-          },
-        );
-      modalRef.hide();
-    }
+    this.mediaUpdateService.updateMedia(
+      this.medium.id,
+      patch,
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (res) => {
+          console.log(res);
+          this.toasterService.info('Updating ' + this.medium.title, 'Info');
+        },
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not update ' + this.medium.title, 'Error');
+        },
+        () => {
+          this.toasterService.success('Updated ' + this.medium.title, 'Success');
+        },
+      );
+    modalRef.hide();
   }
 
   deleteMedia(modalRef: BsModalRef): void {
-    if (this.medium.id) {
-      this.mediaDeleteService.deleteMedia(
-        this.medium.id,
-      )
-        .pipe(takeWhile(_ => this.isActive))
-        .subscribe(
-          (res) => {
-            this.toasterService.info('Deleting ' + this.medium.title, 'Info');
-          },
-          (err) => {
-            console.log(err);
-            this.toasterService.error('Could not delete ' + this.medium.title, 'Error');
-          },
-          () => {
-            this.toasterService.success('Deleted ' + this.medium.title, 'Success');
-          },
-        );
-      modalRef.hide();
-    }
+    if (!this.medium.id) return;
+
+    this.mediaDeleteService.deleteMedia(
+      this.medium.id,
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (res) => {
+          this.toasterService.info('Deleting ' + this.medium.title, 'Info');
+        },
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Could not delete ' + this.medium.title, 'Error');
+        },
+        () => {
+          this.toasterService.success('Deleted ' + this.medium.title, 'Success');
+        },
+      );
+    modalRef.hide();
   }
 
 }

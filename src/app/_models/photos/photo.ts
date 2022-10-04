@@ -6,7 +6,8 @@ export interface Photo {
   taken_by: string | null;
   height: number;
   width: number;
-  image: File | null;
+  file_format: string;
+  file: File | null;
   blob_url: string | null,
   id: string | null;
 }
