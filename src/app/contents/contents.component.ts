@@ -184,12 +184,17 @@ export class ContentsComponent implements OnInit {
   }
 
   public filterPhotos(): void {
-    const searchFilteredPhotos = this.searchBarFilterContent(this.searchPhrase);
-    this.filteredContents = this.temporalFilterContent(
-      searchFilteredPhotos,
-      this.filterStartDate,
-      this.filterEndDate
-    );
+    let searchFilteredPhotos = this.contents;
+    if (this.searchPhrase) {
+      searchFilteredPhotos = this.searchBarFilterContent(this.searchPhrase);
+    }
+
+    this.filteredContents = searchFilteredPhotos;
+    // this.filteredContents = this.temporalFilterContent(
+    //   searchFilteredPhotos,
+    //   this.filterStartDate,
+    //   this.filterEndDate
+    // );
   }
 
   private temporalFilterContent(
@@ -209,13 +214,12 @@ export class ContentsComponent implements OnInit {
     searchValue: string
   ): Content[] {
     const searchTerms: string[] = [];
-    const groups = searchValue.matchAll(this.searchRegex);
+    const groups = searchValue.toLowerCase().matchAll(this.searchRegex);
     let group = groups.next();
     while (!group.done) {
       for (let i = 1; i < group.value.length; i++) {
-        if (group.value[i] !== undefined) {
-          searchTerms.push(group.value[i].toLowerCase());
-        }
+        if (group.value[i] === undefined) continue;
+        searchTerms.push(group.value[i].toLowerCase());
       }
       group = groups.next();
     }
@@ -228,8 +232,15 @@ export class ContentsComponent implements OnInit {
 
       for (const searchTerm of searchTerms) {
         const includedForThisTerm: boolean[] = [];
-        includedForThisTerm.push(name.includes(searchTerm));
-        includedForThisTerm.push(description.includes(searchTerm));
+
+        if (name) {
+          includedForThisTerm.push(name.includes(searchTerm));
+        }
+
+        if (description) {
+          includedForThisTerm.push(description.includes(searchTerm));
+        }
+
         included.push(
           includedForThisTerm.reduceRight((accumulator, currentValue) => {
             return accumulator || currentValue;
