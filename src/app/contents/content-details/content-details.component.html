@@ -21,4 +21,7 @@
   </div>
 </div>
 <br>
-<img [src]="content.blob_url" alt="{{content.name}}" width="100%">
+<img *ngIf="allowedPhotoMimeTypes.includes(content.file_format)" [src]="content.blob_url" alt="{{content.name}}" width="100%">
+<video controls autoplay *ngIf="allowedVideoMimeTypes.includes(content.file_format)" [src]="content.blob_url" width="100%">
+  This browser does not support native videos
+</video>

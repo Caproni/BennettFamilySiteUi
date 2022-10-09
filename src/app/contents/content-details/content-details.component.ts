@@ -19,6 +19,9 @@ export class ContentDetailsComponent implements OnInit {
 
   @Input() content!: Content;
 
+  allowedPhotoMimeTypes = ['image/png', 'image/jpeg'];
+  allowedVideoMimeTypes = ['video/mp4'];
+
   modalRef: BsModalRef = new BsModalRef();
 
   constructor(
