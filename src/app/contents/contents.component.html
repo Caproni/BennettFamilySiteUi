@@ -34,7 +34,7 @@
   <div ngxMasonryItem class="masonry-item" *ngFor="let content of filteredContents" style="width: {{getPhotoWidth()}};">
     <img *ngIf="content.file_format === undefined" [src]="content.blob_url" alt="{{content.name}}" width="100%" height="90%" (click)="populateContent(content); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
     <img *ngIf="allowedPhotoMimeTypes.includes(content.file_format)" [src]="content.blob_url" alt="{{content.name}}" width="100%" height="90%" (click)="populateContent(content); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
-    <video *ngIf="allowedVideoMimeTypes.includes(content.file_format)" [src]="content.blob_url" width="100%" height="90%" (click)="populateContent(content); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
+    <video controls autoplay *ngIf="allowedVideoMimeTypes.includes(content.file_format)" [src]="content.blob_url" width="100%" height="90%" (click)="populateContent(content); openModal(viewPhotoTemplate, {class: 'modal-lg'})">
       This browser does not support native videos
     </video>
   </div>
