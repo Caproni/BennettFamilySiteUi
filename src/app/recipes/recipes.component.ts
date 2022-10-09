@@ -31,7 +31,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
           ':enter',
           [
             style({ opacity: 0 }),
-            animate('0.3s ease-out',
+            animate('400ms ease-out',
               style({ opacity: 1 }))
           ]
         ),
@@ -39,7 +39,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
           ':leave',
           [
             style({ opacity: 1 }),
-            animate('0.3s ease-in',
+            animate('400ms ease-in',
               style({ opacity: 0 }))
           ]
         )
@@ -121,10 +121,9 @@ export class RecipesComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
-    console.log('Width: ', this.windowWidth);
   }
 
   ngOnDestroy(): void {

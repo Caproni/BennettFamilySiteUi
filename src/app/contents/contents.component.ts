@@ -7,18 +7,18 @@ import { NgxMasonryComponent, NgxMasonryOptions } from 'ngx-masonry';
 import { BehaviorSubject } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
-import { Photo } from 'src/app/_models/photos/photo';
+import { Content } from 'src/app/_models/contents/content';
 import { PhotosCreateService } from 'src/app/_services/api/photos/photos-create.service';
 import { PhotosReadService } from 'src/app/_services/api/photos/photos-read.service';
 import { LoginService } from 'src/app/_services/login/login.service';
-import { PhotoDetailsComponent } from './photo-details/photo-details.component';
+import { ContentDetailsComponent } from 'src/app/contents/content-details/content-details.component';
 
 @Component({
-  selector: 'fam-app-photos',
-  templateUrl: './photos.component.html',
-  styleUrls: ['./photos.component.css']
+  selector: 'fam-app-contents',
+  templateUrl: './contents.component.html',
+  styleUrls: ['./contents.component.css']
 })
-export class PhotosComponent implements OnInit {
+export class ContentsComponent implements OnInit {
 
   windowWidth!: number;
   windowHeight!: number;
@@ -39,27 +39,28 @@ export class PhotosComponent implements OnInit {
   };
 
   @ViewChild(NgxMasonryComponent) masonry!: NgxMasonryComponent;
-  @ViewChild(PhotoDetailsComponent) photo!: Photo;
+  @ViewChild(ContentDetailsComponent) content!: Content;
 
   isActive = true;
-  loadedPhotos = false;
-  photos!: Photo[];
-  filteredPhotos!: Photo[];
+  loadedContent = false;
+  contents!: Content[];
+  filteredContents!: Content[];
 
   modalRef: BsModalRef = new BsModalRef();
 
-  allowedMimeTypes = ['image/png', 'image/jpeg', 'video/mp4'];
+  allowedPhotoMimeTypes = ['image/png', 'image/jpeg'];
+  allowedVideoMimeTypes = ['video/mp4'];
   file = new File([], '');
-  photoHeight = 0;
-  photoWidth = 0;
+  contentHeight: number | null = 0;
+  contentWidth: number | null = 0;
   fileFormat = '';
 
-  newPhotoForm: FormGroup = new FormGroup({
+  newContentForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl(''),
     taken_by: new FormControl(''),
     taken_date: new FormControl(''),
-    image: new FormControl('', [Validators.required]),
+    file: new FormControl('', [Validators.required]),
     camera_details: new FormControl(''),
   });
 
@@ -90,20 +91,20 @@ export class PhotosComponent implements OnInit {
 
     const distantFuture = new Date(2901, 0, 1);
 
-    this.photosReadService.readPhotos().subscribe((b) => {
-      this.loadedPhotos = b;
-      const photos = this.photosReadService.getPhotos();
-      if (photos.length > 0) {
-        this.photos = photos.sort(
+    this.photosReadService.readContent().subscribe((b) => {
+      this.loadedContent = b;
+      const photos = this.photosReadService.getContent();
+      if (photos && photos.length > 0) {
+        this.contents = photos.sort(
           (x, y) => {
             if ((x.taken_date ? x.taken_date: distantFuture) > (y.taken_date ? y.taken_date : distantFuture)) return -1;
             if ((x.taken_date ? x.taken_date: distantFuture) <= (y.taken_date ? y.taken_date : distantFuture)) return 1;
             return 0;
           }
         );
-        this.filteredPhotos = this.photos;
-        this.startDate = new BehaviorSubject<Date>(this.photos[0].taken_date?? new Date(2021, 0, 1));
-        this.endDate = new BehaviorSubject<Date>(this.photos[this.photos.length - 1].taken_date?? new Date(2022, 11, 31));
+        this.filteredContents = this.contents;
+        this.startDate = new BehaviorSubject<Date>(this.contents[0].taken_date?? new Date(2021, 0, 1));
+        this.endDate = new BehaviorSubject<Date>(this.contents[this.contents.length - 1].taken_date?? new Date(2022, 11, 31));
       }
     });
   }
@@ -126,31 +127,42 @@ export class PhotosComponent implements OnInit {
     this.modalRef = this.modalService.show(template, modalOptions);
   }
 
-  populatePhoto(photo: Photo) {
-    this.photo = photo;
+  populateContent(content: Content) {
+    this.content = content;
   }
 
-  onPhotoSelected(event: any) {
+  onContentSelected(event: any) {
 
     const target = event.target as HTMLInputElement;
-
     if (!target.files) return;
-
     const file: File = target.files && target.files[0];
-
     if (!file) return;
+    this.selectContent(file);
 
-    if (this.allowedMimeTypes.includes(file.type)) {
+  }
+
+  selectContent(file: File) {
+
+    if (this.allowedPhotoMimeTypes.includes(file.type)) {
       this.file = file;
       this.fileFormat = file.type;
       const image = new Image();
 
       image.src = URL.createObjectURL(this.file);
       image.onload = (e: any) => {
-        this.photoHeight = e.path[0].height;
-        this.photoWidth = e.path[0].width;
+        this.contentHeight = e.path[0].height;
+        this.contentWidth = e.path[0].width;
       }
-      this.newPhotoForm.controls['image'].setValue(file.name);
+      this.newContentForm.controls['file'].setValue(file.name);
+    }
+    else if (this.allowedVideoMimeTypes.includes(file.type)) {
+      this.file = file;
+      this.fileFormat = file.type;
+
+      this.contentHeight = null;
+      this.contentWidth = null;
+
+      this.newContentForm.controls['file'].setValue(file.name);
     } else {
       console.log('Invalid file: ', file);
     }
@@ -158,7 +170,7 @@ export class PhotosComponent implements OnInit {
   }
 
   photosLoaded() {
-    this.toasterService.success('Photo album loaded.', 'Success');
+    this.toasterService.success('Content album loaded.', 'Success');
   }
 
   updateStartDate(value: number): void {
@@ -172,20 +184,20 @@ export class PhotosComponent implements OnInit {
   }
 
   public filterPhotos(): void {
-    const searchFilteredPhotos = this.searchBarFilterPhotos(this.searchPhrase);
-    this.filteredPhotos = this.temporalFilterPhotos(
+    const searchFilteredPhotos = this.searchBarFilterContent(this.searchPhrase);
+    this.filteredContents = this.temporalFilterContent(
       searchFilteredPhotos,
       this.filterStartDate,
       this.filterEndDate
     );
   }
 
-  private temporalFilterPhotos(
-    inputPhotos: Photo[],
+  private temporalFilterContent(
+    inputPhotos: Content[],
     startDate: Date,
     endDate: Date,
     nullsIncluded: boolean = false
-  ): Photo[] {
+  ): Content[] {
     return inputPhotos.filter((item) => {
       const nullValue = nullsIncluded ? startDate : new Date(2022, 1, 1);
       const timestamp = new Date(item.taken_date ?? nullValue);
@@ -193,9 +205,9 @@ export class PhotosComponent implements OnInit {
     });
   }
 
-  private searchBarFilterPhotos(
+  private searchBarFilterContent(
     searchValue: string
-  ): Photo[] {
+  ): Content[] {
     const searchTerms: string[] = [];
     const groups = searchValue.matchAll(this.searchRegex);
     let group = groups.next();
@@ -208,7 +220,7 @@ export class PhotosComponent implements OnInit {
       group = groups.next();
     }
 
-    return this.photos.filter((item) => {
+    return this.contents.filter((item) => {
       const included: boolean[] = [];
 
       const name = item.name.toLowerCase();
@@ -230,11 +242,13 @@ export class PhotosComponent implements OnInit {
     });
   }
 
-  onNewPhotoFormSubmit() {
+  onNewContentFormSubmit() {
 
     if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
-    const payload = JSON.parse(JSON.stringify(this.newPhotoForm.value));
+    this.selectContent(this.file);
+
+    const payload = JSON.parse(JSON.stringify(this.newContentForm.value));
 
     this.photosCreateService.createPhoto(
       {
@@ -245,8 +259,8 @@ export class PhotosComponent implements OnInit {
         file: null,
         file_format: this.fileFormat,
         blob_url: null,
-        height: this.photoHeight,
-        width: this.photoWidth,
+        height: this.contentHeight,
+        width: this.contentWidth,
         camera_details: payload.camera_details ?? null,
         id: null,
       },

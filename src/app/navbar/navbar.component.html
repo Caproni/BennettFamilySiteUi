@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="navbar-nav navbar-left">
       <a class="nav-brand pl-2 pr-2" routerLink="" title="Home"><img src="assets/favicon_io/favicon.ico" height="40" alt="EB"></a>
-      <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/photos" routerLinkActive="active" title="Photos">
+      <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/photos" routerLinkActive="active" title="Content">
         <fa-icon [icon]="photosIcon" [size]="'lg'"></fa-icon>
       </a>
       <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/recipes" routerLinkActive="active" title="Recipes">
@@ -11,7 +11,7 @@
       <a *ngIf="isAuthorised()" class="project-title nav-item nav-link pr-3 ml-2" routerLink="/family" routerLinkActive="active" title="Family Tree">
         <fa-icon [icon]="familyTreeIcon" [size]="'lg'"></fa-icon>
       </a>
-      <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/media" routerLinkActive="active" title="Media">
+      <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/media" routerLinkActive="active" title="Films">
         <fa-icon [icon]="mediaIcon" [size]="'lg'"></fa-icon>
       </a>
     </div>

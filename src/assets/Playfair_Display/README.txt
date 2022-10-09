@@ -14,7 +14,7 @@ If your app fully supports variable fonts, you can now pick intermediate styles
 that aren’t available as static fonts. Not all apps support variable fonts, and
 in those cases you can use the static font files for Playfair Display:
   static/PlayfairDisplay-Regular.ttf
-  static/PlayfairDisplay-Content.ttf
+  static/PlayfairDisplay-Media.ttf
   static/PlayfairDisplay-SemiBold.ttf
   static/PlayfairDisplay-Bold.ttf
   static/PlayfairDisplay-ExtraBold.ttf

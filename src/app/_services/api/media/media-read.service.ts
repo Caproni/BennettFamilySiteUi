@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from 'src/app/_models/common/api-response';
-import { Content } from 'src/app/_models/content/content';
+import { Media } from 'src/app/_models/media/media';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,13 @@ import { Content } from 'src/app/_models/content/content';
 export class MediaReadService {
 
   private baseUrl = environment.apiUrl;
-  private content: Content[] = [];
+  private content: Media[] = [];
 
   constructor(
     private http: HttpClient,
   ) {}
 
-  getMedia(): Content[] {
+  getMedia(): Media[] {
     return this.content;
   }
 

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from 'src/app/_models/common/api-response';
-import { Photo } from 'src/app/_models/photos/photo';
+import { Content } from 'src/app/_models/contents/content';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +12,18 @@ import { Photo } from 'src/app/_models/photos/photo';
 export class PhotosReadService {
 
   private baseUrl = environment.apiUrl;
-  private content: Photo[] = [];
+  private content: Content[] = [];
 
   constructor(
     private http: HttpClient,
   ) {}
 
-  getPhotos(): Photo[] {
+  getContent(): Content[] {
     return this.content;
   }
 
-  readPhotos(): Observable<boolean> {
-    const url = `${this.baseUrl}/readPhotos`;
+  readContent(): Observable<boolean> {
+    const url = `${this.baseUrl}/readContent`;
     let _subject = new BehaviorSubject<boolean>(false);
     this.http.get<ApiResponse>(url).subscribe((data) => {
       if (data.success) {

@@ -1,4 +1,4 @@
-export interface Content {
+export interface Media {
   director: string | null;
   title: string;
   publisher: string | null;

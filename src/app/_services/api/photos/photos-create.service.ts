@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Photo } from 'src/app/_models/photos/photo';
+import { Content } from 'src/app/_models/contents/content';
 import { ApiResponse } from 'src/app/_models/common/api-response';
 import { environment } from 'src/environments/environment';
 
@@ -16,9 +16,9 @@ export class PhotosCreateService {
     private http: HttpClient,
   ) { }
 
-  createPhoto(photo: Photo, file: File) {
+  createPhoto(photo: Content, file: File) {
 
-    let url = `${this.baseUrl}/createPhoto?name=${photo.name}`;
+    let url = `${this.baseUrl}/createContent?name=${photo.name}`;
 
     if (photo.description) {
       url += `&description=${photo.description}`;
@@ -36,6 +36,10 @@ export class PhotosCreateService {
       url += `&taken_by=${photo.taken_by}`;
     }
 
+    if (photo.file_format) {
+      url += `&file_format=${photo.file_format}`;
+    }
+
     if (photo.height) {
       url += `&height=${photo.height}`;
     }
@@ -45,7 +49,7 @@ export class PhotosCreateService {
     }
 
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('file', file);
     return this.http.post<ApiResponse>(
       url,
       formData,

@@ -24,14 +24,14 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { MediaComponent } from './media/media.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
-import { PhotosComponent } from './photos/photos.component';
+import { ContentsComponent } from './contents/contents.component';
 import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.component';
 import { MediaDetailComponent } from './media/media-detail/media-detail.component';
 import { LoadingTableComponent } from './loading-table/loading-table.component';
 import { RecipeViewComponent } from './recipes/recipe-view/recipe-view.component';
 import { NoPageComponent } from './no-page/no-page.component';
 import { AccountComponent } from './account/account.component';
-import { PhotoDetailsComponent } from './photos/photo-details/photo-details.component';
+import { ContentDetailsComponent } from './contents/content-details/content-details.component';
 import { DatetimeSliderComponent } from './_shared/datetime-slider/datetime-slider.component';
 import { RecipeStepComponent } from './recipes/recipe-view/recipe-step/recipe-step.component';
 import { IngredientsComponent } from './recipes/ingredients/ingredients.component';
@@ -53,14 +53,14 @@ import { NodeComponent } from './family-tree/family-network-chart/node/node.comp
     MediaComponent,
     NavbarComponent,
     HomeComponent,
-    PhotosComponent,
+    ContentsComponent,
     RecipeDetailsComponent,
     MediaDetailComponent,
     LoadingTableComponent,
     RecipeViewComponent,
     NoPageComponent,
     AccountComponent,
-    PhotoDetailsComponent,
+    ContentDetailsComponent,
     DatetimeSliderComponent,
     RecipeStepComponent,
     IngredientsComponent,

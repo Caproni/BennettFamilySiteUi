@@ -6,18 +6,18 @@ import { ToastrService } from 'ngx-toastr';
 import { LoginService } from 'src/app/_services/login/login.service';
 import { PhotosUpdateService } from 'src/app/_services/api/photos/photos-update.service';
 import { PhotosDeleteService } from 'src/app/_services/api/photos/photos-delete.service';
-import { Photo } from 'src/app/_models/photos/photo';
+import { Content } from 'src/app/_models/contents/content';
 
 @Component({
-  selector: 'fam-app-photo-details',
-  templateUrl: './photo-details.component.html',
-  styleUrls: ['./photo-details.component.css']
+  selector: 'fam-app-content-details',
+  templateUrl: './content-details.component.html',
+  styleUrls: ['./content-details.component.css']
 })
-export class PhotoDetailsComponent implements OnInit {
+export class ContentDetailsComponent implements OnInit {
 
   isActive = true;
 
-  @Input() photo!: Photo;
+  @Input() content!: Content;
 
   modalRef: BsModalRef = new BsModalRef();
 
@@ -41,22 +41,22 @@ export class PhotoDetailsComponent implements OnInit {
       return;
     }
 
-    if (this.photo.id) {
+    if (this.content.id) {
       this.photosDeleteService.deletePhoto(
-        this.photo.id,
+        this.content.id,
       )
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (res) => {
             console.log(res);
-            this.toasterService.info('Deleting ' + this.photo.name, 'Info');
+            this.toasterService.info('Deleting ' + this.content.name, 'Info');
           },
           (err) => {
             console.log(err);
-            this.toasterService.error('Could not delete ' + this.photo.name, 'Error');
+            this.toasterService.error('Could not delete ' + this.content.name, 'Error');
           },
           () => {
-            this.toasterService.success('Deleted ' + this.photo.name, 'Success');
+            this.toasterService.success('Deleted ' + this.content.name, 'Success');
           },
         );
     }

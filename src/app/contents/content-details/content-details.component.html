@@ -1,0 +1,24 @@
+<div class="container mx-auto text-center">
+  <div class="row">
+    <div class="col">
+      <h1>{{content.name}}</h1>
+    </div>
+    <div class="col-1">
+      <button type="button" class="btn" aria-label="Edit" (click)="editPhoto()">
+        <i class="fas fa-edit fa-pull-right" title="Edit"></i>
+      </button>
+    </div>
+  </div>
+  <div class="row pl-2">
+    <h4 *ngIf="content.description" class="sub-text">{{content.description}}</h4>
+  </div>
+  <div class="row pl-2">
+    <h4 *ngIf="content.taken_by" class="sub-text">Taken by {{content.taken_by}} on {{content.taken_date | date: 'd MMM YYYY'}}</h4>
+    <h4 *ngIf="!content.taken_by" class="sub-text">Taken on {{content.taken_date | date: 'd MMM YYYY'}}</h4>
+  </div>
+  <div class="row pl-2">
+    <h4 *ngIf="content.camera_details" class="sub-text">Camera Details: {{content.camera_details}}</h4>
+  </div>
+</div>
+<br>
+<img [src]="content.blob_url" alt="{{content.name}}" width="100%">

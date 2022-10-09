@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { FamilyTreeComponent } from './family-tree/family-tree.component';
 import { MediaComponent } from './media/media.component';
-import { PhotosComponent } from './photos/photos.component';
+import { ContentsComponent } from './contents/contents.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { IngredientsComponent } from './recipes/ingredients/ingredients.component';
 import { EquipmentComponent } from './recipes/equipment/equipment.component';
@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'cooking-equipment', component: EquipmentComponent },
   { path: 'recipe-detail/:recipeId', component: RecipeViewComponent },
   { path: 'media', component: MediaComponent },
-  { path: 'photos', component: PhotosComponent },
+  { path: 'photos', component: ContentsComponent },
   { path: '**', component: NoPageComponent },
 ];
 

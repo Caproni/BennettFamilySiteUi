@@ -5,7 +5,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
-import { Content } from 'src/app/_models/content/content';
+import { Media } from 'src/app/_models/media/media';
 import { MediaUpdateService } from 'src/app/_services/api/media/media-update.service';
 import { MediaDeleteService } from 'src/app/_services/api/media/media-delete.service';
 import { LoginService } from 'src/app/_services/login/login.service';
@@ -43,7 +43,7 @@ export class MediaDetailComponent implements OnInit {
   windowWidth!: number;
   windowHeight!: number;
 
-  @Input() medium!: Content;
+  @Input() medium!: Media;
   isActive = true;
 
   modalRef: BsModalRef = new BsModalRef();
@@ -111,7 +111,7 @@ export class MediaDetailComponent implements OnInit {
 
     const payload = JSON.parse(JSON.stringify(this.editMediumForm.value));
 
-    const patch: Content = {
+    const patch: Media = {
       director: payload.director ?? null,
       title: payload.title,
       publisher: payload.publisher ?? null,

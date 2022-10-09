@@ -10,10 +10,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { LoginService } from 'src/app/_services/login/login.service';
 import { MediaReadService } from 'src/app/_services/api/media/media-read.service';
 import { MediaCreateService } from 'src/app/_services/api/media/media-create.service';
-import { Content } from 'src/app/_models/content/content';
+import { Media } from 'src/app/_models/media/media';
 
 @Component({
-  selector: 'fam-app-content',
+  selector: 'fam-app-media',
   templateUrl: './media.component.html',
   styleUrls: ['./media.component.css'],
   animations: [
@@ -48,8 +48,8 @@ export class MediaComponent implements OnInit {
   isActive = true;
   loadedMedia = false;
 
-  media: Content[] = [];
-  filteredMedia: Content[] = [];
+  media: Media[] = [];
+  filteredMedia: Media[] = [];
   modalRef: BsModalRef = new BsModalRef();
 
   mediaActors: string[] = [];
