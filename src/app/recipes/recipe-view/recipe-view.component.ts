@@ -106,7 +106,10 @@ export class RecipeViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.onInit();
+  }
 
+  onInit() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
 
@@ -261,7 +264,7 @@ export class RecipeViewComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
@@ -304,7 +307,7 @@ export class RecipeViewComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
         },
         (err) => console.log(err),
       );
@@ -325,7 +328,7 @@ export class RecipeViewComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding image for ' + this.recipeDetails.recipe.name, 'Info');
         },
         (err) => {

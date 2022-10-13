@@ -83,7 +83,10 @@ export class MediaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.onInit();
+  }
 
+  onInit() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
 
@@ -203,7 +206,7 @@ export class MediaComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding ' + payload.title, 'Info');
         },
         (err) => {

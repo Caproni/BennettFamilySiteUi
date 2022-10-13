@@ -99,7 +99,10 @@ export class IngredientsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.onInit();
+  }
 
+  onInit() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
 
@@ -123,7 +126,6 @@ export class IngredientsComponent implements OnInit {
       this.loadedRecipeSteps = b;
       this.recipeSteps = this.recipeStepReadService.getRecipeSteps();
     });
-
   }
 
   @HostListener('window:resize', ['$event'])
@@ -233,7 +235,7 @@ export class IngredientsComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
@@ -279,7 +281,7 @@ export class IngredientsComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding image for ' + this.ingredient.name, 'Info');
         },
         (err) => {
@@ -311,7 +313,7 @@ export class IngredientsComponent implements OnInit {
         (err) => console.log(err),
       );
     modalRef.hide();
-    this.ngOnInit();
+    this.onInit();
   }
 
 }

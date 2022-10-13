@@ -102,7 +102,10 @@ export class RecipesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.onInit();
+  }
 
+  onInit() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
 
@@ -117,7 +120,6 @@ export class RecipesComponent implements OnInit {
       this.equipment = this.equipmentReadService.getEquipments();
       this.filteredEquipment = this.equipment;
     });
-
   }
 
   @HostListener('window:resize', ['$event'])
@@ -230,7 +232,7 @@ export class RecipesComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
@@ -262,7 +264,7 @@ export class RecipesComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {

@@ -95,13 +95,15 @@ export class RecipeStepComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.onInit();
+  }
 
+  onInit() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
 
     this.editRecipeStepForm.controls['name'].setValue(this.step.name);
     this.editRecipeStepForm.controls['description'].setValue(this.step.description);
-
   }
 
   @HostListener('window:resize', ['$event'])
@@ -140,7 +142,7 @@ export class RecipeStepComponent implements OnInit {
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (_) => {
-            this.ngOnInit();
+            this.onInit();
             this.toasterService.info('Updating ' + payload.name, 'Info');
           },
           (err) => {
@@ -173,7 +175,7 @@ export class RecipeStepComponent implements OnInit {
           (err) => console.log(err),
         );
       this.modalRef.hide();
-      this.ngOnInit();
+      this.onInit();
     }
   }
 
@@ -208,7 +210,7 @@ export class RecipeStepComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
@@ -244,7 +246,7 @@ export class RecipeStepComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {

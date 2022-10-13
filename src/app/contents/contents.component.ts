@@ -85,7 +85,10 @@ export class ContentsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.onInit();
+  }
 
+  onInit() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
 
@@ -281,7 +284,7 @@ export class ContentsComponent implements OnInit {
       .subscribe(
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
-          this.ngOnInit();
+          this.onInit();
         },
         (err) => {
           console.log(err);

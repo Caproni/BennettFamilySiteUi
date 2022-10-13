@@ -46,7 +46,7 @@
             <label class="control-label">Username </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="username" id="fam-username" class="form-control" name="fam-username" required>
+            <input type="text" formControlName="username" id="fam-username" class="form-control" name="fam-username" required autocomplete="off">
             <div *ngIf="loginForm.controls['username'].touched && loginForm.controls['username'].invalid" class="alert alert-danger">
               A username is required
             </div>
@@ -57,7 +57,7 @@
             <label class="control-label">Password </label>
           </div>
           <div class="col">
-            <input type="password" formControlName="password" id="fam-password" class="form-control" name="fam-password" required>
+            <input type="password" formControlName="password" id="fam-password" class="form-control" name="fam-password" required autocomplete="off">
             <div *ngIf="loginForm.controls['password'].touched && loginForm.controls['password'].invalid" class="alert alert-danger">
               A password is required
             </div>

@@ -59,6 +59,11 @@ export class NodeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.onInit();
+  }
+
+  onInit() {
+
   }
 
   openModal(template: TemplateRef<any>): void {
@@ -114,7 +119,7 @@ export class NodeComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.ngOnInit();
+          this.onInit();
           this.toasterService.info('Adding image for person', 'Info');
         },
         (err) => {
