@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { FamilyTreeComponent } from './family-tree/family-tree.component';
 import { MediaComponent } from './media/media.component';
 import { ContentsComponent } from './contents/contents.component';
+import { MappingComponent } from './mapping/mapping.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { IngredientsComponent } from './recipes/ingredients/ingredients.component';
 import { EquipmentComponent } from './recipes/equipment/equipment.component';
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'recipe-detail/:recipeId', component: RecipeViewComponent },
   { path: 'media', component: MediaComponent },
   { path: 'photos', component: ContentsComponent },
+  { path: 'mapping', component: MappingComponent },
   { path: '**', component: NoPageComponent },
 ];
 

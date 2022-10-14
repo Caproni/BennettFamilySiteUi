@@ -8,6 +8,7 @@ import {
   faTv,
   faUtensils,
   faTree,
+  faMapPin,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthenticationService } from 'src/app/_services/api/authentication/authentication.service';
@@ -21,6 +22,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
 export class NavbarComponent implements OnInit {
 
   mediaIcon = faTv;
+  mapIcon = faMapPin;
   photosIcon = faCameraRetro;
   recipesIcon = faUtensils;
   familyTreeIcon = faTree;
