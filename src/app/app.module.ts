@@ -14,6 +14,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxMasonryModule } from 'ngx-masonry';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -76,6 +77,7 @@ import { MappingComponent } from './mapping/mapping.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    LeafletModule,
     ModalModule.forRoot(),
     BrowserAnimationsModule,
     HttpClientModule,
