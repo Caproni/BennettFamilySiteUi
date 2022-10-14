@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ChangeContext, LabelType, Options} from '@angular-slider/ngx-slider';
 import { BehaviorSubject } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
@@ -15,7 +15,7 @@ export class DatetimeSliderComponent implements OnInit {
   dates: Date[] = [];
 
   public value = 0;
-  public highValue = 0;
+  public highValue = 10;
 
   @Input() minDate: BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date(1901, 0, 1));
   @Input() maxDate: BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date(1901, 11, 31));
@@ -34,7 +34,7 @@ export class DatetimeSliderComponent implements OnInit {
 
   ngOnInit(): void {
     this.minDate
-      .pipe(takeWhile(x => this.isActive))
+      .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (date) => {
           this.sliderMin = new Date(date);
@@ -42,7 +42,7 @@ export class DatetimeSliderComponent implements OnInit {
         }
       );
     this.maxDate
-      .pipe(takeWhile(x => this.isActive))
+      .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (date) => {
           this.sliderMax = new Date(date);

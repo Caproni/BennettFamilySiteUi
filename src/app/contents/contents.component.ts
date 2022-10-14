@@ -106,8 +106,8 @@ export class ContentsComponent implements OnInit {
           }
         );
         this.filteredContents = this.contents;
-        this.startDate = new BehaviorSubject<Date>(this.contents[0].taken_date?? new Date(2021, 0, 1));
-        this.endDate = new BehaviorSubject<Date>(this.contents[this.contents.length - 1].taken_date?? new Date(2022, 11, 31));
+        this.startDate.next(new Date(this.filteredContents[this.contents.length - 1].taken_date?? new Date(2021, 0, 1)));
+        this.endDate.next(new Date(this.filteredContents[0].taken_date?? new Date(2022, 11, 31)));
       }
     });
   }
@@ -192,12 +192,11 @@ export class ContentsComponent implements OnInit {
       searchFilteredPhotos = this.searchBarFilterContent(this.searchPhrase);
     }
 
-    this.filteredContents = searchFilteredPhotos;
-    // this.filteredContents = this.temporalFilterContent(
-    //   searchFilteredPhotos,
-    //   this.filterStartDate,
-    //   this.filterEndDate
-    // );
+    this.filteredContents = this.temporalFilterContent(
+      searchFilteredPhotos,
+      this.filterStartDate,
+      this.filterEndDate
+    );
   }
 
   private temporalFilterContent(
