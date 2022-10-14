@@ -42,6 +42,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { IngredientUsageComponent } from './recipes/recipe-view/ingredient-usage/ingredient-usage.component';
 import { FamilyNetworkChartComponent } from './family-tree/family-network-chart/family-network-chart.component';
 import { NodeComponent } from './family-tree/family-network-chart/node/node.component';
+import { MappingComponent } from './mapping/mapping.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { NodeComponent } from './family-tree/family-network-chart/node/node.comp
     IngredientUsageComponent,
     FamilyNetworkChartComponent,
     NodeComponent,
+    MappingComponent,
   ],
   imports: [
     BrowserModule,

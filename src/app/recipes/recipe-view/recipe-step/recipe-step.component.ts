@@ -142,7 +142,6 @@ export class RecipeStepComponent implements OnInit {
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (_) => {
-            this.onInit();
             this.toasterService.info('Updating ' + payload.name, 'Info');
           },
           (err) => {
@@ -151,6 +150,7 @@ export class RecipeStepComponent implements OnInit {
           },
           () => {
             this.toasterService.success('Updated ' + payload.name, 'Success');
+            this.onInit();
           },
         );
 

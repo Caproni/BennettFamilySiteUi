@@ -4,21 +4,19 @@
     <h3>{{step.description}}</h3>
   </div>
   <div class="col-1">
-    <div class="col-1">
-      <button type="button" class="btn" aria-label="Edit Step" (click)="openModal(editRecipeStepTemplate)">
-        <i class="fas fa-edit" title="Edit Step"></i>
-      </button>
-      <button type="button" class="btn" aria-label="Add Ingredient" (click)="openModal(addIngredientUsageTemplate)">
-        <i class="fas fa-carrot" title="Add Ingredient"></i>
-      </button>
-      <button type="button" class="btn" aria-label="Add Equipment" (click)="openModal(addEquipmentUsageTemplate)">
-        <i class="fas fa-blender" title="Add Equipment"></i>
-      </button>
-    </div>
+    <button type="button" class="btn" aria-label="Edit Step" (click)="openModal(editRecipeStepTemplate)">
+      <i class="fas fa-edit" title="Edit Step"></i>
+    </button>
+    <button type="button" class="btn" aria-label="Add Ingredient" (click)="openModal(addIngredientUsageTemplate)">
+      <i class="fas fa-carrot" title="Add Ingredient"></i>
+    </button>
+    <button type="button" class="btn" aria-label="Add Equipment" (click)="openModal(addEquipmentUsageTemplate)">
+      <i class="fas fa-blender" title="Add Equipment"></i>
+    </button>
   </div>
 </div>
 
-<ng-template #editRecipeStepTemplate let-id="id">
+<ng-template #editRecipeStepTemplate>
   <div class="modal-header">
     <h3 class="modal-title pull-left">Edit Step</h3>
     <button
