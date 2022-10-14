@@ -35,3 +35,7 @@
 .image-text:hover {
   opacity:1;
 }
+
+h3 {
+  font-size: 1.2vmin;
+}
