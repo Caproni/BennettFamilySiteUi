@@ -1,9 +1,5 @@
 <div class="col">
   <h3>{{ingredient.name + ': ' + usage.quantity + ' ' + usage.quantity_units}} - {{ingredient.description}}</h3>
-</div>
-<div class="col">
   <h3>{{usage.notes}}</h3>
-</div>
-<div *ngIf="ingredient.blob_url" class="col">
-  <img [src]="ingredient.blob_url" alt="{{ingredient.name}}" style="border-radius: 10px;">
+  <img *ngIf="ingredient.blob_url" [src]="ingredient.blob_url" alt="{{ingredient.name}}" height=50 style="border-radius: 15%;">
 </div>
