@@ -68,9 +68,9 @@
   </button>
 </div>
 
-<div *ngIf="loadedRecipeDetail" [@inOutAnimation]="loadedRecipeDetail" class="spacing primary-border row">
-  <div class="spacing col">
-    <div class="row">
+<div *ngIf="loadedRecipeDetail" [@inOutAnimation]="loadedRecipeDetail" class="spacing primary-border row" style="width: 100%;">
+  <div class="spacing col" style="width: 100%;">
+    <div class="row" style="width: 100%;">
       <div *ngIf="windowWidth > 1000">
         <div *ngIf="recipeDetails.steps.length > 0" [@inOutAnimation]="recipeDetails.steps.length > 0" class="col">
           <div *ngFor="let step of recipeDetails.steps" class="secondary-border">
@@ -90,8 +90,19 @@
         </div>
       </div>
 
-      <div *ngIf="windowWidth > 1000">
-        <div *ngIf="recipeDetails.ingredientUsage.length > 0" [@inOutAnimation]="recipeDetails.ingredientUsage.length > 0" class="col">
+      <div class="col">
+        <div *ngIf="windowWidth > 1000">
+          <div *ngIf="recipeDetails.ingredientUsage.length > 0" [@inOutAnimation]="recipeDetails.ingredientUsage.length > 0" class="col">
+            <div *ngFor="let usage of recipeDetails.ingredientUsage" class="secondary-border row" style="width: 100%; padding: 10px;">
+              <fam-app-recipe-ingredient-usage
+                [usage]="usage"
+                [ingredients]="recipeDetails.ingredients"
+              >
+              </fam-app-recipe-ingredient-usage>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="windowWidth <= 1000">
           <div *ngFor="let usage of recipeDetails.ingredientUsage" class="secondary-border row" style="width: 100%; padding: 10px;">
             <fam-app-recipe-ingredient-usage
               [usage]="usage"
@@ -99,15 +110,6 @@
             >
             </fam-app-recipe-ingredient-usage>
           </div>
-        </div>
-      </div>
-      <div *ngIf="windowWidth <= 1000">
-        <div *ngFor="let usage of recipeDetails.ingredientUsage" class="secondary-border row" style="width: 100%; padding: 10px;">
-          <fam-app-recipe-ingredient-usage
-            [usage]="usage"
-            [ingredients]="recipeDetails.ingredients"
-          >
-          </fam-app-recipe-ingredient-usage>
         </div>
       </div>
 
