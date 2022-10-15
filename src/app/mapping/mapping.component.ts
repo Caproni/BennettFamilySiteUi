@@ -65,8 +65,8 @@ export class MappingComponent implements OnInit {
   private initMap(): void {
     if (this.map != undefined) this.map.remove();
     this.map = L.map('map', {
-      center: [55.879966, 0.726909],
-      zoom: 7,
+      center: [55.00, -1.57],
+      zoom: 13,
     });
     L.tileLayer.provider('Stamen.Toner').addTo(this.map);
   }
