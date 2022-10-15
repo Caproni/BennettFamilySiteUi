@@ -8,8 +8,8 @@ import { BehaviorSubject } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
 import { Content } from 'src/app/_models/contents/content';
-import { PhotosCreateService } from 'src/app/_services/api/photos/photos-create.service';
-import { PhotosReadService } from 'src/app/_services/api/photos/photos-read.service';
+import { ContentCreateService } from 'src/app/_services/api/content/content-create.service';
+import { ContentReadService } from 'src/app/_services/api/content/content-read.service';
 import { LoginService } from 'src/app/_services/login/login.service';
 import { ContentDetailsComponent } from 'src/app/contents/content-details/content-details.component';
 
@@ -80,8 +80,8 @@ export class ContentsComponent implements OnInit {
     private loginService: LoginService,
     private modalService: BsModalService,
     private toasterService: ToastrService,
-    private photosCreateService: PhotosCreateService,
-    private photosReadService: PhotosReadService,
+    private photosCreateService: ContentCreateService,
+    private photosReadService: ContentReadService,
   ) { }
 
   ngOnInit(): void {
@@ -96,9 +96,9 @@ export class ContentsComponent implements OnInit {
 
     this.photosReadService.readContent().subscribe((b) => {
       this.loadedContent = b;
-      const photos = this.photosReadService.getContent();
-      if (photos && photos.length > 0) {
-        this.contents = photos.sort(
+      const contents = this.photosReadService.getContent();
+      if (contents && contents.length > 0) {
+        this.contents = contents.sort(
           (x, y) => {
             if ((x.taken_date ? x.taken_date: distantFuture) > (y.taken_date ? y.taken_date : distantFuture)) return -1;
             if ((x.taken_date ? x.taken_date: distantFuture) <= (y.taken_date ? y.taken_date : distantFuture)) return 1;
@@ -122,7 +122,7 @@ export class ContentsComponent implements OnInit {
     return this.loginService.getAuthorised();
   }
 
-  getPhotoWidth(): string {
+  getContentWidth(): string {
     return 100 * (this.windowWidth / 3.5) / this.windowWidth + '%'
   }
 
@@ -172,40 +172,40 @@ export class ContentsComponent implements OnInit {
 
   }
 
-  photosLoaded() {
+  contentLoaded() {
     this.toasterService.success('Content album loaded.', 'Success');
   }
 
   updateStartDate(value: number): void {
     this.filterStartDate = new Date(value);
-    this.filterPhotos();
+    this.filterContent();
   }
 
   updateEndDate(highValue: number): void {
     this.filterEndDate = new Date(highValue);
-    this.filterPhotos();
+    this.filterContent();
   }
 
-  public filterPhotos(): void {
-    let searchFilteredPhotos = this.contents;
+  public filterContent(): void {
+    let searchFilteredContent = this.contents;
     if (this.searchPhrase) {
-      searchFilteredPhotos = this.searchBarFilterContent(this.searchPhrase);
+      searchFilteredContent = this.searchBarFilterContent(this.searchPhrase);
     }
 
     this.filteredContents = this.temporalFilterContent(
-      searchFilteredPhotos,
+      searchFilteredContent,
       this.filterStartDate,
       this.filterEndDate
     );
   }
 
   private temporalFilterContent(
-    inputPhotos: Content[],
+    inputContent: Content[],
     startDate: Date,
     endDate: Date,
     nullsIncluded: boolean = false
   ): Content[] {
-    return inputPhotos.filter((item) => {
+    return inputContent.filter((item) => {
       const nullValue = nullsIncluded ? startDate : new Date(2022, 1, 1);
       const timestamp = new Date(item.taken_date ?? nullValue);
       return startDate <= timestamp && timestamp <= endDate;

@@ -9,7 +9,7 @@ import { Content } from 'src/app/_models/contents/content';
 @Injectable({
   providedIn: 'root'
 })
-export class PhotosReadService {
+export class ContentReadService {
 
   private baseUrl = environment.apiUrl;
   private content: Content[] = [];

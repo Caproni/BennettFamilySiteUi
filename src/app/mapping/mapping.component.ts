@@ -68,7 +68,8 @@ export class MappingComponent implements OnInit {
       center: [55.00, -1.57],
       zoom: 13,
     });
-    L.tileLayer.provider('Stamen.Toner').addTo(this.map);
+    L.tileLayer.provider('Stamen.TonerBackground').addTo(this.map);
+    L.tileLayer.provider('Stamen.TonerLabels').addTo(this.map);
   }
 
   @HostListener('window:resize', ['$event'])

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PhotosDeleteService } from './photos-delete.service';
+import { ContentDeleteService } from './content-delete.service';
 
-describe('PhotoDeleteService', () => {
-  let service: PhotosDeleteService;
+describe('ContentDeleteService', () => {
+  let service: ContentDeleteService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PhotosDeleteService);
+    service = TestBed.inject(ContentDeleteService);
   });
 
   it('should be created', () => {

@@ -7,7 +7,7 @@ import { ApiResponse } from 'src/app/_models/common/api-response';
 @Injectable({
   providedIn: 'root'
 })
-export class PhotosUpdateService {
+export class ContentUpdateService {
 
   private baseUrl = environment.apiUrl;
 
@@ -15,8 +15,8 @@ export class PhotosUpdateService {
     private http: HttpClient,
   ) {}
 
-  updatePhoto(id: string, patch: Object) {
-    const url = `${this.baseUrl}/updatePhotoMetadata?photo_id=${id}`;
+  updateContent(id: string, patch: Object) {
+    const url = `${this.baseUrl}/updateContentMetadata?content_id=${id}`;
     return this.http.patch<ApiResponse>(url, patch);
   }
 

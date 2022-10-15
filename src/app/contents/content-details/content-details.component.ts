@@ -4,8 +4,8 @@ import { takeWhile } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 import { LoginService } from 'src/app/_services/login/login.service';
-import { PhotosUpdateService } from 'src/app/_services/api/photos/photos-update.service';
-import { PhotosDeleteService } from 'src/app/_services/api/photos/photos-delete.service';
+import { ContentUpdateService } from 'src/app/_services/api/content/content-update.service';
+import { ContentDeleteService } from 'src/app/_services/api/content/content-delete.service';
 import { Content } from 'src/app/_models/contents/content';
 
 @Component({
@@ -27,8 +27,8 @@ export class ContentDetailsComponent implements OnInit {
   constructor(
     private loginService: LoginService,
     private toasterService: ToastrService,
-    private photosUpdateService: PhotosUpdateService,
-    private photosDeleteService: PhotosDeleteService,
+    private photosUpdateService: ContentUpdateService,
+    private photosDeleteService: ContentDeleteService,
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class ContentDetailsComponent implements OnInit {
     }
 
     if (this.content.id) {
-      this.photosDeleteService.deletePhoto(
+      this.photosDeleteService.deleteContent(
         this.content.id,
       )
         .pipe(takeWhile(_ => this.isActive))

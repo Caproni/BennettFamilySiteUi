@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class PhotosDeleteService {
+export class ContentDeleteService {
 
   private baseUrl = environment.apiUrl;
 
@@ -15,8 +15,8 @@ export class PhotosDeleteService {
     private http: HttpClient,
   ) { }
 
-  deletePhoto(id: string) {
-    const url = `${this.baseUrl}/deletePhoto?photo_id=${id}`;
+  deleteContent(id: string) {
+    const url = `${this.baseUrl}/deleteContent?content_id=${id}`;
     return this.http.delete<ApiResponse>(url);
   }
 }
