@@ -33,7 +33,7 @@ import { EquipmentUsageDeleteService } from 'src/app/_services/api/recipes/equip
           ':enter',
           [
             style({ opacity: 0 }),
-            animate('0.3s ease-out',
+            animate('300ms ease-out',
               style({ opacity: 1 }))
           ]
         ),
@@ -41,7 +41,7 @@ import { EquipmentUsageDeleteService } from 'src/app/_services/api/recipes/equip
           ':leave',
           [
             style({ opacity: 1 }),
-            animate('0.3s ease-in',
+            animate('300ms ease-in',
               style({ opacity: 0 }))
           ]
         )
@@ -107,13 +107,17 @@ export class RecipeStepComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
   }
 
   openModal(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template);
+  }
+
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised();
   }
 
   updateRecipeStep() {
@@ -145,7 +149,6 @@ export class RecipeStepComponent implements OnInit {
             this.toasterService.info('Updating ' + payload.name, 'Info');
           },
           (err) => {
-            console.log(err);
             this.toasterService.error('Could not update ' + payload.name, 'Error');
           },
           () => {
@@ -170,12 +173,17 @@ export class RecipeStepComponent implements OnInit {
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (res) => {
-            console.log(res);
+            this.toasterService.info('Deleting ' + this.step.name, 'Info');
           },
-          (err) => console.log(err),
+          (err) => {
+            this.toasterService.error('Could not delete ' + this.step.name, 'Error');
+          },
+          () => {
+            this.toasterService.success('Deleted ' + this.step.name, 'Success');
+            this.onInit();
+          }
         );
       this.modalRef.hide();
-      this.onInit();
     }
   }
 
@@ -199,6 +207,7 @@ export class RecipeStepComponent implements OnInit {
     if (!ingredientId) return;
 
     const ingredientUsage: IngredientUsage = {
+      id: null,
       recipe_step_id: this.step.id,
       ingredient_id: ingredientId,
       quantity: payload.quantity,
@@ -210,15 +219,14 @@ export class RecipeStepComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
           this.toasterService.success('Added ' + payload.name, 'Success');
+          this.onInit();
         },
       );
 
@@ -237,6 +245,7 @@ export class RecipeStepComponent implements OnInit {
     if (!equipmentId) return;
 
     const equipmentUsage: EquipmentUsage = {
+      id: null,
       recipe_step_id: this.step.id,
       equipment_id: equipmentId,
       notes: payload.notes ?? null,
@@ -246,15 +255,14 @@ export class RecipeStepComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
           this.toasterService.success('Added ' + payload.name, 'Success');
+          this.onInit();
         },
       );
 

@@ -232,15 +232,14 @@ export class RecipesComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
           this.toasterService.success('Added ' + payload.name, 'Success');
+          this.onInit();
         },
       );
 
@@ -264,15 +263,14 @@ export class RecipesComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
           this.toasterService.success('Added ' + payload.name, 'Success');
+          this.onInit();
         },
       );
 

@@ -206,15 +206,14 @@ export class MediaComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding ' + payload.title, 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add ' + payload.title, 'Error');
         },
         () => {
           this.toasterService.success('Added ' + payload.title, 'Success');
+          this.onInit();
         },
       );
 

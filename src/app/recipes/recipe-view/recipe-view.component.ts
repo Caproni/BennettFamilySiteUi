@@ -9,10 +9,6 @@ import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
 import { Recipe } from 'src/app/_models/recipes/recipe';
-import { Ingredient } from 'src/app/_models/recipes/ingredient';
-import { Equipment } from 'src/app/_models/recipes/equipment';
-import { IngredientUsage } from 'src/app/_models/recipes/ingredient-usage';
-import { EquipmentUsage } from 'src/app/_models/recipes/equipment-usage';
 import { RecipeDetails } from 'src/app/_models/recipes/recipe-details';
 import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
 import { RecipeDeleteService } from 'src/app/_services/api/recipes/recipe/recipe-delete.service';
@@ -122,7 +118,6 @@ export class RecipeViewComponent implements OnInit {
           this.recipeDetails = this.recipeDetailReadService.getRecipeDetails();
           this.loadedRecipeDetail = b;
           if (this.recipeDetails) {
-            console.log('Details: ', this.recipeDetails);
             this.recipeTags = this.recipeDetails.recipe.tags;
             this.editRecipeForm.controls['name'].setValue(this.recipeDetails.recipe.name);
             this.editRecipeForm.controls['description'].setValue(this.recipeDetails.recipe.description);
@@ -137,7 +132,7 @@ export class RecipeViewComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
   }
@@ -182,11 +177,11 @@ export class RecipeViewComponent implements OnInit {
             this.toasterService.info('Deleting ' + this.recipeDetails.recipe.name, 'Info');
           },
         (err) => {
-            console.log(err);
             this.toasterService.error('Could not delete ' + this.recipeDetails.recipe.name, 'Error');
           },
           () => {
             this.toasterService.success('Deleted ' + this.recipeDetails.recipe.name, 'Success');
+            this.onInit();
           },
         );
       this.modalRef.hide();
@@ -264,7 +259,6 @@ export class RecipeViewComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
@@ -273,6 +267,7 @@ export class RecipeViewComponent implements OnInit {
         },
         () => {
           this.toasterService.success('Added ' + payload.name, 'Success');
+          this.onInit();
         },
       );
 
@@ -307,9 +302,15 @@ export class RecipeViewComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
+          this.toasterService.info('Updating ' + payload.name, 'Info');
         },
-        (err) => console.log(err),
+        (err) => {
+          this.toasterService.error('Error updating ' + payload.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Updated ' + payload.name, 'Success');
+          this.onInit();
+        }
       );
 
     this.modalRef.hide();
@@ -328,7 +329,6 @@ export class RecipeViewComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding image for ' + this.recipeDetails.recipe.name, 'Info');
         },
         (err) => {
@@ -337,6 +337,7 @@ export class RecipeViewComponent implements OnInit {
         },
         () => {
           this.toasterService.success('Added image for ' + this.recipeDetails.recipe.name, 'Success');
+          this.onInit();
         },
       );
 

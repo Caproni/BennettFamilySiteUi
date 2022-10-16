@@ -64,7 +64,7 @@
 
 </div>
 
-<div *ngIf="isAuthorised()" class="row p-20">
+<div *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()" class="row p-20 justify-content-center">
   <button type="button" class="btn" aria-label="New Step" (click)="openModal(addRecipeStepTemplate)">
     <i class="fas fa-shoe-prints" title="New Step"></i>
   </button>
@@ -72,6 +72,7 @@
 
 <div *ngIf="loadedRecipeDetail" [@inOutAnimation]="loadedRecipeDetail" class="spacing primary-border row">
   <div *ngIf="windowWidth > 1000 && recipeDetails.steps.length > 0" [@inOutAnimation]="windowWidth > 1000 && recipeDetails.steps.length > 0" class="spacing col">
+    <div class="justify-content-center"><h3>Recipe Steps</h3></div>
     <div *ngFor="let step of recipeDetails.steps" class="secondary-border">
       <fam-app-recipe-step
         [recipeDetails]="recipeDetails"
@@ -80,6 +81,7 @@
     </div>
   </div>
   <div *ngIf="windowWidth <= 1000 && recipeDetails.steps.length > 0" [@inOutAnimation]="windowWidth <= 1000 && recipeDetails.steps.length > 0" style="width: 100%">
+    <div class="justify-content-center"><h3>Recipe Steps</h3></div>
     <div *ngFor="let step of recipeDetails.steps" class="secondary-border">
       <fam-app-recipe-step
         [recipeDetails]="recipeDetails"
@@ -88,6 +90,7 @@
     </div>
   </div>
   <div *ngIf="windowWidth > 1000 && recipeDetails.ingredientUsage.length > 0" [@inOutAnimation]="windowWidth > 1000 && recipeDetails.ingredientUsage.length > 0" class="spacing col">
+    <div><h3>Ingredients</h3></div>
     <div *ngFor="let usage of recipeDetails.ingredientUsage" class="secondary-border">
       <fam-app-recipe-ingredient-usage
         [usage]="usage"
@@ -96,13 +99,34 @@
       </fam-app-recipe-ingredient-usage>
     </div>
   </div>
+  <div *ngIf="windowWidth > 1000 && recipeDetails.equipmentUsage.length > 0" [@inOutAnimation]="windowWidth > 1000 && recipeDetails.equipmentUsage.length > 0" class="spacing col">
+    <div class="justify-content-center"><h3>Equipment</h3></div>
+    <div *ngFor="let usage of recipeDetails.equipmentUsage" class="secondary-border">
+      <fam-app-recipe-equipment-usage
+        [usage]="usage"
+        [equipments]="recipeDetails.equipment"
+      >
+      </fam-app-recipe-equipment-usage>
+    </div>
+  </div>
   <div *ngIf="windowWidth <= 1000 && recipeDetails.ingredientUsage.length > 0" [@inOutAnimation]="windowWidth <= 1000 && recipeDetails.ingredientUsage.length > 0" style="width: 100%">
+    <div class="justify-content-center"><h3>Ingredients</h3></div>
     <div *ngFor="let usage of recipeDetails.ingredientUsage" class="secondary-border">
       <fam-app-recipe-ingredient-usage
         [usage]="usage"
         [ingredients]="recipeDetails.ingredients"
       >
       </fam-app-recipe-ingredient-usage>
+    </div>
+  </div>
+  <div *ngIf="windowWidth <= 1000 && recipeDetails.equipmentUsage.length > 0" [@inOutAnimation]="windowWidth <= 1000 && recipeDetails.equipmentUsage.length > 0" style="width: 100%">
+    <div class="justify-content-center"><h3>Equipment</h3></div>
+    <div *ngFor="let usage of recipeDetails.equipmentUsage" class="secondary-border">
+        <fam-app-recipe-equipment-usage
+          [usage]="usage"
+          [equipments]="recipeDetails.equipment"
+        >
+        </fam-app-recipe-equipment-usage>
     </div>
   </div>
 
@@ -129,7 +153,9 @@
         </div>
         <div class="col">
           <input type="text" formControlName="name" id="edit-recipe-step-name" class="form-control" name="edit-recipe-step-name" required>
-          <div *ngIf="addRecipeStepForm.controls['name'].touched && addRecipeStepForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
+          <div *ngIf="addRecipeStepForm.controls['name'].touched && addRecipeStepForm.controls['name'].invalid"
+               [@inOutAnimation]="addRecipeStepForm.controls['name'].touched && addRecipeStepForm.controls['name'].invalid"
+               class="alert alert-danger">
             A name is required
           </div>
         </div>
@@ -180,7 +206,9 @@
             </div>
             <div class="col">
               <input type="text" formControlName="name" id="recipe-name" class="form-control" name="recipe-name" required>
-              <div *ngIf="editRecipeForm.controls['name'].touched && editRecipeForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
+              <div *ngIf="editRecipeForm.controls['name'].touched && editRecipeForm.controls['name'].invalid"
+                   [@inOutAnimation]="editRecipeForm.controls['name'].touched && editRecipeForm.controls['name'].invalid"
+                   class="alert alert-danger">
                 A name is required
               </div>
             </div>
@@ -203,8 +231,10 @@
               <label class="control-label">Cooking time (mins) </label>
             </div>
             <div class="col">
-              <input type="text" formControlName="duration_in_minutes" id="duration_in_minutes" class="form-control" name="duration_in_minutes" required>
-              <div *ngIf="editRecipeForm.controls['duration_in_minutes'].touched && editRecipeForm.controls['duration_in_minutes'].invalid" [@inOutAnimation] class="alert alert-danger">
+              <input type="text" formControlName="duration_in_minutes" id="duration-in-minutes" class="form-control" name="duration-in-minutes" required>
+              <div *ngIf="editRecipeForm.controls['duration_in_minutes'].touched && editRecipeForm.controls['duration_in_minutes'].invalid"
+                   [@inOutAnimation]="editRecipeForm.controls['duration_in_minutes'].touched && editRecipeForm.controls['duration_in_minutes'].invalid"
+                   class="alert alert-danger">
                 A duration is required (even just a guess)
               </div>
             </div>
@@ -286,7 +316,9 @@
             </button>
             <div class="file-upload">
               <input type="text" formControlName="image" id="image" class="form-control" name="image" required>
-              <div *ngIf="recipeImageForm.controls['image'].touched && recipeImageForm.controls['image'].invalid" [@inOutAnimation] class="alert alert-danger">
+              <div *ngIf="recipeImageForm.controls['image'].touched && recipeImageForm.controls['image'].invalid"
+                   [@inOutAnimation]="recipeImageForm.controls['image'].touched && recipeImageForm.controls['image'].invalid"
+                   class="alert alert-danger">
                 An image file is required
               </div>
             </div>

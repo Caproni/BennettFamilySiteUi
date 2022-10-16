@@ -283,14 +283,13 @@ export class ContentsComponent implements OnInit {
       .subscribe(
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
-          this.onInit();
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
           this.toasterService.success('Added ' + payload.name, 'Success');
+          this.onInit();
         },
       );
 

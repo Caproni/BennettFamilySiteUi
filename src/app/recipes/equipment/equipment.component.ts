@@ -230,15 +230,14 @@ export class EquipmentComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
           this.toasterService.success('Added ' + payload.name, 'Success');
+          this.onInit();
         },
       );
 
@@ -280,15 +279,14 @@ export class EquipmentComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding image for ' + this.equipment.name, 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add image for ' + this.equipment.name, 'Error');
         },
         () => {
           this.toasterService.success('Added image for ' + this.equipment.name, 'Success');
+          this.onInit();
         },
       );
 
@@ -307,12 +305,17 @@ export class EquipmentComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (res) => {
-          console.log(res);
+          this.toasterService.info('Deleting ' + this.equipment.name, 'Info');
         },
-        (err) => console.log(err),
+        (err) => {
+          this.toasterService.error('Could not delete ' + this.equipment.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Deleted ' + this.equipment.name, 'Success');
+          this.onInit();
+        }
       );
     modalRef.hide();
-    this.onInit();
   }
 
 }

@@ -41,6 +41,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CalendarComponent } from './calendar/calendar.component';
 import { IngredientUsageComponent } from './recipes/recipe-view/ingredient-usage/ingredient-usage.component';
+import { EquipmentUsageComponent } from './recipes/recipe-view/equipment-usage/equipment-usage.component';
 import { FamilyNetworkChartComponent } from './family-tree/family-network-chart/family-network-chart.component';
 import { NodeComponent } from './family-tree/family-network-chart/node/node.component';
 import { MappingComponent } from './mapping/mapping.component';
@@ -69,6 +70,7 @@ import { MappingComponent } from './mapping/mapping.component';
     EquipmentComponent,
     CalendarComponent,
     IngredientUsageComponent,
+    EquipmentUsageComponent,
     FamilyNetworkChartComponent,
     NodeComponent,
     MappingComponent,

@@ -3,7 +3,7 @@
     <h3>{{step.index + 1}}. {{step.name}}</h3>
     <h3>{{step.description}}</h3>
   </div>
-  <div class="col-1">
+  <div *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()" class="col-1">
     <button type="button" class="btn" aria-label="Edit Step" (click)="openModal(editRecipeStepTemplate)">
       <i class="fas fa-edit" title="Edit Step"></i>
     </button>
@@ -129,9 +129,12 @@
         </div>
         <div class="col">
           <select formControlName="name" id="add-ingredient-usage-name" class="form-control" name="add-ingredient-usage-name" required>
+            <option></option>
             <option *ngFor="let ingredient of recipeDetails.ingredients">{{ingredient.name}}</option>
           </select>
-          <div *ngIf="addIngredientUsageForm.controls['name'].touched && addIngredientUsageForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
+          <div *ngIf="addIngredientUsageForm.controls['name'].touched && addIngredientUsageForm.controls['name'].invalid"
+               [@inOutAnimation]="addIngredientUsageForm.controls['name'].touched && addIngredientUsageForm.controls['name'].invalid"
+               class="alert alert-danger">
             A name is required
           </div>
         </div>
@@ -142,7 +145,9 @@
         </div>
         <div class="col">
           <input type="text" formControlName="quantity" id="add-ingredient-usage-quantity" class="form-control" name="edit-ingredients-usage-quantity" required>
-          <div *ngIf="addIngredientUsageForm.controls['quantity'].touched && addIngredientUsageForm.controls['quantity'].invalid" [@inOutAnimation] class="alert alert-danger">
+          <div *ngIf="addIngredientUsageForm.controls['quantity'].touched && addIngredientUsageForm.controls['quantity'].invalid"
+               [@inOutAnimation]="addIngredientUsageForm.controls['quantity'].touched && addIngredientUsageForm.controls['quantity'].invalid"
+               class="alert alert-danger">
             A quantity is required
           </div>
         </div>
@@ -153,7 +158,8 @@
         </div>
         <div class="col">
           <input type="text" formControlName="quantity_units" id="add-ingredient-usage-quantity-units" class="form-control" name="edit-ingredients-usage-quantity-units" required>
-          <div *ngIf="addIngredientUsageForm.controls['quantity_units'].touched && addIngredientUsageForm.controls['quantity_units'].invalid" [@inOutAnimation] class="alert alert-danger">
+          <div *ngIf="addIngredientUsageForm.controls['quantity_units'].touched && addIngredientUsageForm.controls['quantity_units'].invalid"
+               [@inOutAnimation]="addIngredientUsageForm.controls['quantity_units'].touched && addIngredientUsageForm.controls['quantity_units'].invalid" class="alert alert-danger">
             Quantity units are required
           </div>
         </div>
@@ -209,9 +215,12 @@
         </div>
         <div class="col">
           <select formControlName="name" id="add-equipment-usage-name" class="form-control" name="add-equipment-usage-name" required>
+            <option></option>
             <option *ngFor="let equip of recipeDetails.equipment">{{equip.name}}</option>
           </select>
-          <div *ngIf="addEquipmentUsageForm.controls['name'].touched && addEquipmentUsageForm.controls['name'].invalid" [@inOutAnimation] class="alert alert-danger">
+          <div *ngIf="addEquipmentUsageForm.controls['name'].touched && addEquipmentUsageForm.controls['name'].invalid"
+               [@inOutAnimation]="addEquipmentUsageForm.controls['name'].touched && addEquipmentUsageForm.controls['name'].invalid"
+               class="alert alert-danger">
             A name is required
           </div>
         </div>

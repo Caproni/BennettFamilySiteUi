@@ -235,15 +235,14 @@ export class IngredientsComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
           this.toasterService.success('Added ' + payload.name, 'Success');
+          this.onInit();
         },
       );
 
@@ -285,7 +284,6 @@ export class IngredientsComponent implements OnInit {
           this.toasterService.info('Adding image for ' + this.ingredient.name, 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add image for ' + this.ingredient.name, 'Error');
         },
         () => {
@@ -308,12 +306,17 @@ export class IngredientsComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (res) => {
-          console.log(res);
+          this.toasterService.info('Deleting ' + this.ingredient.name, 'Info');
         },
-        (err) => console.log(err),
+        (err) => {
+          this.toasterService.error('Could not delete ' + this.ingredient.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Deleted ' + this.ingredient.name, 'Success');
+          this.onInit();
+        }
       );
     modalRef.hide();
-    this.onInit();
   }
 
 }

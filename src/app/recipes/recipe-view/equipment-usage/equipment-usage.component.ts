@@ -5,16 +5,16 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeWhile } from 'rxjs/operators';
 
-import { IngredientUsage } from 'src/app/_models/recipes/ingredient-usage';
-import { Ingredient } from 'src/app/_models/recipes/ingredient';
+import { EquipmentUsage } from 'src/app/_models/recipes/equipment-usage';
+import { Equipment } from 'src/app/_models/recipes/equipment';
 import { LoginService } from 'src/app/_services/login/login.service';
-import { IngredientUsageDeleteService } from 'src/app/_services/api/recipes/ingredient-usage/ingredient-usage-delete.service';
-import { IngredientUsageUpdateService } from 'src/app/_services/api/recipes/ingredient-usage/ingredient-usage-update.service';
+import { EquipmentUsageDeleteService } from 'src/app/_services/api/recipes/equipment-usage/equipment-usage-delete.service';
+import { EquipmentUsageUpdateService } from 'src/app/_services/api/recipes/equipment-usage/equipment-usage-update.service';
 
 @Component({
-  selector: 'fam-app-recipe-ingredient-usage',
-  templateUrl: './ingredient-usage.component.html',
-  styleUrls: ['./ingredient-usage.component.css'],
+  selector: 'fam-app-recipe-equipment-usage',
+  templateUrl: './equipment-usage.component.html',
+  styleUrls: ['./equipment-usage.component.css'],
   animations: [
     trigger(
       'inOutAnimation',
@@ -39,17 +39,17 @@ import { IngredientUsageUpdateService } from 'src/app/_services/api/recipes/ingr
     )
   ],
 })
-export class IngredientUsageComponent implements OnInit {
+export class EquipmentUsageComponent implements OnInit {
 
   isActive = true;
 
-  @Input() usage!: IngredientUsage;
-  @Input() ingredients!: Ingredient[];
-  @Input() ingredient!: Ingredient;
+  @Input() usage!: EquipmentUsage;
+  @Input() equipments!: Equipment[];
+  @Input() equipment!: Equipment;
 
   modalRef: BsModalRef = new BsModalRef();
 
-  editIngredientUsageForm: FormGroup = new FormGroup({
+  editEquipmentUsageForm: FormGroup = new FormGroup({
     quantity: new FormControl('', [Validators.required]),
     quantity_units: new FormControl('', [Validators.required]),
     notes: new FormControl(''),
@@ -59,8 +59,8 @@ export class IngredientUsageComponent implements OnInit {
     private modalService: BsModalService,
     private loginService: LoginService,
     private toasterService: ToastrService,
-    private ingredientUsageUpdateService: IngredientUsageUpdateService,
-    private ingredientUsageDeleteService: IngredientUsageDeleteService,
+    private equipmentUsageUpdateService: EquipmentUsageUpdateService,
+    private equipmentUsageDeleteService: EquipmentUsageDeleteService,
   ) { }
 
   ngOnInit(): void {
@@ -68,11 +68,9 @@ export class IngredientUsageComponent implements OnInit {
   }
 
   onInit() {
-    this.ingredient = this.ingredients.filter(x => x.id == this.usage.ingredient_id)[0];
+    this.equipment = this.equipments.filter(x => x.id == this.usage.equipment_id)[0];
 
-    this.editIngredientUsageForm.controls['quantity'].setValue(this.usage.quantity);
-    this.editIngredientUsageForm.controls['quantity_units'].setValue(this.usage.quantity_units);
-    this.editIngredientUsageForm.controls['notes'].setValue(this.usage.notes);
+    this.editEquipmentUsageForm.controls['notes'].setValue(this.usage.notes);
   }
 
   openModal(template: TemplateRef<any>): void {
@@ -83,26 +81,24 @@ export class IngredientUsageComponent implements OnInit {
     return this.loginService.getAuthorised();
   }
 
-  updateIngredientUsage() {
+  updateEquipmentUsage() {
 
     if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (!this.usage.id) return;
 
-    const payload = JSON.parse(JSON.stringify(this.editIngredientUsageForm.value));
+    const payload = JSON.parse(JSON.stringify(this.editEquipmentUsageForm.value));
 
     if (this.usage.id) {
 
-      const patch: IngredientUsage = {
+      const patch: EquipmentUsage = {
         id: this.usage.id,
         recipe_step_id: this.usage.recipe_step_id,
-        ingredient_id: this.usage.ingredient_id,
-        quantity: payload.quantity,
-        quantity_units: payload.quantity_units,
+        equipment_id: this.usage.equipment_id,
         notes: payload.notes,
       };
 
-      this.ingredientUsageUpdateService.updateIngredientUsage(this.usage.id, patch)
+      this.equipmentUsageUpdateService.updateEquipmentUsage(this.usage.id, patch)
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (_) => {
@@ -123,26 +119,26 @@ export class IngredientUsageComponent implements OnInit {
 
   }
 
-  deleteIngredientUsage() {
+  deleteEquipmentUsage() {
 
     if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
 
     if (!this.usage.id) return;
 
     if (this.usage.id) {
-      this.ingredientUsageDeleteService.deleteIngredientUsage(
+      this.equipmentUsageDeleteService.deleteEquipmentUsage(
         this.usage.id,
       )
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (res) => {
-            this.toasterService.info('Deleting ingredient usage', 'Info');
+            this.toasterService.info('Deleting equipment usage', 'Info');
           },
           (err) => {
-            this.toasterService.error('Could not delete ingredient usage', 'Error');
+            this.toasterService.error('Could not update ', 'Error');
           },
           () => {
-            this.toasterService.success('Deleted ingredient usage', 'Success');
+            this.toasterService.success('Deleted equipment usage', 'Success');
             this.onInit();
           }
         );

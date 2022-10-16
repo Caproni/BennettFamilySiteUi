@@ -119,15 +119,14 @@ export class NodeComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding image for person', 'Info');
         },
         (err) => {
-          console.log(err);
           this.toasterService.error('Could not add image for person', 'Error');
         },
         () => {
           this.toasterService.success('Added image for person', 'Success');
+          this.onInit();
         },
       );
 
