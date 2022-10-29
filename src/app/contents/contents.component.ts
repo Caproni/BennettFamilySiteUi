@@ -85,12 +85,14 @@ export class ContentsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.onInit();
   }
 
   onInit() {
-    this.windowWidth = window.innerWidth;
-    this.windowHeight = window.innerHeight;
 
     const distantFuture = new Date(2901, 0, 1);
 
@@ -100,8 +102,8 @@ export class ContentsComponent implements OnInit {
       if (contents && contents.length > 0) {
         this.contents = contents.sort(
           (x, y) => {
-            if ((x.taken_date ? x.taken_date: distantFuture) > (y.taken_date ? y.taken_date : distantFuture)) return -1;
-            if ((x.taken_date ? x.taken_date: distantFuture) <= (y.taken_date ? y.taken_date : distantFuture)) return 1;
+            if ((x.taken_date ? new Date(x.taken_date): distantFuture) > (y.taken_date ? new Date(y.taken_date) : distantFuture)) return -1;
+            if ((x.taken_date ? new Date(x.taken_date): distantFuture) <= (y.taken_date ? new Date(y.taken_date) : distantFuture)) return 1;
             return 0;
           }
         );

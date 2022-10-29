@@ -95,12 +95,14 @@ export class RecipeStepComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.onInit();
   }
 
   onInit() {
-    this.windowWidth = window.innerWidth;
-    this.windowHeight = window.innerHeight;
 
     this.editRecipeStepForm.controls['name'].setValue(this.step.name);
     this.editRecipeStepForm.controls['description'].setValue(this.step.description);

@@ -102,12 +102,14 @@ export class RecipeViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.onInit();
   }
 
   onInit() {
-    this.windowWidth = window.innerWidth;
-    this.windowHeight = window.innerHeight;
 
     this.activatedRoute.paramMap.subscribe(params => {
       this.recipeId = params.get('recipeId')?? '';

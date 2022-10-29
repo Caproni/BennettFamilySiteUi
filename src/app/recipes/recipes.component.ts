@@ -102,12 +102,14 @@ export class RecipesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.onInit();
   }
 
   onInit() {
-    this.windowWidth = window.innerWidth;
-    this.windowHeight = window.innerHeight;
 
     this.recipeReadService.readRecipes().subscribe((b) => {
       this.loadedRecipes = b;

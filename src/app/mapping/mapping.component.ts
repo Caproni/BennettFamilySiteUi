@@ -48,12 +48,14 @@ export class MappingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.onInit();
   }
 
   onInit() {
-    this.windowWidth = window.innerWidth;
-    this.windowHeight = window.innerHeight;
 
     this.mapboxKeyReadService.readMapboxKey().subscribe((b) => {
       this.loadedMapboxKey = b;

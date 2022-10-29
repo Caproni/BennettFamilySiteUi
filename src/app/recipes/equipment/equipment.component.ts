@@ -99,12 +99,14 @@ export class EquipmentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.onInit();
   }
 
   onInit() {
-    this.windowWidth = window.innerWidth;
-    this.windowHeight = window.innerHeight;
 
     this.equipmentReadService.readEquipments().subscribe((b) => {
       this.loadedEquipment = b;

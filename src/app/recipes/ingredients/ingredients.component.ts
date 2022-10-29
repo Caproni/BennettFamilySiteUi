@@ -99,12 +99,14 @@ export class IngredientsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
     this.onInit();
   }
 
   onInit() {
-    this.windowWidth = window.innerWidth;
-    this.windowHeight = window.innerHeight;
 
     this.ingredientReadService.readIngredients().subscribe((b) => {
       this.loadedIngredients = b;
@@ -280,7 +282,6 @@ export class IngredientsComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.onInit();
           this.toasterService.info('Adding image for ' + this.ingredient.name, 'Info');
         },
         (err) => {
@@ -288,6 +289,7 @@ export class IngredientsComponent implements OnInit {
         },
         () => {
           this.toasterService.success('Added image for ' + this.ingredient.name, 'Success');
+          this.onInit();
         },
       );
 
