@@ -3,16 +3,12 @@
     <div class="col">
       <h1>{{content.name}}</h1>
     </div>
-    <div class="col-1">
+    <div *ngIf="isAuthorised()" class="col-1">
       <button type="button" class="btn" aria-label="Edit" (click)="openModal(editContentTemplate)">
         <i class="fas fa-edit fa-pull-right" title="Edit"></i>
       </button>
     </div>
-    <div class="col-1">
-      <button type="button" class="btn" aria-label="Delete" (click)="openModal(deleteContentTemplate)">
-        <i class="fas fa-trash fa-pull-right" title="Delete"></i>
-      </button>
-    </div>
+    <div class="col-1"></div>
   </div>
   <div class="row pl-2">
     <h4 *ngIf="content.description" class="sub-text">{{content.description}}</h4>
@@ -69,5 +65,46 @@
 </ng-template>
 
 <ng-template #editContentTemplate>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Edit Content</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
+  <div class="modal-body">
+    <form [formGroup]="editContentForm">
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Name </label>
+        </div>
+        <div class="col">
+            <textarea matInput
+                      formControlName="notes"
+                      cdkTextareaAutosize
+                      matAutosizeMinRows=3
+                      matAutosizeMaxRows=10
+            ></textarea>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col">
+          <div class="row mx-auto justify-content-center">
+            <button class="btn btn-outline-success" style="width: 80%;"
+                    [disabled]="!editContentForm.valid"
+                    (click)="editContent()">Update</button>
+          </div>
+          <div class="row mx-auto pt-2 justify-content-center">
+            <button class="btn btn-outline-danger" (click)="modalRef.hide(); openModal(deleteContentTemplate)" style="width: 80%;">Delete</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </ng-template>

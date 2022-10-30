@@ -67,6 +67,10 @@ export class ContentDetailsComponent implements OnInit {
     this.windowHeight = window.innerHeight;
   }
 
+  isAuthorised(): boolean {
+    return this.loginService.getAuthorised();
+  }
+
   openModal(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template);
   }

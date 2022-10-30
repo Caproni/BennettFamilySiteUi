@@ -109,7 +109,7 @@ export class FamilyTreeComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
   }
