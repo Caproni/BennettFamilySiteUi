@@ -104,7 +104,7 @@ export class EquipmentUsageComponent implements OnInit {
           (_) => {
             this.toasterService.info('Updating ' + payload.name, 'Info');
           },
-          (err) => {
+          (_) => {
             this.toasterService.error('Could not update ' + payload.name, 'Error');
           },
           () => {
@@ -131,10 +131,10 @@ export class EquipmentUsageComponent implements OnInit {
       )
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
-          (res) => {
+          (_) => {
             this.toasterService.info('Deleting equipment usage', 'Info');
           },
-          (err) => {
+          (_) => {
             this.toasterService.error('Could not update ', 'Error');
           },
           () => {

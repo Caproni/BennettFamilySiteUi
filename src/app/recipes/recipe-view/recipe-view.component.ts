@@ -174,11 +174,10 @@ export class RecipeViewComponent implements OnInit {
       )
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
-          (res) => {
-            console.log(res);
+          (_) => {
             this.toasterService.info('Deleting ' + this.recipeDetails.recipe.name, 'Info');
           },
-        (err) => {
+        (_) => {
             this.toasterService.error('Could not delete ' + this.recipeDetails.recipe.name, 'Error');
           },
           () => {
@@ -201,12 +200,10 @@ export class RecipeViewComponent implements OnInit {
       )
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
-          (res) => {
-            console.log(res);
+          (_) => {
             this.toasterService.info('Deleting image for ' + this.recipeDetails.recipe.name, 'Info');
           },
-          (err) => {
-            console.log(err);
+          (_) => {
             this.toasterService.error('Could not delete image for ' + this.recipeDetails.recipe.name, 'Error');
           },
           () => {
@@ -263,8 +260,7 @@ export class RecipeViewComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
-        (err) => {
-          console.log(err);
+        (_) => {
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
@@ -306,7 +302,7 @@ export class RecipeViewComponent implements OnInit {
         (_) => {
           this.toasterService.info('Updating ' + payload.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Error updating ' + payload.name, 'Error');
         },
         () => {
@@ -333,8 +329,7 @@ export class RecipeViewComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding image for ' + this.recipeDetails.recipe.name, 'Info');
         },
-        (err) => {
-          console.log(err);
+        (_) => {
           this.toasterService.error('Could not add image for ' + this.recipeDetails.recipe.name, 'Error');
         },
         () => {

@@ -133,12 +133,10 @@ export class MediaDetailComponent implements OnInit {
     )
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
-        (res) => {
-          console.log(res);
+        (_) => {
           this.toasterService.info('Updating ' + this.medium.title, 'Info');
         },
-        (err) => {
-          console.log(err);
+        (_) => {
           this.toasterService.error('Could not update ' + this.medium.title, 'Error');
         },
         () => {
@@ -159,8 +157,7 @@ export class MediaDetailComponent implements OnInit {
         (res) => {
           this.toasterService.info('Deleting ' + this.medium.title, 'Info');
         },
-        (err) => {
-          console.log(err);
+        (_) => {
           this.toasterService.error('Could not delete ' + this.medium.title, 'Error');
         },
         () => {

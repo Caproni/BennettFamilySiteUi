@@ -108,7 +108,7 @@ export class IngredientUsageComponent implements OnInit {
           (_) => {
             this.toasterService.info('Updating ' + payload.name, 'Info');
           },
-          (err) => {
+          (_) => {
             this.toasterService.error('Could not update ' + payload.name, 'Error');
           },
           () => {
@@ -135,10 +135,10 @@ export class IngredientUsageComponent implements OnInit {
       )
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
-          (res) => {
+          (_) => {
             this.toasterService.info('Deleting ingredient usage', 'Info');
           },
-          (err) => {
+          (_) => {
             this.toasterService.error('Could not delete ingredient usage', 'Error');
           },
           () => {

@@ -286,7 +286,7 @@ export class ContentsComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {

@@ -160,8 +160,7 @@ export class FamilyTreeComponent implements OnInit {
             this.toasterService.info('Adding person', 'Info');
           });
         },
-        (err) => {
-          console.log(err);
+        (_) => {
           this.toasterService.error('Could not add person', 'Error');
         },
         () => {
@@ -198,8 +197,7 @@ export class FamilyTreeComponent implements OnInit {
             this.toasterService.info('Adding relationship', 'Info');
           });
         },
-        (err) => {
-          console.log(err);
+        (_) => {
           this.toasterService.error('Could not add relationship', 'Error');
         },
         () => {
@@ -231,8 +229,7 @@ export class FamilyTreeComponent implements OnInit {
           this.familyTreeDataSourceReadService.readFamilyTreeDataSources();
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
-        (err) => {
-          console.log(err);
+        (_) => {
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {

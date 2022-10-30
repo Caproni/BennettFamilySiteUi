@@ -121,7 +121,7 @@ export class NodeComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding image for person', 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add image for person', 'Error');
         },
         () => {
@@ -143,12 +143,10 @@ export class NodeComponent implements OnInit {
       )
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
-          (res) => {
-            console.log(res);
+          (_) => {
             this.toasterService.info('Deleting image for person', 'Info');
           },
-          (err) => {
-            console.log(err);
+          (_) => {
             this.toasterService.error('Could not delete image for person', 'Error');
           },
           () => {
@@ -199,8 +197,7 @@ export class NodeComponent implements OnInit {
             this.toasterService.info('Updating person', 'Info');
           });
         },
-        (err) => {
-          console.log(err);
+        (_) => {
           this.toasterService.error('Could not update person', 'Error');
         },
         () => {

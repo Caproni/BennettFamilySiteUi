@@ -210,7 +210,7 @@ export class MediaComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding ' + payload.title, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add ' + payload.title, 'Error');
         },
         () => {

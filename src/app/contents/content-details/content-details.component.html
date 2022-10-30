@@ -84,12 +84,56 @@
           <label class="control-label">Name </label>
         </div>
         <div class="col">
-            <textarea matInput
-                      formControlName="notes"
-                      cdkTextareaAutosize
-                      matAutosizeMinRows=3
-                      matAutosizeMaxRows=10
-            ></textarea>
+          <input type="text" formControlName="name" id="edit-name" class="form-control" name="edit-name" required>
+          <div *ngIf="editContentForm.controls['name'].touched && editContentForm.controls['name'].invalid" class="alert alert-danger">
+            A name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Description </label>
+        </div>
+        <div class="col">
+          <input type="text" formControlName="description" id="edit-description" class="form-control" name="edit-description">
+        </div>
+      </div>
+
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Camera Details </label>
+        </div>
+        <div class="col">
+          <input type="text" formControlName="camera_details" id="edit-camera-details" class="form-control" name="edit-camera-details">
+        </div>
+      </div>
+
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Taken Date </label>
+        </div>
+        <div class="col">
+          <input
+            type="text"
+            placeholder="Select date"
+            class="form-control"
+            bsDatepicker
+            formControlName="taken_date"
+            [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-1">
+        <div class="col form-group">
+          <label class="control-label">Taken By </label>
+        </div>
+        <div class="col">
+          <input type="text" formControlName="taken_by" id="edit-taken-by" class="form-control" name="edit-taken-by">
         </div>
       </div>
 

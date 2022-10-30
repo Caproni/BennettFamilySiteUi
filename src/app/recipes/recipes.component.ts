@@ -236,7 +236,7 @@ export class RecipesComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
@@ -267,7 +267,7 @@ export class RecipesComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {

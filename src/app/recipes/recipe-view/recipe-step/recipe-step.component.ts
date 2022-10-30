@@ -150,7 +150,7 @@ export class RecipeStepComponent implements OnInit {
           (_) => {
             this.toasterService.info('Updating ' + payload.name, 'Info');
           },
-          (err) => {
+          (_) => {
             this.toasterService.error('Could not update ' + payload.name, 'Error');
           },
           () => {
@@ -174,10 +174,10 @@ export class RecipeStepComponent implements OnInit {
       )
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
-          (res) => {
+          (_) => {
             this.toasterService.info('Deleting ' + this.step.name, 'Info');
           },
-          (err) => {
+          (_) => {
             this.toasterService.error('Could not delete ' + this.step.name, 'Error');
           },
           () => {
@@ -223,7 +223,7 @@ export class RecipeStepComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
@@ -259,7 +259,7 @@ export class RecipeStepComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {

@@ -234,7 +234,7 @@ export class EquipmentComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
@@ -283,7 +283,7 @@ export class EquipmentComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding image for ' + this.equipment.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add image for ' + this.equipment.name, 'Error');
         },
         () => {
@@ -309,7 +309,7 @@ export class EquipmentComponent implements OnInit {
         (res) => {
           this.toasterService.info('Deleting ' + this.equipment.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not delete ' + this.equipment.name, 'Error');
         },
         () => {

@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit, TemplateRef} from '@angular/core';
+import { Component, HostListener, Input, Output, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { takeWhile } from 'rxjs/operators';
@@ -21,7 +21,7 @@ export class ContentDetailsComponent implements OnInit {
 
   isActive = true;
 
-  @Input() content!: Content;
+  @Input() @Output() content!: Content;
 
   allowedPhotoMimeTypes = ['image/png', 'image/jpeg'];
   allowedVideoMimeTypes = ['video/mp4'];
@@ -40,8 +40,8 @@ export class ContentDetailsComponent implements OnInit {
     private loginService: LoginService,
     private modalService: BsModalService,
     private toasterService: ToastrService,
-    private photosUpdateService: ContentUpdateService,
-    private photosDeleteService: ContentDeleteService,
+    private contentUpdateService: ContentUpdateService,
+    private contentDeleteService: ContentDeleteService,
   ) { }
 
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class ContentDetailsComponent implements OnInit {
     this.editContentForm.controls['name'].setValue(this.content.name);
     this.editContentForm.controls['description'].setValue(this.content.description);
     this.editContentForm.controls['camera_details'].setValue(this.content.camera_details);
-    this.editContentForm.controls['taken_date'].setValue(this.content.taken_date);
+    this.editContentForm.controls['taken_date'].setValue(this.content.taken_date ? new Date(this.content.taken_date): new Date());
     this.editContentForm.controls['taken_by'].setValue(this.content.taken_by);
   }
 
@@ -77,6 +77,41 @@ export class ContentDetailsComponent implements OnInit {
 
   editContent() {
 
+    if (!this.loginService.checkModalAuthorised(this.modalRef)) return;
+
+    if (!this.content.id) return;
+
+    const payload = JSON.parse(JSON.stringify(this.editContentForm.value));
+
+    this.contentUpdateService.updateContent(
+      this.content.id,
+      {
+        name: payload.name,
+        description: payload.description ?? null,
+        taken_by: payload.taken_by?? null,
+        taken_date: new Date(payload.taken_date),
+        camera_details: payload.camera_details ?? null,
+        height: this.content.height,
+        width: this.content.width,
+        file_format: this.content.file_format,
+        blob_url: this.content.blob_url,
+      }
+    )
+      .pipe(takeWhile(_ => this.isActive))
+      .subscribe(
+        (_) => {
+          this.toasterService.info('Updating ' + payload.name, 'Info');
+        },
+        (_) => {
+          this.toasterService.error('Could not update ' + payload.name, 'Error');
+        },
+        () => {
+          this.toasterService.success('Updated ' + payload.name, 'Success');
+          this.onInit();
+        },
+      );
+
+    this.modalRef.hide();
   }
 
   deleteContent(): void {
@@ -85,19 +120,20 @@ export class ContentDetailsComponent implements OnInit {
 
     if (!this.content.id) return;
 
-    this.photosDeleteService.deleteContent(
+    this.contentDeleteService.deleteContent(
       this.content.id,
     )
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
-        (res) => {
+        (_) => {
           this.toasterService.info('Deleting ' + this.content.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not delete ' + this.content.name, 'Error');
         },
         () => {
           this.toasterService.success('Deleted ' + this.content.name, 'Success');
+          this.onInit();
         },
       );
   }

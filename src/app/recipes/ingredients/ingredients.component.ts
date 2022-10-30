@@ -239,7 +239,7 @@ export class IngredientsComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding ' + payload.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add ' + payload.name, 'Error');
         },
         () => {
@@ -284,7 +284,7 @@ export class IngredientsComponent implements OnInit {
         (_) => {
           this.toasterService.info('Adding image for ' + this.ingredient.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not add image for ' + this.ingredient.name, 'Error');
         },
         () => {
@@ -307,10 +307,10 @@ export class IngredientsComponent implements OnInit {
     )
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
-        (res) => {
+        (_) => {
           this.toasterService.info('Deleting ' + this.ingredient.name, 'Info');
         },
-        (err) => {
+        (_) => {
           this.toasterService.error('Could not delete ' + this.ingredient.name, 'Error');
         },
         () => {
