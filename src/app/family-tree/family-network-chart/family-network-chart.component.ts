@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Output, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ElementRef, Input, Output, OnInit, HostListener } from '@angular/core';
 import ForceGraph, { ForceGraphInstance } from 'force-graph';
 
 import { FamilyTreePerson } from 'src/app/_models/family-tree/family-tree-person';
@@ -29,7 +29,7 @@ interface Link {
   templateUrl: './family-network-chart.component.html',
   styleUrls: ['./family-network-chart.component.css']
 })
-export class FamilyNetworkChartComponent implements AfterViewInit {
+export class FamilyNetworkChartComponent implements OnInit {
 
   private graph!: ForceGraphInstance;
 
@@ -46,7 +46,7 @@ export class FamilyNetworkChartComponent implements AfterViewInit {
     private elementRef: ElementRef,
   ) { }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
 
     for (let person of this.people) {
 
