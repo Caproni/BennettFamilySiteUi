@@ -1,0 +1,197 @@
+<div *ngIf="windowWidth > 1000" [@inOutAnimation]="windowWidth > 1000" class="row row-chart m-1 p-2 align-items-center">
+  <div class="col"><a href="{{paper.doi}}">{{paper.title}}</a></div>
+  <div class="col">{{paper.publication_type}}</div>
+  <div class="col">{{paper.publication_location}}</div>
+  <div class="col">{{paper.publication_date | date: 'dd MMM Y'}}</div>
+  <div class="col">{{paper.pages}}</div>
+  <div class="col">
+    <mat-chip-list aria-label="Authors">
+      <mat-chip *ngFor="let author of paper.authors">
+        {{author}}
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+  <div class="col">{{paper.language}}</div>
+  <div *ngIf="isAuthorised()" class="col"><button class="btn" title="Edit" (click)="openModal(editPaperTemplate)"><i class="fas fa-edit fa-sm"></i></button></div>
+  <div *ngIf="!isAuthorised()" class="col"><button class="btn" title="View" (click)="openModal(viewPaperTemplate)"><i class="fas fa-eye fa-sm"></i></button></div>
+</div>
+
+<div *ngIf="windowWidth <= 1000" [@inOutAnimation]="windowWidth <= 1000" class="row row-chart m-1 p-2 align-items-center">
+  <div class="col">{{paper.title}}</div>
+  <div *ngIf="isAuthorised()" class="col"><button class="btn" title="Edit" (click)="openModal(editPaperTemplate)"><i class="fas fa-edit fa-sm"></i></button></div>
+  <div *ngIf="!isAuthorised()" class="col"><button class="btn" title="View" (click)="openModal(viewPaperTemplate)"><i class="fas fa-eye fa-sm"></i></button></div>
+</div>
+
+<ng-template #editPaperTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit Paper</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="editPaperForm">
+      <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Director </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="director" id="edit-director" class="form-control" name="edit-director">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Title </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="title" id="edit-title" class="form-control" name="edit-title" required>
+            <div *ngIf="editPaperForm.controls['title'].touched && editPaperForm.controls['title'].invalid" class="alert alert-danger">
+              A title is required
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Publisher </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="publisher" id="edit-publisher" class="form-control" name="edit-publisher">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Actors </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="actors" id="edit-actors" class="form-control" name="edit-actors">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Format </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="format" id="edit-format" class="form-control" name="edit-format">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Publication Date </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="release_year" id="edit-release-year" class="form-control" name="edit-release-year">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Language </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="language" id="edit-language" class="form-control" name="edit-language">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Location </label>
+          </div>
+          <div class="col">
+            <select formControlName="location" id="edit-location" class="form-control" name="edit-location">
+              <option>Attic</option>
+              <option>Living Room</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <div class="row mx-auto justify-content-center">
+              <button class="btn btn-outline-success" style="width: 80%;"
+                      [disabled]="!editPaperForm.valid"
+                      (click)="onPaperUpdate(modalRef)">Update</button>
+            </div>
+            <div class="row mx-auto pt-2 justify-content-center">
+              <button class="btn btn-outline-danger" (click)="modalRef.hide(); openModal(deletePaperTemplate);" style="width: 80%;">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #viewPaperTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{paper.title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Authors </label>
+          </div>
+          <div class="col">
+            <mat-chip-list aria-label="Media actors">
+              <mat-chip *ngFor="let author of paper.authors?.split(',')">
+                {{author}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Release Year </label>
+          </div>
+          <div class="col">
+            <label id="view-release-year">{{paper.publication_date}}</label>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Language </label>
+          </div>
+          <div class="col">
+            <label id="view-language">{{paper.language}}</label>
+          </div>
+        </div>
+  </div>
+</ng-template>
+
+<ng-template #deletePaperTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">
+      Are you sure you want to delete {{ paper.title }}?
+    </h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row justify-content-center">
+      <button
+        class="btn btn-outline-danger"
+        (click)="deletePaper(modalRef)"
+        style="width: 80%"
+      >
+        Confirm
+      </button>
+    </div>
+    <div class="row justify-content-center pt-2">
+      <button
+        class="btn btn-outline-secondary"
+        (click)="modalRef.hide()"
+        style="width: 80%"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</ng-template>

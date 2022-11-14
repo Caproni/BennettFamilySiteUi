@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import {
   faCameraRetro,
   faTv,
+  faScroll,
   faUtensils,
   faTree,
   faMapPin,
@@ -22,6 +23,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
 export class NavbarComponent implements OnInit {
 
   mediaIcon = faTv;
+  scholarIcon = faScroll;
   mapIcon = faMapPin;
   photosIcon = faCameraRetro;
   recipesIcon = faUtensils;

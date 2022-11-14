@@ -45,6 +45,8 @@ import { EquipmentUsageComponent } from './recipes/recipe-view/equipment-usage/e
 import { FamilyNetworkChartComponent } from './family-tree/family-network-chart/family-network-chart.component';
 import { NodeComponent } from './family-tree/family-network-chart/node/node.component';
 import { MappingComponent } from './mapping/mapping.component';
+import { PapersComponent } from './papers/papers.component';
+import { PaperDetailComponent } from './papers/paper-detail/paper-detail.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +76,8 @@ import { MappingComponent } from './mapping/mapping.component';
     FamilyNetworkChartComponent,
     NodeComponent,
     MappingComponent,
+    PapersComponent,
+    PaperDetailComponent,
   ],
   imports: [
     BrowserModule,

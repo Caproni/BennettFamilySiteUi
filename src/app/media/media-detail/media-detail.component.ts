@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, HostListener, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -67,7 +67,6 @@ export class MediaDetailComponent implements OnInit {
     private modalService: BsModalService,
     private loginService: LoginService,
     private toasterService: ToastrService,
-    private changeDetectorRef: ChangeDetectorRef,
     private mediaUpdateService: MediaUpdateService,
     private mediaDeleteService: MediaDeleteService,
   ) { }
@@ -76,7 +75,10 @@ export class MediaDetailComponent implements OnInit {
 
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
+    this.populateForm();
+  }
 
+  populateForm() {
     this.editMediumForm.controls['director'].setValue(this.medium.director);
     this.editMediumForm.controls['title'].setValue(this.medium.title);
     this.editMediumForm.controls['publisher'].setValue(this.medium.publisher);

@@ -1,0 +1,215 @@
+<br>
+<div class="container mx-auto text-center">
+  <h1>Papers</h1>
+</div>
+<br>
+<div *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()" class="mx-auto text-center">
+  <button class="btn btn-outline-dark" (click)="openModal(addPaperTemplate)">
+    <i class="fas fa-scroll"></i>
+    Add Paper
+  </button>
+</div>
+<br>
+<div class="col">
+  <div class="row justify-content-center">
+    <div class="input-group col-8" id="searchContainer">
+      <input class="form-control search-bar" type="text"
+             placeholder="Search for papers" id="textSearch"
+             name="dataSearch" [(ngModel)]="searchPhrase">
+      <button type="button" class="btn btn-outline-dark" aria-label="Search" (click)="filterPapers()">
+        <i class="fas fa-search fa-lg"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<br>
+<div>
+  <br>
+  <div class="container-fluid text-center table-outer">
+    <div *ngIf="windowWidth > 1000" [@inOutAnimation]="windowWidth > 1000" class="row row-chart row-header m-1 p-2">
+      <div class="col"><b>Title</b></div>
+      <div class="col"><b>Publication Type</b></div>
+      <div class="col"><b>Publication Location</b></div>
+      <div class="col"><b>Publication Date</b></div>
+      <div class="col"><b>Pages</b></div>
+      <div class="col"><b>Authors</b></div>
+      <div class="col"><b>Language</b></div>
+      <div class="col"></div>
+    </div>
+
+    <div *ngIf="windowWidth <= 1000" [@inOutAnimation]="windowWidth <= 1000" class="row row-chart row-header m-1 p-2">
+      <div class="col"><b>Title</b></div>
+      <div class="col"><b>DOI</b></div>
+      <div class="col"></div>
+    </div>
+
+    <div *ngIf="papers && papers.length < 1 && !loadedPapers">
+      <fam-app-loading-table></fam-app-loading-table>
+    </div>
+    <div *ngFor="let paper of filteredPapers">
+      <fam-app-paper-detail [paper]="paper"></fam-app-paper-detail>
+    </div>
+  </div>
+</div>
+
+<ng-template #addPaperTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">New Paper</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="newPaperForm">
+      <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Title </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="title" id="title" class="form-control" name="title" required>
+            <div *ngIf="newPaperForm.controls['title'].touched && newPaperForm.controls['title'].invalid" class="alert alert-danger">
+              A title is required
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Description </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="description" id="description" class="form-control" name="description">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Abstract </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="abstract" id="abstract" class="form-control" name="abstract">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Authors </label>
+          </div>
+          <div class="col">
+            <mat-form-field class="author-chip-list" appearance="fill">
+              <mat-label>Authors</mat-label>
+              <mat-chip-list #authorList aria-label="Actor selection">
+                <mat-chip *ngFor="let author of authors" (removed)="removeAuthor(author)">
+                  {{author}}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip>
+                <input placeholder="New author..."
+                       [matChipInputFor]="authorList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="addAuthor($event)">
+              </mat-chip-list>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Publication Type </label>
+          </div>
+          <div class="col">
+            <select formControlName="publication_type" id="publication-type" class="form-control" name="publication-type">
+              <option>Book</option>
+              <option>Conference Proceedings</option>
+              <option>Journal Publication</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Publication Location </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="publication_location" id="publication-location" class="form-control" name="publication-location">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Publication Date </label>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              placeholder="Select date"
+              class="form-control"
+              bsDatepicker
+              formControlName="publication_date"
+              [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+            />
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">DOI </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="doi" id="doi" class="form-control" name="doi">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Language </label>
+          </div>
+          <div class="col">
+            <select formControlName="language" id="language" class="form-control" name="language">
+              <option>English</option>
+              <option>French</option>
+              <option>German</option>
+              <option>Spanish</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">File </label>
+          </div>
+          <div class="col">
+            <input
+              #fileUpload
+              type="file"
+              accept="application/pdf"
+              class="file-upload"
+              style="display: none;"
+              (change)="onPaperSelected($event)">
+
+            <button class="btn btn-outline-dark"
+                    (click)="fileUpload.click()">
+              <i class="fas fa-upload"> Browse</i>
+            </button>
+            <div class="file-upload">
+              <input type="text" formControlName="file" id="file" class="form-control" name="file" required>
+              <div *ngIf="newPaperForm.controls['file'].touched && newPaperForm.controls['file'].invalid" class="alert alert-danger">
+                A pdf is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <div class="row mx-auto justify-content-center">
+              <button class="btn btn-outline-success" style="width: 80%;"
+                      [disabled]="!newPaperForm.valid"
+                      (click)="onPaperFormSubmit()">Save</button>
+            </div>
+            <div class="row mx-auto pt-2 justify-content-center">
+              <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

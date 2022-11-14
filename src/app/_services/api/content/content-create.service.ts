@@ -16,7 +16,7 @@ export class ContentCreateService {
     private http: HttpClient,
   ) { }
 
-  createPhoto(photo: Content, file: File) {
+  createContent(photo: Content, file: File) {
 
     let url = `${this.baseUrl}/createContent?name=${photo.name}`;
 

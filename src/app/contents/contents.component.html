@@ -5,7 +5,7 @@
 <div *ngIf="isAuthorised()" class="mx-auto text-center pb-10">
   <button class="btn btn-outline-dark" (click)="openModal(addContentTemplate, {})">
     <i class="fas fa-camera-retro"></i>
-    Add Media
+    Add Content
   </button>
 </div>
 
@@ -23,7 +23,7 @@
 <div class="row px-10 justify-content-center">
   <div class="input-group col-8" id="searchContainer">
     <input class="form-control search-bar" type="text"
-           placeholder="Search for media" id="textSearch"
+           placeholder="Search for content" id="textSearch"
            name="dataSearch" [(ngModel)]="searchPhrase">
     <button type="button" class="btn btn-outline-dark" aria-label="Search" (click)="filterContent()">
       <i class="fas fa-search fa-lg"></i>

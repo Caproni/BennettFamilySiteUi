@@ -4,7 +4,10 @@
 </div>
 <br>
 <div *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()" class="mx-auto text-center">
-  <button class="btn btn-outline-dark" (click)="openModal(addMediaTemplate)">Add Media</button>
+  <button class="btn btn-outline-dark" (click)="openModal(addMediaTemplate)">
+    <i class="fas fa-tv"></i>
+    Add Media
+  </button>
 </div>
 <br>
 <div class="col">
@@ -98,7 +101,7 @@
           </div>
           <div class="col">
             <mat-form-field class="actor-chip-list" appearance="fill">
-              <mat-label>Recipe Tags</mat-label>
+              <mat-label>Actors</mat-label>
               <mat-chip-list #mediaActorList aria-label="Actor selection">
                 <mat-chip *ngFor="let actor of mediaActors" (removed)="removeMediaActor(actor)">
                   {{actor}}
@@ -106,7 +109,7 @@
                     <mat-icon>cancel</mat-icon>
                   </button>
                 </mat-chip>
-                <input placeholder="New actor..."
+                <input placeholder="New media..."
                        [matChipInputFor]="mediaActorList"
                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                        [matChipInputAddOnBlur]="addOnBlur"

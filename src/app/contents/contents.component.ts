@@ -265,7 +265,7 @@ export class ContentsComponent implements OnInit {
 
     const payload = JSON.parse(JSON.stringify(this.newContentForm.value));
 
-    this.photosCreateService.createPhoto(
+    this.photosCreateService.createContent(
       {
         name: payload.name,
         description: payload.description ?? null,
