@@ -15,7 +15,7 @@ import { Recipe } from 'src/app/_models/recipes/recipe';
           ':enter',
           [
             style({ opacity: 0 }),
-            animate('0.3s ease-out',
+            animate('300ms ease-out',
               style({ opacity: 1 }))
           ]
         ),
@@ -23,7 +23,7 @@ import { Recipe } from 'src/app/_models/recipes/recipe';
           ':leave',
           [
             style({ opacity: 1 }),
-            animate('0.3s ease-in',
+            animate('300ms ease-in',
               style({ opacity: 0 }))
           ]
         )

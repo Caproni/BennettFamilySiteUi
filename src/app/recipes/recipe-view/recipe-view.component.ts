@@ -31,7 +31,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
           ':enter',
           [
             style({ opacity: 0 }),
-            animate('0.3s ease-out',
+            animate('300ms ease-out',
               style({ opacity: 1 }))
           ]
         ),
@@ -39,7 +39,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
           ':leave',
           [
             style({ opacity: 1 }),
-            animate('0.3s ease-in',
+            animate('300ms ease-in',
               style({ opacity: 0 }))
           ]
         )
