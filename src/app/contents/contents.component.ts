@@ -16,7 +16,7 @@ import { ContentDetailsComponent } from 'src/app/contents/content-details/conten
 @Component({
   selector: 'fam-app-contents',
   templateUrl: './contents.component.html',
-  styleUrls: ['./contents.component.css']
+  styleUrls: ['./contents.component.scss']
 })
 export class ContentsComponent implements OnInit {
 

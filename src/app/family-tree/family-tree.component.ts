@@ -21,7 +21,7 @@ import { FamilyTreeDataSource } from 'src/app/_models/family-tree/family-tree-da
 @Component({
   selector: 'fam-app-family-tree',
   templateUrl: './family-tree.component.html',
-  styleUrls: ['./family-tree.component.css']
+  styleUrls: ['./family-tree.component.scss']
 })
 export class FamilyTreeComponent implements OnInit {
 

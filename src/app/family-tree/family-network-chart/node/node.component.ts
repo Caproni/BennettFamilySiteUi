@@ -14,7 +14,7 @@ import { FamilyTreePersonImageDeleteService } from 'src/app/_services/api/family
 @Component({
   selector: 'fam-app-node',
   templateUrl: './node.component.html',
-  styleUrls: ['./node.component.css']
+  styleUrls: ['./node.component.scss']
 })
 export class NodeComponent implements OnInit {
 

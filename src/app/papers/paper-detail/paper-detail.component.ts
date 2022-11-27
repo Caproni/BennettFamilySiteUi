@@ -13,7 +13,7 @@ import { PaperDeleteService } from 'src/app/_services/api/papers/paper-delete.se
 @Component({
   selector: 'fam-app-paper-detail',
   templateUrl: './paper-detail.component.html',
-  styleUrls: ['./paper-detail.component.css'],
+  styleUrls: ['./paper-detail.component.scss'],
   animations: [
     trigger(
       'inOutAnimation',

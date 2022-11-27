@@ -27,7 +27,7 @@ interface Link {
 @Component({
   selector: 'fam-app-family-network-chart',
   templateUrl: './family-network-chart.component.html',
-  styleUrls: ['./family-network-chart.component.css']
+  styleUrls: ['./family-network-chart.component.scss']
 })
 export class FamilyNetworkChartComponent implements OnInit {
 

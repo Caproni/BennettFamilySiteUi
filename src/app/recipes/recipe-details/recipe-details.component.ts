@@ -6,7 +6,7 @@ import { Recipe } from 'src/app/_models/recipes/recipe';
 @Component({
   selector: 'fam-app-recipe-details',
   templateUrl: './recipe-details.component.html',
-  styleUrls: ['./recipe-details.component.css'],
+  styleUrls: ['./recipe-details.component.scss'],
   animations: [
     trigger(
       'columnInOutAnimation',

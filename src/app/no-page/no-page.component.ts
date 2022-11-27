@@ -4,7 +4,7 @@ import { DogCeoApiService } from 'src/app/_services/dogs/dog-ceo-api.service';
 @Component({
   selector: 'fam-app-no-page',
   templateUrl: './no-page.component.html',
-  styleUrls: ['./no-page.component.css']
+  styleUrls: ['./no-page.component.scss']
 })
 export class NoPageComponent implements OnInit {
 

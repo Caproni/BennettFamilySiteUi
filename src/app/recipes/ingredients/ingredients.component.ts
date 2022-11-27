@@ -24,7 +24,7 @@ import { RecipeStep } from 'src/app/_models/recipes/recipe-step';
 @Component({
   selector: 'fam-app-ingredients',
   templateUrl: './ingredients.component.html',
-  styleUrls: ['./ingredients.component.css'],
+  styleUrls: ['./ingredients.component.scss'],
 })
 export class IngredientsComponent implements OnInit {
 

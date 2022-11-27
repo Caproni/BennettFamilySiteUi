@@ -8,7 +8,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
 @Component({
   selector: 'app-mapping',
   templateUrl: './mapping.component.html',
-  styleUrls: ['./mapping.component.css'],
+  styleUrls: ['./mapping.component.scss'],
   animations: [
     trigger(
       'inOutAnimation',

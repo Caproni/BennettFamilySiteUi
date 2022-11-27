@@ -15,7 +15,7 @@ import { Paper } from 'src/app/_models/papers/paper';
 @Component({
   selector: 'fam-app-papers',
   templateUrl: './papers.component.html',
-  styleUrls: ['./papers.component.css'],
+  styleUrls: ['./papers.component.scss'],
   animations: [
     trigger(
       'inOutAnimation',

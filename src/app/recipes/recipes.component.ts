@@ -22,7 +22,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
 @Component({
   selector: 'fam-app-recipes',
   templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.css'],
+  styleUrls: ['./recipes.component.scss'],
   animations: [
     trigger(
       'inOutAnimation',

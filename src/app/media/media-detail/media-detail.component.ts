@@ -13,7 +13,7 @@ import { LoginService } from 'src/app/_services/login/login.service';
 @Component({
   selector: 'fam-app-media-detail',
   templateUrl: './media-detail.component.html',
-  styleUrls: ['./media-detail.component.css'],
+  styleUrls: ['./media-detail.component.scss'],
   animations: [
     trigger(
       'inOutAnimation',

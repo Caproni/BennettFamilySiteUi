@@ -12,7 +12,7 @@ import { Content } from 'src/app/_models/contents/content';
 @Component({
   selector: 'fam-app-content-details',
   templateUrl: './content-details.component.html',
-  styleUrls: ['./content-details.component.css']
+  styleUrls: ['./content-details.component.scss']
 })
 export class ContentDetailsComponent implements OnInit {
 

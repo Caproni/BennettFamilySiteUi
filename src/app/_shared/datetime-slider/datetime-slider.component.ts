@@ -6,7 +6,7 @@ import { takeWhile } from 'rxjs/operators';
 @Component({
   selector: 'fam-app-datetime-slider',
   templateUrl: './datetime-slider.component.html',
-  styleUrls: ['./datetime-slider.component.css']
+  styleUrls: ['./datetime-slider.component.scss']
 })
 export class DatetimeSliderComponent implements OnInit {
 

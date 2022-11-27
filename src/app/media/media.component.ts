@@ -15,7 +15,7 @@ import { Media } from 'src/app/_models/media/media';
 @Component({
   selector: 'fam-app-media',
   templateUrl: './media.component.html',
-  styleUrls: ['./media.component.css'],
+  styleUrls: ['./media.component.scss'],
   animations: [
     trigger(
       'inOutAnimation',

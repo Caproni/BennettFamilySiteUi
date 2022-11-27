@@ -4,7 +4,7 @@ import { interval, Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'fam-app-loading-table',
   templateUrl: './loading-table.component.html',
-  styleUrls: ['./loading-table.component.css']
+  styleUrls: ['./loading-table.component.scss']
 })
 export class LoadingTableComponent implements OnInit {
 

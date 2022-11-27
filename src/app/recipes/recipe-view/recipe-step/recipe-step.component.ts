@@ -24,7 +24,7 @@ import { EquipmentUsageDeleteService } from 'src/app/_services/api/recipes/equip
 @Component({
   selector: 'fam-app-recipe-step',
   templateUrl: './recipe-step.component.html',
-  styleUrls: ['./recipe-step.component.css'],
+  styleUrls: ['./recipe-step.component.scss'],
   animations: [
     trigger(
       'inOutAnimation',

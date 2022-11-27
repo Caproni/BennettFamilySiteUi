@@ -14,7 +14,7 @@ import { EquipmentUsageUpdateService } from 'src/app/_services/api/recipes/equip
 @Component({
   selector: 'fam-app-recipe-equipment-usage',
   templateUrl: './equipment-usage.component.html',
-  styleUrls: ['./equipment-usage.component.css'],
+  styleUrls: ['./equipment-usage.component.scss'],
   animations: [
     trigger(
       'inOutAnimation',

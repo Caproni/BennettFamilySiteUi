@@ -14,7 +14,7 @@ import { IngredientUsageUpdateService } from 'src/app/_services/api/recipes/ingr
 @Component({
   selector: 'fam-app-recipe-ingredient-usage',
   templateUrl: './ingredient-usage.component.html',
-  styleUrls: ['./ingredient-usage.component.css'],
+  styleUrls: ['./ingredient-usage.component.scss'],
   animations: [
     trigger(
       'inOutAnimation',
