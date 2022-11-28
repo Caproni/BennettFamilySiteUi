@@ -59,17 +59,17 @@ export class PapersComponent implements OnInit {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
   newPaperForm: FormGroup = new FormGroup({
-    title: new FormControl('', [Validators.required]),
+    title: new FormControl(''),
     description: new FormControl(''),
     abstract: new FormControl(''),
     authors: new FormControl(''),
     publication_type: new FormControl(''),
     publication_location: new FormControl(''),
     publication_date: new FormControl(''),
-    doi: new FormControl(''),
+    doi: new FormControl('', [Validators.required]),
     blob_url: new FormControl(''),
     language: new FormControl(''),
-    file: new FormControl('', [Validators.required]),
+    file: new FormControl(''),
   });
 
   searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;

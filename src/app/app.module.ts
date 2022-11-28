@@ -47,6 +47,7 @@ import { NodeComponent } from './family-tree/family-network-chart/node/node.comp
 import { MappingComponent } from './mapping/mapping.component';
 import { PapersComponent } from './papers/papers.component';
 import { PaperDetailComponent } from './papers/paper-detail/paper-detail.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { PaperDetailComponent } from './papers/paper-detail/paper-detail.compone
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    NgbModule,
   ],
   providers: [],
   exports: [],

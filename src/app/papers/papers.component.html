@@ -68,10 +68,7 @@
             <label class="control-label">Title </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="title" id="title" class="form-control" name="title" required>
-            <div *ngIf="newPaperForm.controls['title'].touched && newPaperForm.controls['title'].invalid" class="alert alert-danger">
-              A title is required
-            </div>
+            <input type="text" formControlName="title" id="title" class="form-control" name="title">
           </div>
         </div>
         <div class="row mb-1">
@@ -156,7 +153,10 @@
             <label class="control-label">DOI </label>
           </div>
           <div class="col">
-            <input type="text" formControlName="doi" id="doi" class="form-control" name="doi">
+            <input type="text" formControlName="doi" id="doi" class="form-control" name="doi" required>
+            <div *ngIf="newPaperForm.controls['doi'].touched && newPaperForm.controls['doi'].invalid" class="alert alert-danger">
+              A DOI is required
+            </div>
           </div>
         </div>
         <div class="row mb-1">
@@ -190,10 +190,7 @@
               <i class="fas fa-upload"> Browse</i>
             </button>
             <div class="file-upload">
-              <input type="text" formControlName="file" id="file" class="form-control" name="file" required>
-              <div *ngIf="newPaperForm.controls['file'].touched && newPaperForm.controls['file'].invalid" class="alert alert-danger">
-                A pdf is required
-              </div>
+              <input type="text" formControlName="file" id="file" class="form-control" name="file">
             </div>
           </div>
         </div>
