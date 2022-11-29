@@ -151,4 +151,8 @@ export class PaperDetailComponent implements OnInit {
     modalRef.hide();
   }
 
+  downloadPaper() {
+
+  }
+
 }

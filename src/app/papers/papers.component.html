@@ -35,6 +35,7 @@
       <div class="col"><b>Authors</b></div>
       <div class="col"><b>Language</b></div>
       <div class="col"></div>
+      <div *ngIf="isAuthorised()" [@inOutAnimation]="windowWidth > 1000" class="col"></div>
     </div>
 
     <div *ngIf="windowWidth <= 1000" [@inOutAnimation]="windowWidth <= 1000" class="row row-chart row-header m-1 p-2">
