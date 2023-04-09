@@ -4,8 +4,24 @@ html, body {
 }
 
 body {
-  margin: 0;
   font-family: Playfair, "Helvetica Neue", sans-serif;
+  margin: 0;
+}
+
+.wrapper {
+  min-height: 100%;
+  margin-bottom: -50px;
+}
+
+/* Apply a clearfix to the wrapper element */
+.wrapper:after {
+  content: "";
+  display: block;
+}
+
+/* Ensure the footer is always at the bottom of the page */
+.push {
+  height: 50px;
 }
 
 .footer {

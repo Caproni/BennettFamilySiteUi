@@ -1,6 +1,6 @@
 This favicon was generated using the following font:
 
-- Font Title: Anek Kannada
-- Font Author: Copyright 2021 The Anek Project Authors (https://github.com/EkType/Anek)
-- Font Source: http://fonts.gstatic.com/s/anekkannada/v2/raxcHiCNvNMKe1CKFsINYFlgkEIwGa8nL6ruWJg1j--h8pvBKSiw4dFxEQukVReA1oef.ttf
+- Font Title: Viaoda Libre
+- Font Author: Copyright 2020 The Viaodalibre Project Authors (https://github.com/bettergui/ViaodaLibre)
+- Font Source: http://fonts.gstatic.com/s/viaodalibre/v15/vEFW2_lWCgoR6OKuRz9kcRVJb2IY2tOHXg.ttf
 - Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

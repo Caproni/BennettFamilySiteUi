@@ -3,22 +3,22 @@
     <div class="navbar-nav navbar-left">
       <a class="nav-brand pl-2 pr-2" routerLink="" title="Home"><img src="assets/favicon_io/favicon.ico" height="40" alt="EB"></a>
       <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/photos" routerLinkActive="active" title="Content">
-        <fa-icon [icon]="photosIcon" [size]="'lg'"></fa-icon>
+        <fa-icon [icon]="photosIcon" [size]="'lg'" style="color: {{getIconColor(photosPath)}};"></fa-icon>
       </a>
       <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/recipes" routerLinkActive="active" title="Recipes">
-        <fa-icon [icon]="recipesIcon" [size]="'lg'"></fa-icon>
+        <fa-icon [icon]="recipesIcon" [size]="'lg'" style="color: {{getIconColor(recipesPath)}};"></fa-icon>
       </a>
       <a *ngIf="isAuthorised()" class="project-title nav-item nav-link pr-3 ml-2" routerLink="/family" routerLinkActive="active" title="Family Tree">
-        <fa-icon [icon]="familyTreeIcon" [size]="'lg'"></fa-icon>
+        <fa-icon [icon]="familyTreeIcon" [size]="'lg'" style="color: {{getIconColor(familyTreePath)}};"></fa-icon>
       </a>
       <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/media" routerLinkActive="active" title="Films">
-        <fa-icon [icon]="mediaIcon" [size]="'lg'"></fa-icon>
+        <fa-icon [icon]="mediaIcon" [size]="'lg'" style="color: {{getIconColor(mediaPath)}};"></fa-icon>
       </a>
       <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/papers" routerLinkActive="active" title="Papers">
-        <fa-icon [icon]="scholarIcon" [size]="'lg'"></fa-icon>
+        <fa-icon [icon]="scholarIcon" [size]="'lg'" style="color: {{getIconColor(scholarPath)}};"></fa-icon>
       </a>
       <a class="project-title nav-item nav-link pr-3 ml-2" routerLink="/mapping" routerLinkActive="active" title="Maps">
-        <fa-icon [icon]="mapIcon" [size]="'lg'"></fa-icon>
+        <fa-icon [icon]="mapIcon" [size]="'lg'" style="color: {{getIconColor(mapPath)}};"></fa-icon>
       </a>
     </div>
     <div class="navbar-nav navbar-right">
