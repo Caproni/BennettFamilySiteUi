@@ -6,16 +6,16 @@ import { FamilyTreeDataSource } from 'src/app/_models/family-tree/family-tree-da
 import { FamilyTreeRelationship } from 'src/app/_models/family-tree/family-tree-relationship';
 
 
-interface Node {
+interface Person {
   id: string,
-  img: HTMLImageElement,
+  imagePath: string,
   name: string,
   sex: string,
   title: string,
   birthplace: string,
 }
 
-interface Link {
+interface Relationship {
   source: string,
   target: string,
   relationship_type: string,
@@ -37,23 +37,23 @@ export class FamilyNetworkChartComponent implements OnInit {
   @Input() @Output() relationships: FamilyTreeRelationship[] = [];
   @Input() @Output() dataSources: FamilyTreeDataSource[] = [];
 
-  nodes: Node[] = [];
-  links: Link[] = [];
+  nodes: Person[] = [];
+  links: Relationship[] = [];
 
   isActive = true;
 
-  constructor(
+  constructor (
     private elementRef: ElementRef,
   ) { }
 
   ngOnInit(): void {
+    this.createGraph();
+  }
 
+  private createGraph(): void {
     for (let person of this.people) {
 
       if (!person.id) continue;
-
-      const img = new Image();
-      img.src = person.blob_url ?? '/assets/silhouette.png';
 
       const dob = person.date_of_birth;
 
@@ -63,7 +63,7 @@ export class FamilyNetworkChartComponent implements OnInit {
         sex: person.sex ?? '',
         title: person.title ?? '',
         birthplace: person.birthplace ?? '',
-        img: img,
+        imagePath: person.blob_url ?? '/assets/silhouette.png',
       });
     }
 
@@ -85,78 +85,90 @@ export class FamilyNetworkChartComponent implements OnInit {
 
     const size = 24;
 
-    this.graph = ForceGraph()(this.htmlElement);
-    this.graph.linkColor('#ffffff');
-    this.graph.linkLabel('relationship_type')
-    this.graph.linkWidth(2);
-    // this.graph.nodePointerAreaPaint(
-    //   ({ id, x, y }, color, ctx) => {
-    //     // @ts-ignore
-    //     ctx.beginPath(); ctx.arc(x, y, 5, 0, 2 * Math.PI, false);
-    //   }
-    // );
-    // @ts-ignore
-    this.graph.nodeCanvasObject(({ img, x, y }, ctx) => {
+    this.graph = ForceGraph()(
+      this.htmlElement
+    )
+      .linkColor('#ffffff')
+      .linkLabel('relationship_type')
+      .linkWidth(2)
+      //@ts-ignore
+      .nodeCanvasObject(({imagePath, x, y}, ctx, globalScale) => {
+        const img = new Image();
+        img.src = imagePath ?? '/assets/silhouette.png';
+        img.onload = () => {
+          if (x && y) {
+            ctx.beginPath();
+            ctx.arc(x, y, size * globalScale, 0, 2 * Math.PI, false);
+            ctx.clip();
+            ctx.drawImage(img, x - size * globalScale, y - size * globalScale, 2 * size * globalScale, 2 * size * globalScale);
+          }
+        }
+
+        if (x && y) {
+          ctx.beginPath();
+          ctx.arc(x, y, size * globalScale, 0, 2 * Math.PI, false);
+          ctx.strokeStyle = 'black';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      })
       // @ts-ignore
-      ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
-    });
-    this.graph.linkDirectionalArrowLength((link) => {
-      // @ts-ignore
-      return link.relationship_type === 'Child'? 6 : 0;
-    });
-    this.graph.linkCanvasObject((link, ctx) => {
-      const MAX_FONT_SIZE = 4;
-      const LABEL_NODE_MARGIN = this.graph.nodeRelSize() * 1.5;
+      .linkDirectionalArrowLength((link: Relationship) => {
+        return link.relationship_type === 'Child'? 6 : 0;
+      })
+      .linkCanvasObject((link, ctx) => {
+        const MAX_FONT_SIZE = 4;
+        const LABEL_NODE_MARGIN = this.graph.nodeRelSize() * 1.5;
 
-      const start = link.source;
-      const end = link.target;
+        const start = link.source;
+        const end = link.target;
 
-      // ignore unbound links
-      if (typeof start !== 'object' || typeof end !== 'object') return;
+        // ignore unbound links
+        if (typeof start !== 'object' || typeof end !== 'object') return;
 
-      // calculate label positioning
-      // @ts-ignore
-      const textPos = Object.assign(...['x', 'y'].map(c => ({
-      // @ts-ignore
-        [c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
-      })));
+        // calculate label positioning
+        // @ts-ignore
+        const textPos = Object.assign(...['x', 'y'].map(c => ({
+          // @ts-ignore
+          [c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
+        })));
 
-      // @ts-ignore
-      const relLink = { x: end.x - start.x, y: end.y - start.y };
+        if (start.x && start.y && end.x && end.y) {
+          const relLink = { x: end.x - start.x, y: end.y - start.y };
+          const maxTextLength = Math.sqrt(Math.pow(relLink.x, 2) + Math.pow(relLink.y, 2)) - LABEL_NODE_MARGIN * 2;
+          let textAngle = Math.atan2(relLink.y, relLink.x);
+          // maintain label vertical orientation for legibility
+          if (textAngle > Math.PI / 2) textAngle = -(Math.PI - textAngle);
+          if (textAngle < -Math.PI / 2) textAngle = -(-Math.PI - textAngle);
+          // @ts-ignore
+          const label = `${link.relationship_type}`;
 
-      const maxTextLength = Math.sqrt(Math.pow(relLink.x, 2) + Math.pow(relLink.y, 2)) - LABEL_NODE_MARGIN * 2;
+          // estimate fontSize to fit in link length
+          ctx.font = '1px Sans-Serif';
+          const fontSize = Math.min(MAX_FONT_SIZE, maxTextLength / ctx.measureText(label).width);
+          ctx.font = `${fontSize}px Sans-Serif`;
+          const textWidth = ctx.measureText(label).width;
+          const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
 
-      let textAngle = Math.atan2(relLink.y, relLink.x);
-      // maintain label vertical orientation for legibility
-      if (textAngle > Math.PI / 2) textAngle = -(Math.PI - textAngle);
-      if (textAngle < -Math.PI / 2) textAngle = -(-Math.PI - textAngle);
+          // draw text label (with background rect)
+          ctx.save();
+          ctx.translate(textPos['x'], textPos['y']);
+          ctx.rotate(textAngle);
 
-      // @ts-ignore
-      const label = `${link.relationship_type}`;
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+          // @ts-ignore
+          ctx.fillRect(- bckgDimensions[0] / 2, - bckgDimensions[1] / 2, ...bckgDimensions);
 
-      // estimate fontSize to fit in link length
-      ctx.font = '1px Sans-Serif';
-      const fontSize = Math.min(MAX_FONT_SIZE, maxTextLength / ctx.measureText(label).width);
-      ctx.font = `${fontSize}px Sans-Serif`;
-      const textWidth = ctx.measureText(label).width;
-      const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = 'darkgrey';
+          ctx.fillText(label, 0, 0);
+          ctx.restore();
+        }
 
-      // draw text label (with background rect)
-      ctx.save();
-      ctx.translate(textPos['x'], textPos['y']);
-      ctx.rotate(textAngle);
+      });
 
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-      // @ts-ignore
-      ctx.fillRect(- bckgDimensions[0] / 2, - bckgDimensions[1] / 2, ...bckgDimensions);
-
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = 'darkgrey';
-      ctx.fillText(label, 0, 0);
-      ctx.restore();
-    });
-    this.graph.graphData(familyTreeData);
+    this.graph.graphData(familyTreeData)
 
     this.windowResize();
   }
