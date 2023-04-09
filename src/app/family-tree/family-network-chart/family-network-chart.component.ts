@@ -1,12 +1,12 @@
 import { Component, ElementRef, Input, Output, OnInit, HostListener } from '@angular/core';
-import ForceGraph, { ForceGraphInstance } from 'force-graph';
+import ForceGraph2D, { ForceGraphInstance } from 'force-graph';
 
 import { FamilyTreePerson } from 'src/app/_models/family-tree/family-tree-person';
 import { FamilyTreeDataSource } from 'src/app/_models/family-tree/family-tree-data-source';
 import { FamilyTreeRelationship } from 'src/app/_models/family-tree/family-tree-relationship';
 
 
-interface Person {
+interface Node {
   id: string,
   imagePath: string,
   name: string,
@@ -15,7 +15,7 @@ interface Person {
   birthplace: string,
 }
 
-interface Relationship {
+interface Link {
   source: string,
   target: string,
   relationship_type: string,
@@ -37,8 +37,8 @@ export class FamilyNetworkChartComponent implements OnInit {
   @Input() @Output() relationships: FamilyTreeRelationship[] = [];
   @Input() @Output() dataSources: FamilyTreeDataSource[] = [];
 
-  nodes: Person[] = [];
-  links: Relationship[] = [];
+  nodes: Node[] = [];
+  links: Link[] = [];
 
   isActive = true;
 
@@ -85,14 +85,12 @@ export class FamilyNetworkChartComponent implements OnInit {
 
     const size = 24;
 
-    this.graph = ForceGraph()(
-      this.htmlElement
-    )
-      .linkColor('#ffffff')
-      .linkLabel('relationship_type')
-      .linkWidth(2)
+    this.graph = ForceGraph2D()(this.htmlElement);
+    this.graph.linkColor('#ffffff');
+    this.graph.linkLabel('relationship_type');
+    this.graph.linkWidth(2);
       //@ts-ignore
-      .nodeCanvasObject(({imagePath, x, y}, ctx, globalScale) => {
+    this.graph.nodeCanvasObject(({imagePath, x, y}, ctx, globalScale) => {
         const img = new Image();
         img.src = imagePath ?? '/assets/silhouette.png';
         img.onload = () => {
@@ -113,10 +111,10 @@ export class FamilyNetworkChartComponent implements OnInit {
         }
       })
       // @ts-ignore
-      .linkDirectionalArrowLength((link: Relationship) => {
+    this.graph.linkDirectionalArrowLength((link: Link) => {
         return link.relationship_type === 'Child'? 6 : 0;
       })
-      .linkCanvasObject((link, ctx) => {
+    this.graph.linkCanvasObject((link, ctx) => {
         const MAX_FONT_SIZE = 4;
         const LABEL_NODE_MARGIN = this.graph.nodeRelSize() * 1.5;
 
@@ -168,7 +166,7 @@ export class FamilyNetworkChartComponent implements OnInit {
 
       });
 
-    this.graph.graphData(familyTreeData)
+    this.graph.graphData(familyTreeData);
 
     this.windowResize();
   }
