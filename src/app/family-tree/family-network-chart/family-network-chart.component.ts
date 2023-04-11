@@ -9,6 +9,7 @@ import { FamilyTreeRelationship } from 'src/app/_models/family-tree/family-tree-
 interface Node {
   id: string,
   imagePath: string,
+  image?: HTMLImageElement,
   name: string,
   sex: string,
   title: string,
@@ -40,6 +41,8 @@ export class FamilyNetworkChartComponent implements OnInit {
   nodes: Node[] = [];
   links: Link[] = [];
 
+  imageCache = new Map<string, HTMLImageElement>();
+
   isActive = true;
 
   constructor (
@@ -47,10 +50,16 @@ export class FamilyNetworkChartComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.initializeGraph();
+  }
+
+  async initializeGraph(): Promise<void> {
+    await this.preloadData();
     this.createGraph();
   }
 
-  private createGraph(): void {
+  private async preloadData(): Promise<void> {
+
     for (let person of this.people) {
 
       if (!person.id) continue;
@@ -78,6 +87,22 @@ export class FamilyNetworkChartComponent implements OnInit {
       });
     }
 
+    const loadPromises = this.nodes.map((node) => {
+      return new Promise<void>((resolve) => {
+        const img = new Image();
+        img.src = node.imagePath ?? '/assets/silhouette.png';
+        img.onload = () => {
+          node.image = img; // Assign the loaded image to the node
+          resolve();
+        };
+      });
+    });
+
+    await Promise.all(loadPromises);
+  }
+
+  private createGraph(): void {
+
     const familyTreeData = {
       nodes: this.nodes,
       links: this.links,
@@ -90,33 +115,34 @@ export class FamilyNetworkChartComponent implements OnInit {
     this.graph.linkLabel('relationship_type');
     this.graph.linkWidth(2);
       //@ts-ignore
-    this.graph.nodeCanvasObject(({imagePath, x, y}, ctx, globalScale) => {
-        const img = new Image();
-        img.src = imagePath ?? '/assets/silhouette.png';
-        img.onload = () => {
-          if (x && y) {
-            ctx.beginPath();
-            ctx.arc(x, y, size * globalScale, 0, 2 * Math.PI, false);
-            ctx.clip();
-            ctx.drawImage(img, x - size * globalScale, y - size * globalScale, 2 * size * globalScale, 2 * size * globalScale);
-          }
-        }
+    this.graph.nodeCanvasObject(({id, image, x, y}, ctx, globalScale) => {
 
-        if (x && y) {
-          ctx.beginPath();
-          ctx.arc(x, y, size * globalScale, 0, 2 * Math.PI, false);
-          ctx.strokeStyle = 'black';
-          ctx.lineWidth = 1;
-          ctx.stroke();
+      const node = this.nodes.find((node) => node.id === id);
+
+        if (node && node.image && x && y) {
+           const d = size * globalScale;
+           ctx.save();
+           ctx.beginPath();
+           ctx.arc(x, y, d / 2, 0, 2 * Math.PI, false);
+           ctx.closePath();
+           ctx.clip();
+           ctx.drawImage(node.image, x - d / 2, y - d / 2, d, d);
+           ctx.restore();
+
+           ctx.beginPath();
+           ctx.arc(x, y, size * globalScale / 2, 0, 2 * Math.PI, false);
+           ctx.strokeStyle = 'black';
+           ctx.lineWidth = 0.25;
+           ctx.stroke();
         }
       })
       // @ts-ignore
     this.graph.linkDirectionalArrowLength((link: Link) => {
         return link.relationship_type === 'Child'? 6 : 0;
       })
-    this.graph.linkCanvasObject((link, ctx) => {
-        const MAX_FONT_SIZE = 4;
-        const LABEL_NODE_MARGIN = this.graph.nodeRelSize() * 1.5;
+    this.graph.linkCanvasObject((link, ctx, globalScale) => {
+        const MAX_FONT_SIZE = 4 * globalScale;
+        const LABEL_NODE_MARGIN = this.graph.nodeRelSize() * globalScale;
 
         const start = link.source;
         const end = link.target;
@@ -133,7 +159,7 @@ export class FamilyNetworkChartComponent implements OnInit {
 
         if (start.x && start.y && end.x && end.y) {
           const relLink = { x: end.x - start.x, y: end.y - start.y };
-          const maxTextLength = Math.sqrt(Math.pow(relLink.x, 2) + Math.pow(relLink.y, 2)) - LABEL_NODE_MARGIN * 2;
+          const maxTextLength = globalScale * Math.sqrt(Math.pow(relLink.x, 2) + Math.pow(relLink.y, 2)) - LABEL_NODE_MARGIN * 2;
           let textAngle = Math.atan2(relLink.y, relLink.x);
           // maintain label vertical orientation for legibility
           if (textAngle > Math.PI / 2) textAngle = -(Math.PI - textAngle);
@@ -143,7 +169,7 @@ export class FamilyNetworkChartComponent implements OnInit {
 
           // estimate fontSize to fit in link length
           ctx.font = '1px Sans-Serif';
-          const fontSize = Math.min(MAX_FONT_SIZE, maxTextLength / ctx.measureText(label).width);
+          const fontSize = Math.min(MAX_FONT_SIZE, maxTextLength / ctx.measureText(label).width * globalScale);
           ctx.font = `${fontSize}px Sans-Serif`;
           const textWidth = ctx.measureText(label).width;
           const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
