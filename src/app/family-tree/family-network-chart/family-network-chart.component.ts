@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, Output, OnInit, HostListener } from '@angular/core';
 import ForceGraph2D, { ForceGraphInstance } from 'force-graph';
+import { forceManyBody } from 'd3';
 
 import { FamilyTreePerson } from 'src/app/_models/family-tree/family-tree-person';
 import { FamilyTreeDataSource } from 'src/app/_models/family-tree/family-tree-data-source';
@@ -114,7 +115,9 @@ export class FamilyNetworkChartComponent implements OnInit {
     this.graph.linkColor('#ffffff');
     this.graph.linkLabel('relationship_type');
     this.graph.linkWidth(2);
-      //@ts-ignore
+    //@ts-ignore
+    this.graph.d3Force('charge', forceManyBody().distanceMax(200).strength(-300))
+    //@ts-ignore
     this.graph.nodeCanvasObject(({id, image, x, y}, ctx, globalScale) => {
 
       const node = this.nodes.find((node) => node.id === id);
