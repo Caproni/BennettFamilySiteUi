@@ -80,8 +80,8 @@ export class PaperDetailComponent implements OnInit {
     this.windowHeight = window.innerHeight;
   }
 
-  openModal(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template);
+  openModal(template: TemplateRef<any>, modalOptions: any): void {
+    this.modalRef = this.modalService.show(template, modalOptions);
   }
 
   isAuthorised(): boolean {
