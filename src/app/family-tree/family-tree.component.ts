@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
+import { Component, HostListener, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -28,9 +28,9 @@ export class FamilyTreeComponent implements OnInit {
   windowWidth!: number;
   windowHeight!: number;
 
-  people!: FamilyTreePerson[];
-  relationships!: FamilyTreeRelationship[];
-  dataSources!: FamilyTreeDataSource[];
+  @Output() people!: FamilyTreePerson[];
+  @Output() relationships!: FamilyTreeRelationship[];
+  @Output() dataSources!: FamilyTreeDataSource[];
 
   person!: FamilyTreePerson;
 

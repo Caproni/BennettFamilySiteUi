@@ -1,10 +1,10 @@
-import { Component, ElementRef, Input, Output, OnInit, HostListener } from '@angular/core';
-import ForceGraph2D, { ForceGraphInstance } from 'force-graph';
-import { forceManyBody } from 'd3';
+import {ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, OnInit, Output} from '@angular/core';
+import ForceGraph2D, {ForceGraphInstance} from 'force-graph';
+import {forceManyBody} from 'd3';
 
-import { FamilyTreePerson } from 'src/app/_models/family-tree/family-tree-person';
-import { FamilyTreeDataSource } from 'src/app/_models/family-tree/family-tree-data-source';
-import { FamilyTreeRelationship } from 'src/app/_models/family-tree/family-tree-relationship';
+import {FamilyTreePerson} from 'src/app/_models/family-tree/family-tree-person';
+import {FamilyTreeDataSource} from 'src/app/_models/family-tree/family-tree-data-source';
+import {FamilyTreeRelationship} from 'src/app/_models/family-tree/family-tree-relationship';
 
 
 interface Node {
@@ -28,6 +28,7 @@ interface Link {
 
 @Component({
   selector: 'fam-app-family-network-chart',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './family-network-chart.component.html',
   styleUrls: ['./family-network-chart.component.scss']
 })
@@ -114,7 +115,7 @@ export class FamilyNetworkChartComponent implements OnInit {
     this.graph = ForceGraph2D()(this.htmlElement);
     this.graph.linkColor('#ffffff');
     this.graph.linkLabel('relationship_type');
-    this.graph.linkWidth(2);
+    this.graph.linkWidth(4);
     //@ts-ignore
     this.graph.d3Force('charge', forceManyBody().distanceMax(200).strength(-300))
     //@ts-ignore

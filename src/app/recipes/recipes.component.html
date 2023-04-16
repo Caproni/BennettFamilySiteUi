@@ -4,26 +4,28 @@
 </div>
 <br>
 
-<div *ngIf="windowWidth > 1000" [@inOutAnimation]="windowWidth > 1000" class="d-flex justify-content-center">
-  <div class="btn-group-horizontal">
-    <a *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()">
+<div *ngIf="windowWidth > 1000" [@inOutAnimation]="windowWidth > 1000" class="row">
+  <div class="row">
+    <div class="col"></div>
+    <div *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()" class="col mx-auto text-center">
       <button class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">
         <i class="fas fa-utensils" title="Add Recipe"></i>
         Add Recipe
       </button>
-    </a>
-    <a class="btn" routerLink="/cooking-ingredients" routerLinkActive="active" title="View Ingredients">
+    </div>
+    <div class="col mx-auto text-center" routerLink="/cooking-ingredients" routerLinkActive="active" title="View Ingredients">
       <button class="btn btn-outline-dark">
         <i class="fas fa-carrot" title="View Ingredients"></i>
         View Ingredients
       </button>
-    </a>
-    <a class="btn" routerLink="/cooking-equipment" routerLinkActive="active" title="View Equipment">
+    </div>
+    <div class="col mx-auto text-center" routerLink="/cooking-equipment" routerLinkActive="active" title="View Equipment">
       <button class="btn btn-outline-dark">
         <i class="fas fa-blender" title="View Equipment"></i>
         View Equipment
       </button>
-    </a>
+    </div>
+    <div class="col"></div>
   </div>
 </div>
 

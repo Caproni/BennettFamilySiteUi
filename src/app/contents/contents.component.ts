@@ -68,7 +68,7 @@ export class ContentsComponent implements OnInit {
     new Date(2021, 0, 1)
   );
   endDate: BehaviorSubject<Date> = new BehaviorSubject<Date>(
-    new Date(2022, 11, 31)
+    new Date()
   );
   filterStartDate: Date = new Date();
   filterEndDate: Date = new Date();
@@ -109,7 +109,7 @@ export class ContentsComponent implements OnInit {
         );
         this.filteredContents = this.contents;
         this.startDate.next(new Date(this.filteredContents[this.contents.length - 1].taken_date?? new Date(2021, 0, 1)));
-        this.endDate.next(new Date(this.filteredContents[0].taken_date?? new Date(2022, 11, 31)));
+        this.endDate.next(new Date(this.filteredContents[0].taken_date?? new Date()));
       }
     });
   }
