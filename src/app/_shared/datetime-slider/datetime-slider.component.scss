@@ -41,3 +41,29 @@
 .data-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
   background: #ff0055;
 }
+
+.custom-slider .ngx-slider {
+  height: 6px;
+  border-radius: 3px;
+  background-color: black;
+}
+
+.custom-slider .ngx-slider-selection {
+  height: 6px;
+  border-radius: 3px;
+  background-color: #55f !important;
+}
+
+.custom-slider .ngx-slider-pointer {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #55f !important;
+  border: 2px solid black;
+  top: -6px;
+}
+
+.custom-slider .ngx-slider-pointer:focus {
+  outline: none;
+  box-shadow: 0 0 3px 1px rgba(85, 85, 255, 0.5);
+}
