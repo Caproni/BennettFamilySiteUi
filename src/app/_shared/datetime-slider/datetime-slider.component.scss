@@ -1,11 +1,11 @@
 ::ng-deep {
 
   .data-slider .ngx-slider .ngx-slider-bar {
-    background: #ffe4d1;
+    background: #343434;
     height: 2px;
   }
   .data-slider .ngx-slider .ngx-slider-selection {
-    background: #ff0055;
+    background: #5555ff;
   }
 
   .data-slider .ngx-slider .ngx-slider-pointer {
@@ -28,7 +28,7 @@
 
   .data-slider .ngx-slider .ngx-slider-limit {
     font-weight: bold;
-    color: #ff0055;
+    color: #5555ff;
   }
 
   .data-slider .ngx-slider .ngx-slider-tick {
@@ -41,7 +41,7 @@
   }
 
   .data-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
-    background: #ff0055;
+    background: #5555ff;
   }
   
 }
