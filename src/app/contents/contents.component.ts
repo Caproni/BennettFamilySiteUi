@@ -125,11 +125,11 @@ export class ContentsComponent implements OnInit {
   }
 
   getContentWidth(): string {
-    if (this.windowWidth > = 1200) {
+    if (this.windowWidth >= 1200) {
       return '25%';
-    } else if (this.windowWidth > = 992) {
+    } else if (this.windowWidth >= 992) {
       return '33.33%';
-    } else if (this.windowWidth > = 768) {
+    } else if (this.windowWidth >= 768) {
       return '50%';
     } else {
       return '100%';
