@@ -1,1 +1,23 @@
-<p>calendar works!</p>
+<div class="calendar-widget">
+  <div class="calendar-header">
+    <div class="previous-month" (click)="prevMonth()"><</div>
+    <div class="current-month">{{ currentMonth }}</div>
+    <div class="next-month" (click)="nextMonth()">></div>
+  </div>
+  <div class="calendar-body">
+    <div class="weekdays">
+      <div class="weekday">Mon</div>
+      <div class="weekday">Tue</div>
+      <div class="weekday">Wed</div>
+      <div class="weekday">Thu</div>
+      <div class="weekday">Fri</div>
+      <div class="weekday">Sat</div>
+      <div class="weekday">Sun</div>
+    </div>
+    <div class="dates">
+      <div *ngFor="let holiday of bankHolidays">
+        {{ holiday.start }}
+      </div>
+    </div>
+  </div>
+</div>

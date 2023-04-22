@@ -1,5 +1,6 @@
-<div class="hero-image">
-  <div class="hero-text">
-    <div>Welcome to our family website!</div>
+<div class="hero-section">
+  <img class="hero-image" src="https://bennettfamilyblobs.blob.core.windows.net/assets/bennett_family.jpg" alt="Bennett family" [@blurInOut]>
+  <div class="hero-text" [@fadeInOut]="fadeInOutState" (mouseenter)="fadeInOutState='in'" (mouseleave)="fadeInOutState='out'">
+    <h1>Welcome to our family website!</h1>
   </div>
 </div>

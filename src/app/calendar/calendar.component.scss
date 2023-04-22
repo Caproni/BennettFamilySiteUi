@@ -1,0 +1,45 @@
+.calendar-widget {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.current-month {
+  font-weight: bold;
+}
+
+.weekdays {
+  display: flex;
+}
+
+.weekday {
+  width: calc(100% / 7);
+}
+
+.dates {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dates div {
+  width: calc(100% / 7);
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+}
+
+.dates div.today {
+  font-weight: bold;
+}
+
+.dates div.holiday {
+  background-color: #f8e8e8;
+}
