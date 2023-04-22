@@ -125,7 +125,15 @@ export class ContentsComponent implements OnInit {
   }
 
   getContentWidth(): string {
-    return 100 * (this.windowWidth / 3.5) / this.windowWidth + '%'
+    if (this.windowWidth > = 1200) {
+      return '25%';
+    } else if (this.windowWidth > = 992) {
+      return '33.33%';
+    } else if (this.windowWidth > = 768) {
+      return '50%';
+    } else {
+      return '100%';
+    }
   }
 
   openModal(template: TemplateRef<any>, modalOptions: any): void {
