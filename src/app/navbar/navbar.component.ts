@@ -23,27 +23,27 @@ import { LoginService } from 'src/app/_services/login/login.service';
 export class NavbarComponent implements OnInit {
 
   mediaIcon = faTv;
-  mediaPath = "/media"
+  mediaPath = '/media';
 
   scholarIcon = faScroll;
-  scholarPath = "/papers"
+  scholarPath = '/papers';
 
   mapIcon = faMapPin;
-  mapPath = "/mapping"
+  mapPath = '/mapping';
 
   photosIcon = faCameraRetro;
-  photosPath = "/photos"
+  photosPath = '/photos';
 
   recipesIcon = faUtensils;
-  recipesPath = "/recipes"
+  recipesPath = '/recipes';
 
   familyTreeIcon = faTree;
-  familyTreePath = "/family"
+  familyTreePath = '/family';
 
   authenticating = false;
 
-  notSelectedColor = "#000000"
-  selectedColor = "#55f"
+  notSelectedColor = '#000000';
+  selectedColor = '#55f';
 
   modalRef: BsModalRef = new BsModalRef();
 
