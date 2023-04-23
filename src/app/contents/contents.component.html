@@ -33,7 +33,7 @@
 
 <div class="justify-content-center">
   <ngx-masonry [options]="masonryOptions" [ordered]="true" style="width: 100%; margin: 0 auto;" (itemsLoaded)="contentLoaded()">
-    <div ngxMasonryItem class="masonry-item" *ngFor="let content of filteredContents" style="width:{{getContentWidth()}};">
+    <div ngxMasonryItem class="masonry-item" *ngFor="let content of filteredContents" [style.width]="getContentWidth()">
       <img *ngIf="content.file_format === undefined" [src]="content.blob_url" alt="{{content.name}}" width="100%" height="90%" (click)="populateContent(content); openModal(viewContentTemplate, {class: 'modal-lg'})">
       <img *ngIf="allowedPhotoMimeTypes.includes(content.file_format)" [src]="content.blob_url" alt="{{content.name}}" width="100%" height="90%" (click)="populateContent(content); openModal(viewContentTemplate, {class: 'modal-lg'})">
       <video *ngIf="allowedVideoMimeTypes.includes(content.file_format)" [src]="content.blob_url" width="100%" height="90%" (click)="populateContent(content); openModal(viewContentTemplate, {class: 'modal-lg'})">
