@@ -1,2 +1,241 @@
 <div id="graph"></div>
 
+<ng-template #editPersonTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit Person</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="editPersonForm">
+      <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">First Name </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="first_name" id="first_name" class="form-control" name="first_name" required>
+            <div *ngIf="editPersonForm.controls['first_name'].touched && editPersonForm.controls['first_name'].invalid" class="alert alert-danger">
+              A first name is required
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Middle Names </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="middle_names" id="add-middle-names" class="form-control" name="add-middle-names">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Surname </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="surname" id="surname" class="form-control" name="surname" required>
+            <div *ngIf="editPersonForm.controls['surname'].touched && editPersonForm.controls['surname'].invalid" class="alert alert-danger">
+              A surname is required
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Chosen Name </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="chosen_name" id="add-chosen-name" class="form-control" name="add-chosen-name">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Title </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="title" id="title" class="form-control" name="title">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Birthplace </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="birthplace" id="add-birthplace" class="form-control" name="add-birthplace">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Sex </label>
+          </div>
+          <div class="col">
+            <select formControlName="sex" id="add-sex" class="form-control" name="add-sex">
+              <option>Unknown</option>
+              <option>XY</option>
+              <option>XX</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Date of Birth </label>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              placeholder="Select date of birth"
+              class="form-control"
+              bsDatepicker
+              formControlName="date_of_birth"
+              [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+            />
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Date of Death </label>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              placeholder="Select date of death"
+              class="form-control"
+              bsDatepicker
+              formControlName="date_of_death"
+              [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+            />
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Previous Surname </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="previous_surnames" id="add-previous-surnames" class="form-control" name="add-previous-surnames">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Narrative </label>
+          </div>
+          <div class="col">
+            <textarea matInput
+                      formControlName="narrative"
+                      cdkTextareaAutosize
+                      matAutosizeMinRows=1
+                      matAutosizeMaxRows=5
+            ></textarea>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <div class="row mx-auto justify-content-center">
+              <button class="btn btn-outline-success" style="width: 80%;"
+                      [disabled]="!editPersonForm.valid"
+                      (click)="onEditPersonFormSubmit()">Save</button>
+            </div>
+            <div class="row mx-auto pt-2 justify-content-center">
+              <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #personImageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Update Person Image</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="personImageForm">
+      <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Image </label>
+          </div>
+          <div class="col">
+            <input
+              #photoUpload
+              type="file"
+              accept="image/*"
+              class="file-upload"
+              style="display: none;"
+              (change)="onPersonImageSelected($event)">
+
+            <button class="btn btn-outline-dark"
+                    (click)="photoUpload.click()">
+              <i class="fas fa-upload"> Browse</i>
+            </button>
+            <div class="file-upload">
+              <input type="text" formControlName="image" id="image" class="form-control" name="image" required>
+              <div *ngIf="personImageForm.controls['image'].touched && personImageForm.controls['image'].invalid"
+                   [@inOutAnimation]="personImageForm.controls['image'].touched && personImageForm.controls['image'].invalid"
+                   class="alert alert-danger">
+                An image file is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <div class="row mx-auto justify-content-center">
+              <button class="btn btn-outline-success" style="width: 80%;"
+                      [disabled]="!personImageForm.valid"
+                      (click)="onPersonImageFormSubmit()">Update</button>
+            </div>
+            <div class="row mx-auto pt-2 justify-content-center">
+              <button class="btn btn-outline-danger" (click)="modalRef.hide(); openModal(deletePersonImageTemplate);" style="width: 80%;">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #deletePersonImageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">
+      Are you sure you want to delete this image?
+    </h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row justify-content-center">
+      <button
+        class="btn btn-outline-danger"
+        (click)="onDeletePersonImage()"
+        style="width: 80%"
+      >
+        Confirm
+      </button>
+    </div>
+    <div class="row justify-content-center pt-2">
+      <button
+        class="btn btn-outline-secondary"
+        (click)="modalRef.hide()"
+        style="width: 80%"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</ng-template>

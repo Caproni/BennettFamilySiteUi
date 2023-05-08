@@ -12,8 +12,6 @@ export interface FamilyTreePerson {
   previous_surnames: string[];
   relationships: string[];
   narrative: string | null;
-  generation_index: number;
-  column_index: number;
   facts: string[];
   photos: string[];
   sources: string[];

@@ -143,8 +143,6 @@ export class FamilyTreeComponent implements OnInit {
         previous_surnames: payload.previous_surnames ? payload.previous_surnames.split(" "): [],
         relationships: [],
         narrative: payload.narrative ?? null,
-        generation_index: 0,
-        column_index: 0,
         facts: [],
         photos: [],
         sources: [],
