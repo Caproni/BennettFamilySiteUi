@@ -122,7 +122,7 @@ export class FamilyNetworkChartComponent implements OnInit {
 
       this.nodes.push({
         id: person.id,
-        name: person.first_name + ' ' + person.surname + (dob ? ' (' + new Date(dob).toLocaleDateString('en-GB') + ')' : ''),
+        name: (person?.chosen_name && person.chosen_name != '' ? person.chosen_name : person.first_name) + ' ' + person.surname + (dob ? ' (' + new Date(dob).toLocaleDateString('en-GB') + ')' : ''),
         sex: person.sex ?? '',
         title: person.title ?? '',
         birthplace: person.birthplace ?? '',
@@ -320,7 +320,7 @@ export class FamilyNetworkChartComponent implements OnInit {
       id: this.selectedPerson.id,
     };
 
-    const name = payload.first_name + ' ' + payload.surname;
+    const name = (this.selectedPerson?.chosen_name && this.selectedPerson.chosen_name != '' ? this.selectedPerson.chosen_name : this.selectedPerson.first_name) + ' ' + payload.surname;
 
     this.familyTreePersonUpdateService.updateFamilyTreePerson(
       this.selectedPerson.id,
@@ -350,7 +350,7 @@ export class FamilyNetworkChartComponent implements OnInit {
 
     if (!this.selectedPerson?.id) return;
 
-    const name = this.selectedPerson?.first_name + ' ' + this.selectedPerson?.surname
+    const name = (this.selectedPerson?.chosen_name && this.selectedPerson.chosen_name != '' ? this.selectedPerson.chosen_name : this.selectedPerson.first_name) + ' ' + this.selectedPerson?.surname
 
     this.familyTreePersonImagePutService.putFamilyTreePersonImage(
       this.selectedPerson.id,

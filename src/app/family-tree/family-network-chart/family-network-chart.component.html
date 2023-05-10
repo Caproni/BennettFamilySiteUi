@@ -10,8 +10,8 @@
   <div class="modal-body">
 
     <div class="pb-2">
-      <img *ngIf="selectedPerson?.blob_url" [src]="selectedPerson?.blob_url" alt="Equipment Image" width="100%">
-      <img *ngIf="!selectedPerson?.blob_url" src="/assets/bowl.png" alt="Equipment Silhouette" width="100%">
+      <img *ngIf="selectedPerson?.blob_url" [src]="selectedPerson?.blob_url" alt="Person Image" width="100%">
+      <img *ngIf="!selectedPerson?.blob_url" src="/assets/silhouette.png" alt="Person Silhouette" width="100%">
     </div>
 
     <form [formGroup]="editPersonForm">
