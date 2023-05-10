@@ -302,7 +302,7 @@ export class FamilyNetworkChartComponent implements OnInit {
 
     const patch: FamilyTreePerson = {
       first_name: payload.first_name ?? null,
-      middle_names: payload.middle_names.split(' '),
+      middle_names: payload.middle_names ?? null,
       chosen_name: payload.chosen_name ?? null,
       surname: payload.surname ?? null,
       previous_surnames: payload.previous_surnames ?? null,
@@ -320,6 +320,8 @@ export class FamilyNetworkChartComponent implements OnInit {
       id: this.selectedPerson.id,
     };
 
+    const name = payload.first_name + ' ' + payload.surname;
+
     this.familyTreePersonUpdateService.updateFamilyTreePerson(
       this.selectedPerson.id,
       patch,
@@ -327,13 +329,13 @@ export class FamilyNetworkChartComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.toasterService.info('Updating ' + payload.name, 'Info');
+          this.toasterService.info('Updating ' + name, 'Info');
         },
         (_) => {
-          this.toasterService.error('Error updating ' + payload.name, 'Error');
+          this.toasterService.error('Error updating ' + name, 'Error');
         },
         () => {
-          this.toasterService.success('Updated ' + payload.name, 'Success');
+          this.toasterService.success('Updated ' + name, 'Success');
           this.changeDetectorRef.detectChanges();
         }
       );
