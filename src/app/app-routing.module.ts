@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'recipe-detail/:recipeId', component: RecipeViewComponent },
   { path: 'media', component: MediaComponent },
   { path: 'papers', component: PapersComponent },
-  { path: 'photos', component: ContentsComponent },
+  { path: 'content', component: ContentsComponent },
   { path: 'mapping', component: MappingComponent },
   { path: '**', component: NoPageComponent },
 ];

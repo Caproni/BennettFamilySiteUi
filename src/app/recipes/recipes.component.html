@@ -31,22 +31,24 @@
 
 <div *ngIf="windowWidth <= 1000" [@inOutAnimation]="windowWidth <= 1000" class="d-flex justify-content-center">
   <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-    <button *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()" class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">
-      <i class="fas fa-utensils" title="Add Recipe"></i>
-      Add Recipe
-    </button>
-    <a class="btn" routerLink="/cooking-ingredients" routerLinkActive="active" title="View Ingredients">
+    <form class="p-1" style="display: inline-block; margin:0 auto;">
+      <button *ngIf="isAuthorised()" [@inOutAnimation]="isAuthorised()" class="btn btn-outline-dark" (click)="openModal(addRecipeTemplate)">
+        <i class="fas fa-utensils" title="Add Recipe"></i>
+        Add Recipe
+      </button>
+    </form>
+    <form class="p-1" style="display: inline-block; margin:0 auto;" action="/cooking-ingredients" method="get">
       <button class="btn btn-outline-dark">
         <i class="fas fa-carrot" title="View Ingredients"></i>
         View Ingredients
       </button>
-    </a>
-    <a class="btn" routerLink="/cooking-equipment" routerLinkActive="active" title="View Equipment">
+    </form>
+    <form class="p-1" style="display: inline-block; margin:0 auto;" action="/cooking-equipment" method="get">
       <button class="btn btn-outline-dark">
         <i class="fas fa-blender" title="View Equipment"></i>
         View Equipment
       </button>
-    </a>
+    </form>
   </div>
 </div>
 

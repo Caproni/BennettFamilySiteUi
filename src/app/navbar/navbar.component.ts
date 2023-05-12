@@ -3,14 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { takeWhile } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import {
-  faCameraRetro,
-  faTv,
-  faScroll,
-  faUtensils,
-  faTree,
-  faMapPin,
-} from '@fortawesome/free-solid-svg-icons';
 
 import { AuthenticationService } from 'src/app/_services/api/authentication/authentication.service';
 import { LoginService } from 'src/app/_services/login/login.service';
@@ -22,22 +14,11 @@ import { LoginService } from 'src/app/_services/login/login.service';
 })
 export class NavbarComponent implements OnInit {
 
-  mediaIcon = faTv;
   mediaPath = '/media';
-
-  scholarIcon = faScroll;
   scholarPath = '/papers';
-
-  mapIcon = faMapPin;
   mapPath = '/mapping';
-
-  photosIcon = faCameraRetro;
-  photosPath = '/photos';
-
-  recipesIcon = faUtensils;
+  contentPath = '/content';
   recipesPath = '/recipes';
-
-  familyTreeIcon = faTree;
   familyTreePath = '/family';
 
   authenticating = false;
