@@ -9,9 +9,14 @@
   </div>
   <div class="modal-body">
 
-    <div class="pb-2">
+    <div class="pb-2 image-container">
       <img *ngIf="selectedPerson?.blob_url" [src]="selectedPerson?.blob_url" alt="Person Image" width="100%">
       <img *ngIf="!selectedPerson?.blob_url" src="/assets/silhouette.png" alt="Person Silhouette" width="100%">
+      <div class="image-text">
+        <button type="button" class="btn" aria-label="Update Person Image" (click)="openModal(editImageTemplate)">
+          <i class="fas fa-image fa-lg fa-fw fa-inverse" title="Update Person Image"></i>
+        </button>
+      </div>
     </div>
 
     <form [formGroup]="editPersonForm">
@@ -243,5 +248,207 @@
         Cancel
       </button>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #editImageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Update Person Image</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="personImageForm">
+      <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Image </label>
+          </div>
+          <div class="col">
+            <input
+              #photoUpload
+              type="file"
+              accept="image/*"
+              class="file-upload"
+              style="display: none;"
+              (change)="onPersonImageSelected($event)">
+
+            <button class="btn btn-outline-dark"
+                    (click)="photoUpload.click()">
+              <i class="fas fa-upload"> Browse</i>
+            </button>
+            <div class="file-upload">
+              <input type="text" formControlName="image" id="image" class="form-control" name="image" required>
+              <div *ngIf="personImageForm.controls['image'].touched && personImageForm.controls['image'].invalid"
+                   [@inOutAnimation]="personImageForm.controls['image'].touched && personImageForm.controls['image'].invalid"
+                   class="alert alert-danger">
+                An image file is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <div class="row mx-auto justify-content-center">
+              <button class="btn btn-outline-success" style="width: 80%;"
+                      [disabled]="!personImageForm.valid"
+                      (click)="onPersonImageFormSubmit()">Update</button>
+            </div>
+            <div class="row mx-auto pt-2 justify-content-center">
+              <button class="btn btn-outline-danger" (click)="modalRef.hide(); openModal(deletePersonImageTemplate);" style="width: 80%;">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #deletePersonImageTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">
+      Are you sure you want to delete the image for {{ getSelectedName() }}?
+    </h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row justify-content-center">
+      <button
+        class="btn btn-outline-danger"
+        (click)="onDeletePersonImage()"
+        style="width: 80%"
+      >
+        Confirm
+      </button>
+    </div>
+    <div class="row justify-content-center pt-2">
+      <button
+        class="btn btn-outline-secondary"
+        (click)="modalRef.hide()"
+        style="width: 80%"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #editRelationshipTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit Relationship</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="editRelationshipForm">
+      <div class="form-horizontal">
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">First Person </label>
+          </div>
+          <div class="col">
+            <select formControlName="person_one" id="person-one-id" class="form-control" name="person-one-id">
+              <option></option>
+              <option *ngFor="let person of people">
+                {{person.first_name + ' ' + person.surname + ((person.date_of_birth | date: ' (dd MMM Y)') || '') + ' [' + person.id + ']'}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Second Person </label>
+          </div>
+          <div class="col">
+            <select formControlName="person_two" id="person-two-id" class="form-control" name="person-two-id">
+              <option></option>
+              <option *ngFor="let person of people">
+                {{person.first_name + ' ' + person.surname + ((person.date_of_birth | date: ' (dd MMM Y)') || '') + ' [' + person.id + ']'}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Type </label>
+          </div>
+          <div class="col">
+            <select formControlName="relationship_type" id="relationship_type" class="form-control" name="relationship_type">
+              <option></option>
+              <option>Civil Partnership</option>
+              <option>Child</option>
+              <option>Divorced</option>
+              <option>Married</option>
+              <option>Sibling</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Start Date </label>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              placeholder="Select relationship start date"
+              class="form-control"
+              bsDatepicker
+              formControlName="start_date"
+              [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+            />
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">End Date </label>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              placeholder="Select relationship end date"
+              class="form-control"
+              bsDatepicker
+              formControlName="end_date"
+              [bsConfig]="{
+              rangeInputFormat: 'YYYY-MM-DD',
+              dateInputFormat: 'DD MMM YYYY'
+            }"
+            />
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col form-group">
+            <label class="control-label">Narrative </label>
+          </div>
+          <div class="col">
+            <input type="text" formControlName="narrative" id="narrative" class="form-control" name="narrative">
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <div class="row mx-auto justify-content-center">
+              <button class="btn btn-outline-success" style="width: 80%;"
+                      [disabled]="!editRelationshipForm.valid"
+                      (click)="onRelationshipFormSubmit()">Save</button>
+            </div>
+            <div class="row mx-auto pt-2 justify-content-center">
+              <button class="btn btn-outline-danger" (click)="modalRef.hide();" style="width: 80%;">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </ng-template>

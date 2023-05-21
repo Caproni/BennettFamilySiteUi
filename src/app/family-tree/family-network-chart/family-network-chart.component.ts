@@ -37,6 +37,7 @@ interface Node {
 }
 
 interface Link {
+  id: string,
   source: string,
   target: string,
   relationship_type: string,
@@ -69,10 +70,12 @@ export class FamilyNetworkChartComponent implements OnInit {
   photoFile = new File([], '');
 
   @ViewChild('editPersonTemplate') editPersonTemplate!: TemplateRef<any>;
+  @ViewChild('editRelationshipTemplate') editRelationshipTemplate!: TemplateRef<any>;
 
   modalRef: BsModalRef = new BsModalRef();
 
   selectedPerson: FamilyTreePerson | undefined;
+  selectedLink: FamilyTreeRelationship | undefined;
 
   editPersonForm: FormGroup = new FormGroup({
     first_name: new FormControl(''),
@@ -85,6 +88,15 @@ export class FamilyNetworkChartComponent implements OnInit {
     sex: new FormControl(''),
     date_of_birth: new FormControl(''),
     date_of_death: new FormControl(''),
+    narrative: new FormControl(''),
+  });
+
+  editRelationshipForm: FormGroup = new FormGroup({
+    person_one: new FormControl(''),
+    person_two: new FormControl(''),
+    start_date: new FormControl(''),
+    end_date: new FormControl(''),
+    relationship_type: new FormControl(''),
     narrative: new FormControl(''),
   });
 
@@ -131,7 +143,11 @@ export class FamilyNetworkChartComponent implements OnInit {
     }
 
     for (let relationship of this.relationships) {
+
+      if (!relationship.id) continue;
+
       this.links.push({
+        id: relationship.id,
         source: relationship.person_two,
         target: relationship.person_one,
         relationship_type: relationship.relationship_type,
@@ -174,7 +190,7 @@ export class FamilyNetworkChartComponent implements OnInit {
     this.graph.linkWidth(4);
     //@ts-ignore
     this.graph.d3Force('charge', forceManyBody().distanceMax(200).strength(-300));
-    this.graph.onNodeClick(
+    this.graph.onNodeRightClick(
       (node) => {
         this.selectedPerson = this.people.filter(item => item.id === node.id)[0];
         this.populateEditPersonForm();
@@ -258,7 +274,14 @@ export class FamilyNetworkChartComponent implements OnInit {
         }
 
     });
-
+    this.graph.onLinkRightClick(
+      //@ts-ignore
+      ({source, target, id}) => {
+        this.selectedLink = this.relationships.filter(item => item.id === id)[0];
+        this.populateEditRelationshipForm();
+        this.openModal(this.editRelationshipTemplate);
+      }
+    );
     this.graph.graphData(familyTreeData);
 
     this.windowResize();
@@ -287,9 +310,34 @@ export class FamilyNetworkChartComponent implements OnInit {
     this.editPersonForm.controls['title'].setValue(this.selectedPerson.title);
     this.editPersonForm.controls['birthplace'].setValue(this.selectedPerson.birthplace);
     this.editPersonForm.controls['sex'].setValue(this.selectedPerson.sex);
-    this.editPersonForm.controls['date_of_birth'].setValue(this.selectedPerson.date_of_birth ? new Date(this.selectedPerson.date_of_birth) : "");
-    this.editPersonForm.controls['date_of_death'].setValue(this.selectedPerson.date_of_death ? new Date(this.selectedPerson.date_of_death) : "");
+    this.editPersonForm.controls['date_of_birth'].setValue(this.selectedPerson.date_of_birth ? new Date(this.selectedPerson.date_of_birth) : '');
+    this.editPersonForm.controls['date_of_death'].setValue(this.selectedPerson.date_of_death ? new Date(this.selectedPerson.date_of_death) : '');
     this.editPersonForm.controls['narrative'].setValue(this.selectedPerson.narrative);
+  }
+
+  populateEditRelationshipForm() {
+
+    if (!this.selectedLink) return;
+
+    const p1 = this.people.filter(item => this.selectedLink?.person_one === item.id)[0];
+    if (!p1.id) return;
+    const p1_name = p1.first_name + ' ' + p1.surname + ' ' + p1.date_of_birth ? new Date(p1.date_of_birth ?? '').toLocaleDateString() : '';
+
+    const p2 = this.people.filter(item => this.selectedLink?.person_two === item.id)[0];
+    if (!p2.id) return;
+    const p2_name = p2.first_name + ' ' + p2.surname + ' ' + new Date(p2.date_of_birth ?? '').toLocaleDateString();
+
+    this.editRelationshipForm.controls['person_one'].setValue(p1_name);
+    this.editRelationshipForm.controls['person_two'].setValue(p2_name);
+    this.editRelationshipForm.controls['start_date'].setValue(this.selectedLink.start_date ? new Date(this.selectedLink.start_date) : '');
+    this.editRelationshipForm.controls['end_date'].setValue(this.selectedLink.end_date ? new Date(this.selectedLink.end_date) : '');
+    this.editRelationshipForm.controls['relationship_type'].setValue(this.selectedLink.relationship_type);
+    this.editRelationshipForm.controls['narrative'].setValue(this.selectedLink.narrative);
+  }
+
+  getSelectedName(): string | undefined {
+    if (!this.selectedPerson) return;
+    return (this.selectedPerson?.chosen_name && this.selectedPerson.chosen_name != '' ? this.selectedPerson.chosen_name : this.selectedPerson.first_name) + ' ' + this.selectedPerson.surname;
   }
 
   onEditPersonFormSubmit() {
@@ -320,8 +368,6 @@ export class FamilyNetworkChartComponent implements OnInit {
       id: this.selectedPerson.id,
     };
 
-    const name = (this.selectedPerson?.chosen_name && this.selectedPerson.chosen_name != '' ? this.selectedPerson.chosen_name : this.selectedPerson.first_name) + ' ' + payload.surname;
-
     this.familyTreePersonUpdateService.updateFamilyTreePerson(
       this.selectedPerson.id,
       patch,
@@ -329,13 +375,13 @@ export class FamilyNetworkChartComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.toasterService.info('Updating ' + name, 'Info');
+          this.toasterService.info('Updating ' + this.getSelectedName(), 'Info');
         },
         (_) => {
-          this.toasterService.error('Error updating ' + name, 'Error');
+          this.toasterService.error('Error updating ' + this.getSelectedName(), 'Error');
         },
         () => {
-          this.toasterService.success('Updated ' + name, 'Success');
+          this.toasterService.success('Updated ' + this.getSelectedName(), 'Success');
           this.changeDetectorRef.detectChanges();
         }
       );
@@ -350,8 +396,6 @@ export class FamilyNetworkChartComponent implements OnInit {
 
     if (!this.selectedPerson?.id) return;
 
-    const name = (this.selectedPerson?.chosen_name && this.selectedPerson.chosen_name != '' ? this.selectedPerson.chosen_name : this.selectedPerson.first_name) + ' ' + this.selectedPerson?.surname
-
     this.familyTreePersonImagePutService.putFamilyTreePersonImage(
       this.selectedPerson.id,
       this.photoFile,
@@ -359,13 +403,13 @@ export class FamilyNetworkChartComponent implements OnInit {
       .pipe(takeWhile(_ => this.isActive))
       .subscribe(
         (_) => {
-          this.toasterService.info('Adding image for ' + name, 'Info');
+          this.toasterService.info('Adding image for ' + this.getSelectedName(), 'Info');
         },
         (_) => {
-          this.toasterService.error('Could not add image for ' + name, 'Error');
+          this.toasterService.error('Could not add image for ' + this.getSelectedName(), 'Error');
         },
         () => {
-          this.toasterService.success('Added image for ' + name, 'Success');
+          this.toasterService.success('Added image for ' + this.getSelectedName(), 'Success');
           this.changeDetectorRef.detectChanges();
         },
       );
@@ -400,8 +444,6 @@ export class FamilyNetworkChartComponent implements OnInit {
 
     if (!this.selectedPerson?.id) return;
 
-    const name = this.selectedPerson?.first_name;
-
     if (this.selectedPerson.id) {
       this.familyTreePersonImageDeleteService.deleteFamilyTreePersonImage(
         this.selectedPerson.id,
@@ -409,17 +451,21 @@ export class FamilyNetworkChartComponent implements OnInit {
         .pipe(takeWhile(_ => this.isActive))
         .subscribe(
           (_) => {
-            this.toasterService.info('Deleting image for ' + name, 'Info');
+            this.toasterService.info('Deleting image for ' + this.getSelectedName(), 'Info');
           },
           (_) => {
-            this.toasterService.error('Could not delete image for ' + name, 'Error');
+            this.toasterService.error('Could not delete image for ' + this.getSelectedName(), 'Error');
           },
           () => {
-            this.toasterService.success('Deleted image for ' + name, 'Success');
+            this.toasterService.success('Deleted image for ' + this.getSelectedName(), 'Success');
           },
         );
       this.modalRef.hide();
     }
+
+  }
+
+  onRelationshipFormSubmit() {
 
   }
 

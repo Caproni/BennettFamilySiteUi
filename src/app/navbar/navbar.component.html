@@ -8,6 +8,15 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
+        <li *ngIf="!isAuthorised() && authenticating" class="nav-item">
+          <a class="nav-link">Authorising</a>
+        </li>
+        <li *ngIf="!isAuthorised() && !authenticating" class="nav-item">
+          <a class="nav-link" (click)="openModal(loginTemplate)">Login</a>
+        </li>
+        <li *ngIf="isAuthorised()" class="nav-item">
+          <a class="nav-link" (click)="logOut()">Logout</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/content" routerLinkActive="active" [style.color]="getIconColor(contentPath)">Content</a>
         </li>
@@ -25,21 +34,6 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/mapping" routerLinkActive="active" [style.color]="getIconColor(mapPath)">Map</a>
-        </li>
-        <li class="nav-item">
-          <button *ngIf="!isAuthorised() && authenticating" class="btn">
-            <i class="fas fa-spinner fa-pulse" title="Authorising"></i>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button *ngIf="!isAuthorised() && !authenticating" class="btn" (click)="openModal(loginTemplate)">
-            <i class="fas fa-sign-in-alt" title="Login"></i>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button *ngIf="isAuthorised()" class="btn" (click)="logOut()">
-            <i class="fas fa-sign-out-alt" title="Logout"></i>
-          </button>
         </li>
       </ul>
     </div>

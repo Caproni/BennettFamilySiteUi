@@ -1,0 +1,18 @@
+.image-container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.image-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: 1s;
+}
+
+.image-text:hover {
+  opacity:1;
+}
