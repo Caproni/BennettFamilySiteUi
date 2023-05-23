@@ -32,7 +32,7 @@
     <h3 *ngIf="!loadedRecipeDetail" [@inOutAnimation]="!loadedRecipeDetail"><i class="fas fa-spinner fa-pulse"></i></h3>
     <div *ngIf="loadedRecipeDetail && recipeDetails.recipe.blob_url" [@inOutAnimation]="loadedRecipeDetail && recipeDetails.recipe.blob_url">
       <img alt="Recipe Image" [src]="recipeDetails.recipe.blob_url" height="200">
-      <div class="image-text">
+      <div *ngIf="isAuthorised()" class="image-text">
         <button type="button" class="btn" aria-label="Update Recipe Image" (click)="openModal(recipeImageTemplate)">
           <i class="fas fa-image fa-lg fa-fw fa-inverse" title="Update Recipe Image"></i>
         </button>
