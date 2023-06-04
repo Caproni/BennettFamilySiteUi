@@ -6,7 +6,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse" #navbarCollapse id="navbarNav">
       <ul class="navbar-nav">
         <li *ngIf="!isAuthorised() && authenticating" class="nav-item">
           <a class="nav-link">Authorising</a>
@@ -18,22 +18,22 @@
           <a class="nav-link" (click)="logOut()">Logout</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/content" routerLinkActive="active" [style.color]="getIconColor(contentPath)">Content</a>
+          <a class="nav-link" routerLink="/content" routerLinkActive="active" (click)="closeNavbar()" [style.color]="getIconColor(contentPath)">Content</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/recipes" routerLinkActive="active" [style.color]="getIconColor(recipesPath)">Recipes</a>
+          <a class="nav-link" routerLink="/recipes" routerLinkActive="active" (click)="closeNavbar()" [style.color]="getIconColor(recipesPath)">Recipes</a>
         </li>
         <li *ngIf="isAuthorised()" class="nav-item">
-          <a class="nav-link" routerLink="/family" routerLinkActive="active" [style.color]="getIconColor(familyTreePath)">Family Tree</a>
+          <a class="nav-link" routerLink="/family" routerLinkActive="active" (click)="closeNavbar()" [style.color]="getIconColor(familyTreePath)">Family Tree</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/media" routerLinkActive="active" [style.color]="getIconColor(mediaPath)">Media</a>
+          <a class="nav-link" routerLink="/media" routerLinkActive="active" (click)="closeNavbar()" [style.color]="getIconColor(mediaPath)">Media</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/papers" routerLinkActive="active" [style.color]="getIconColor(scholarPath)">Papers</a>
+          <a class="nav-link" routerLink="/papers" routerLinkActive="active" (click)="closeNavbar()" [style.color]="getIconColor(scholarPath)">Papers</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/mapping" routerLinkActive="active" [style.color]="getIconColor(mapPath)">Map</a>
+          <a class="nav-link" routerLink="/mapping" routerLinkActive="active" (click)="closeNavbar()" [style.color]="getIconColor(mapPath)">Map</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="https://rockpaperscience.co.uk">Rock Paper Science Blog</a>

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { takeWhile } from 'rxjs/operators';
@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
   familyTreePath = '/family';
 
   authenticating = false;
+  @ViewChild('navbarCollapse') navbarCollapse!: ElementRef;
 
   notSelectedColor = '#000000';
   selectedColor = '#55f';
@@ -48,6 +49,13 @@ export class NavbarComponent implements OnInit {
 
   isAuthorised(): boolean {
     return this.loginService.getAuthorised();
+  }
+
+  closeNavbar(): void {
+    const navbarToggle = document.querySelector('.navbar-toggler');
+    if (navbarToggle && this.navbarCollapse.nativeElement.classList.contains('show')) {
+      navbarToggle.dispatchEvent(new Event('click'));
+    }
   }
 
   getIconColor(checkPath: string) {
