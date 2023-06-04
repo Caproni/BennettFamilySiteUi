@@ -47,6 +47,7 @@ import { MappingComponent } from './mapping/mapping.component';
 import { PapersComponent } from './papers/papers.component';
 import { PaperDetailComponent } from './papers/paper-detail/paper-detail.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { WeatherComponent } from './weather/weather.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MappingComponent,
     PapersComponent,
     PaperDetailComponent,
+    WeatherComponent,
   ],
   imports: [
     BrowserModule,

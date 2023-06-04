@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
   mediaPath = '/media';
   scholarPath = '/papers';
   mapPath = '/mapping';
+  weatherPath = '/weather';
   contentPath = '/content';
   recipesPath = '/recipes';
   familyTreePath = '/family';
