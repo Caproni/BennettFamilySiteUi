@@ -70,7 +70,7 @@ export class ContentsComponent implements OnInit {
   endDate: BehaviorSubject<Date> = new BehaviorSubject<Date>(
     new Date()
   );
-  filterStartDate: Date = new Date();
+  filterStartDate: Date = this.startDate.value;
   filterEndDate: Date = new Date();
 
   searchRegex = /["']([a-z0-9:,\-.\s^\/+]+)["']|([a-z0-9:,\-.^\/+]+)/gm;
